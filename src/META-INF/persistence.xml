@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="GoalNetDesigner">
+		<class>ntu.goalnetdesigner.persistence.Arc</class>
+		<class>ntu.goalnetdesigner.persistence.Function</class>
+		<class>ntu.goalnetdesigner.persistence.Gnet</class>
+		<class>ntu.goalnetdesigner.persistence.Property</class>
+		<class>ntu.goalnetdesigner.persistence.State</class>
+		<class>ntu.goalnetdesigner.persistence.StateFunction</class>
+		<class>ntu.goalnetdesigner.persistence.StateFunctionPK</class>
+		<class>ntu.goalnetdesigner.persistence.Task</class>
+		<class>ntu.goalnetdesigner.persistence.TaskFunction</class>
+		<class>ntu.goalnetdesigner.persistence.TaskFunctionPK</class>
+		<class>ntu.goalnetdesigner.persistence.Tasklist</class>
+		<class>ntu.goalnetdesigner.persistence.TasklistTask</class>
+		<class>ntu.goalnetdesigner.persistence.TasklistTaskPK</class>
+		<class>ntu.goalnetdesigner.persistence.Transition</class>
+		<class>ntu.goalnetdesigner.persistence.Usergroup</class>
+		<class>ntu.goalnetdesigner.persistence.User</class>
+		<properties>
+		    <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/gnetdb" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="root" />
+		</properties>
+	</persistence-unit>
+</persistence>
