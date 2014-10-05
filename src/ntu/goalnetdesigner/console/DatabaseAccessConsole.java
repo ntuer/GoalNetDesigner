@@ -1,6 +1,7 @@
 package ntu.goalnetdesigner.console;
 
-import ntu.goalnetdesigner.persistence.*;
+import ntu.goalnetdesigner.data.*;
+import ntu.goalnetdesigner.data.persistence.*;
 
 public class DatabaseAccessConsole {
 
@@ -8,5 +9,4 @@ public class DatabaseAccessConsole {
 		TestManager tm = new TestManager();
 		System.out.println(tm.fetchFirstArc().getGNetID());
 	}
-
 }

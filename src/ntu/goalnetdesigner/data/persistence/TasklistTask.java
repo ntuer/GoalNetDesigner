@@ -1,4 +1,4 @@
-package ntu.goalnetdesigner.persistence;
+package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
 import javax.persistence.*;

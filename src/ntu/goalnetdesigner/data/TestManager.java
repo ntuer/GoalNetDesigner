@@ -1,7 +1,8 @@
-package ntu.goalnetdesigner.persistence;
+package ntu.goalnetdesigner.data;
 
 import javax.persistence.*;
 import java.math.BigInteger;
+import ntu.goalnetdesigner.data.persistence.*;
 
 public class TestManager {
 	

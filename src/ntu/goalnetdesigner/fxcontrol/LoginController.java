@@ -1,5 +1,7 @@
 package ntu.goalnetdesigner.fxcontrol;
 
+import ntu.goalnetdesigner.data.*;
+import ntu.goalnetdesigner.data.persistence.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,11 +24,14 @@ public class LoginController {
 	
 	@FXML
 	protected void handleSubmitButtonAction(ActionEvent event) {
-		try {
-			replaceSceneContent("/ntu/goalnetdesigner/fxui/MainPage.fxml");
-		} catch (Exception e) {
-			
-		}
+		TestManager tm = new TestManager();
+		actiontarget.setText(tm.fetchFirstArc().getGNetID().toString());
+		
+//		try {
+//			replaceSceneContent("/ntu/goalnetdesigner/fxui/MainPage.fxml");
+//		} catch (Exception e) {
+//			
+//		}
 	}
 	
 	private Parent replaceSceneContent(String fxml) throws Exception {

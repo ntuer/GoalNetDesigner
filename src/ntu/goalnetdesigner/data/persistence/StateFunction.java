@@ -1,34 +1,34 @@
-package ntu.goalnetdesigner.persistence;
+package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
 import javax.persistence.*;
 
 
 /**
- * The persistent class for the task_function database table.
+ * The persistent class for the state_function database table.
  * 
  */
 @Entity
-@Table(name="task_function")
-@NamedQuery(name="TaskFunction.findAll", query="SELECT t FROM TaskFunction t")
-public class TaskFunction implements Serializable {
+@Table(name="state_function")
+@NamedQuery(name="StateFunction.findAll", query="SELECT s FROM StateFunction s")
+public class StateFunction implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private TaskFunctionPK id;
+	private StateFunctionPK id;
 
 	private String arguments;
 
 	private int sequence;
 
-	public TaskFunction() {
+	public StateFunction() {
 	}
 
-	public TaskFunctionPK getId() {
+	public StateFunctionPK getId() {
 		return this.id;
 	}
 
-	public void setId(TaskFunctionPK id) {
+	public void setId(StateFunctionPK id) {
 		this.id = id;
 	}
 

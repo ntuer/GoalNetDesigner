@@ -1,28 +1,28 @@
-package ntu.goalnetdesigner.persistence;
+package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
 import javax.persistence.*;
 
 /**
- * The primary key class for the task_function database table.
+ * The primary key class for the state_function database table.
  * 
  */
 @Embeddable
-public class TaskFunctionPK implements Serializable {
+public class StateFunctionPK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
 
-	private String taskID;
+	private String stateID;
 
 	private String functionID;
 
-	public TaskFunctionPK() {
+	public StateFunctionPK() {
 	}
-	public String getTaskID() {
-		return this.taskID;
+	public String getStateID() {
+		return this.stateID;
 	}
-	public void setTaskID(String taskID) {
-		this.taskID = taskID;
+	public void setStateID(String stateID) {
+		this.stateID = stateID;
 	}
 	public String getFunctionID() {
 		return this.functionID;
@@ -35,19 +35,19 @@ public class TaskFunctionPK implements Serializable {
 		if (this == other) {
 			return true;
 		}
-		if (!(other instanceof TaskFunctionPK)) {
+		if (!(other instanceof StateFunctionPK)) {
 			return false;
 		}
-		TaskFunctionPK castOther = (TaskFunctionPK)other;
+		StateFunctionPK castOther = (StateFunctionPK)other;
 		return 
-			this.taskID.equals(castOther.taskID)
+			this.stateID.equals(castOther.stateID)
 			&& this.functionID.equals(castOther.functionID);
 	}
 
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
-		hash = hash * prime + this.taskID.hashCode();
+		hash = hash * prime + this.stateID.hashCode();
 		hash = hash * prime + this.functionID.hashCode();
 		
 		return hash;
