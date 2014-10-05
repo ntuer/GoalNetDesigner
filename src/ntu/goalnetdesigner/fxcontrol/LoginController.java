@@ -1,37 +1,44 @@
 package ntu.goalnetdesigner.fxcontrol;
 
+import java.net.URL;
+import java.util.*;
+
 import ntu.goalnetdesigner.data.*;
 import ntu.goalnetdesigner.data.persistence.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuButton;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class LoginController {
+public class LoginController implements Initializable{
 	public Stage stage;
 	
 	@FXML
 	private Text actiontarget;
 
 	@FXML
-    private ChoiceBox serverField;
+    private ComboBox serverSelectionComboBox;
 	
 	@FXML
 	protected void handleSubmitButtonAction(ActionEvent event) {
 		TestManager tm = new TestManager();
 		actiontarget.setText(tm.fetchFirstArc().getGNetID().toString());
 		
-//		try {
-//			replaceSceneContent("/ntu/goalnetdesigner/fxui/MainPage.fxml");
-//		} catch (Exception e) {
-//			
-//		}
+		try {
+			replaceSceneContent("/ntu/goalnetdesigner/fxui/MainPage.fxml");
+		} catch (Exception e) {
+			
+		}
 	}
 	
 	private Parent replaceSceneContent(String fxml) throws Exception {
@@ -46,4 +53,12 @@ public class LoginController {
         stage.sizeToScene();
         return page;
     }
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		List<String> list = new ArrayList<String>();
+		list.add("localhost");
+		ObservableList obList = FXCollections.observableList(list);
+		serverSelectionComboBox.setItems(obList);
+	}
 }

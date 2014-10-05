@@ -29,7 +29,7 @@
    
    	<Text fx:id="actiontarget" GridPane.columnIndex="1" GridPane.rowIndex="6" />
       <Label text="Server to Connect:" GridPane.rowIndex="2" />
-      <ChoiceBox fx:id="serverField" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <ComboBox fx:id="serverSelectionComboBox" prefWidth="150.0" promptText="Please select ..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
    </children>
    <columnConstraints>
       <ColumnConstraints />

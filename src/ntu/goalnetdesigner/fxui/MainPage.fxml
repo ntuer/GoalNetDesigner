@@ -11,37 +11,112 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+                  <MenuItem fx:id="fileMenuNew" mnemonicParsing="false" text="New" />
+              <MenuItem fx:id="fileMenuOpen" mnemonicParsing="false" text="Open" />
+                  <MenuItem fx:id="fileMenuSave" mnemonicParsing="false" text="Save" />
+                  <MenuItem fx:id="fileMenuNSaveAs" mnemonicParsing="false" text="Save As" />
+                  <MenuItem fx:id="fileMenuClose" mnemonicParsing="false" text="Close" />
+                  <MenuItem fx:id="fileMenuPrint" mnemonicParsing="false" text="Print" />
+                  <MenuItem fx:id="fileMenuExit" mnemonicParsing="false" text="Exit" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
+              <MenuItem fx:id="editMenuUndo" mnemonicParsing="false" text="Undo" />
+                  <MenuItem fx:id="editMenuDelete" mnemonicParsing="false" text="Delete" />
+                  <MenuItem fx:id="editMenuProperty" mnemonicParsing="false" text="Property" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Help">
+          <Menu mnemonicParsing="false" text="Run">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+                  <MenuItem fx:id="runMenuVerify" mnemonicParsing="false" text="Verity" />
+              <MenuItem fx:id="runMenuRun" mnemonicParsing="false" text="Run" />
+                  <CheckMenuItem fx:id="runMenuDisplayWarning" mnemonicParsing="false" text="Display Warnings" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Session">
+               <items>
+                  <MenuItem fx:id="sessionMenuCurrentUser" mnemonicParsing="false" text="View Current User" />
+                  <MenuItem fx:id="sessionMenuLogOut" mnemonicParsing="false" text="Log Out" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+               <items>
+                  <MenuItem fx:id="helpMenuAbout" mnemonicParsing="false" text="About" />
+                  <MenuItem fx:id="helpMenuContactAuthor" mnemonicParsing="false" text="Contact Author" />
+               </items>
+            </Menu>
         </menus>
       </MenuBar>
       <ToolBar layoutY="25.0" prefHeight="40.0" prefWidth="1024.0">
         <items>
           <Button mnemonicParsing="false" text="Button" />
+            <Button mnemonicParsing="false" text="Button" />
             <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" />
+            <Button mnemonicParsing="false" text="Button" />
+            <Button mnemonicParsing="false" text="Button" />
+            <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" />
+            <Button mnemonicParsing="false" text="Button" />
         </items>
       </ToolBar>
       <TabPane layoutX="726.0" layoutY="65.0" prefHeight="367.0" prefWidth="298.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Untitled Tab 1" />
-          <Tab text="Untitled Tab 2" />
+            <Tab fx:id="arcTab" text="Arc">
+               <content>
+                  <TreeView fx:id="arcTreeView" prefHeight="336.0" prefWidth="296.0" />
+               </content>
+            </Tab>
+          <Tab fx:id="functionTab" text="Function">
+               <content>
+                  <TreeView fx:id="functionTreeView" prefHeight="200.0" prefWidth="200.0" />
+               </content></Tab>
+            <Tab fx:id="stateTab" text="State">
+               <content>
+                  <TreeView fx:id="stateTreeView" prefHeight="200.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+          <Tab fx:id="taskTab" text="Task">
+               <content>
+                  <TreeView fx:id="taskTreeView" prefHeight="200.0" prefWidth="200.0" />
+               </content></Tab>
+            <Tab fx:id="transitionTab" text="Transition">
+               <content>
+                  <TreeView fx:id="transitionTreeView" prefHeight="200.0" prefWidth="200.0" />
+               </content>
+            </Tab>
         </tabs>
       </TabPane>
       <TabPane layoutX="726.0" layoutY="434.0" prefHeight="339.0" prefWidth="298.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Untitled Tab 1" />
-          <Tab text="Untitled Tab 2" />
+          <Tab fx:id="propertyTab" text="Property">
+               <content>
+                  <TableView fx:id="propertyTable" prefHeight="200.0" prefWidth="200.0">
+                    <columns>
+                      <TableColumn fx:id="propertyTablePropertyColumn" prefWidth="150.0" text="Property" />
+                      <TableColumn fx:id="propertyTableValueColumn" minWidth="0.0" prefWidth="148.0" text="Value" />
+                    </columns>
+                  </TableView>
+               </content></Tab>
+          <Tab fx:id="linkTab" text="Link" />
+        </tabs>
+      </TabPane>
+      <TitledPane animated="false" layoutY="65.0" prefHeight="523.0" prefWidth="726.0" text="Drawing">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        </content>
+      </TitledPane>
+      <TabPane layoutY="588.0" prefHeight="184.0" prefWidth="726.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab fx:id="outputTab" text="Output">
+               <content>
+                  <TextArea fx:id="outputField" prefHeight="156.0" prefWidth="726.0" />
+               </content>
+          </Tab>
+          <Tab fx:id="eventLogTab" text="Event Log">
+               <content>
+                  <TextArea fx:id="eventLogField" prefHeight="156.0" prefWidth="726.0" />
+               </content>
+          </Tab>
         </tabs>
       </TabPane>
    </children>
