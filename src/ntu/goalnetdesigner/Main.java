@@ -1,4 +1,6 @@
-package ntu.goalnetdesigner.fxcontrol;
+package ntu.goalnetdesigner;
+
+import ntu.goalnetdesigner.fxcontrol.*;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +18,7 @@ public class Main extends Application {
         LoginController ctrl  = loader.getController();
         ctrl.stage = primaryStage;
         Scene scene = new Scene(root);
-        primaryStage.setTitle("FXML Welcome");
+        primaryStage.setTitle("Goal Net Designer Login");
         primaryStage.setScene(scene);
         primaryStage.show();
 	}
