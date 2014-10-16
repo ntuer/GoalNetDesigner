@@ -3,6 +3,7 @@ package ntu.goalnetdesigner.data.persistence;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.util.List;
 
 
 /**
@@ -15,7 +16,6 @@ public class State implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private String id;
 
 	private int achievement;
@@ -30,17 +30,21 @@ public class State implements Serializable {
 
 	private String name;
 
-	private BigInteger parentGNetID;
+	private String parentGNetID;
 
-	private BigInteger subGNetEndID;
+	private String subGNetEndID;
 
-	private BigInteger subGNetStartID;
+	private String subGNetStartID;
 
 	private BigInteger token;
 
 	private int x;
 
 	private int y;
+
+	//bi-directional many-to-one association to StateFunction
+	@OneToMany(mappedBy="state")
+	private List<StateFunction> stateFunctions;
 
 	public State() {
 	}
@@ -101,27 +105,27 @@ public class State implements Serializable {
 		this.name = name;
 	}
 
-	public BigInteger getParentGNetID() {
+	public String getParentGNetID() {
 		return this.parentGNetID;
 	}
 
-	public void setParentGNetID(BigInteger parentGNetID) {
+	public void setParentGNetID(String parentGNetID) {
 		this.parentGNetID = parentGNetID;
 	}
 
-	public BigInteger getSubGNetEndID() {
+	public String getSubGNetEndID() {
 		return this.subGNetEndID;
 	}
 
-	public void setSubGNetEndID(BigInteger subGNetEndID) {
+	public void setSubGNetEndID(String subGNetEndID) {
 		this.subGNetEndID = subGNetEndID;
 	}
 
-	public BigInteger getSubGNetStartID() {
+	public String getSubGNetStartID() {
 		return this.subGNetStartID;
 	}
 
-	public void setSubGNetStartID(BigInteger subGNetStartID) {
+	public void setSubGNetStartID(String subGNetStartID) {
 		this.subGNetStartID = subGNetStartID;
 	}
 
@@ -147,6 +151,28 @@ public class State implements Serializable {
 
 	public void setY(int y) {
 		this.y = y;
+	}
+
+	public List<StateFunction> getStateFunctions() {
+		return this.stateFunctions;
+	}
+
+	public void setStateFunctions(List<StateFunction> stateFunctions) {
+		this.stateFunctions = stateFunctions;
+	}
+
+	public StateFunction addStateFunction(StateFunction stateFunction) {
+		getStateFunctions().add(stateFunction);
+		stateFunction.setState(this);
+
+		return stateFunction;
+	}
+
+	public StateFunction removeStateFunction(StateFunction stateFunction) {
+		getStateFunctions().remove(stateFunction);
+		stateFunction.setState(null);
+
+		return stateFunction;
 	}
 
 }

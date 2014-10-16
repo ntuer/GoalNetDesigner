@@ -15,7 +15,6 @@ public class Transition implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private String id;
 
 	private int achievement;
@@ -28,15 +27,15 @@ public class Transition implements Serializable {
 
 	private int exceptionStateID;
 
-	private BigInteger GNetID;
+	private String GNetID;
 
 	private int level;
 
 	private String name;
 
-	private BigInteger taskListID;
+	private BigInteger taskCount;
 
-	private BigInteger taskNumber;
+	private String taskListID;
 
 	private String type;
 
@@ -95,11 +94,11 @@ public class Transition implements Serializable {
 		this.exceptionStateID = exceptionStateID;
 	}
 
-	public BigInteger getGNetID() {
+	public String getGNetID() {
 		return this.GNetID;
 	}
 
-	public void setGNetID(BigInteger GNetID) {
+	public void setGNetID(String GNetID) {
 		this.GNetID = GNetID;
 	}
 
@@ -119,20 +118,20 @@ public class Transition implements Serializable {
 		this.name = name;
 	}
 
-	public BigInteger getTaskListID() {
+	public BigInteger getTaskCount() {
+		return this.taskCount;
+	}
+
+	public void setTaskCount(BigInteger taskCount) {
+		this.taskCount = taskCount;
+	}
+
+	public String getTaskListID() {
 		return this.taskListID;
 	}
 
-	public void setTaskListID(BigInteger taskListID) {
+	public void setTaskListID(String taskListID) {
 		this.taskListID = taskListID;
-	}
-
-	public BigInteger getTaskNumber() {
-		return this.taskNumber;
-	}
-
-	public void setTaskNumber(BigInteger taskNumber) {
-		this.taskNumber = taskNumber;
 	}
 
 	public String getType() {

@@ -21,6 +21,16 @@ public class StateFunction implements Serializable {
 
 	private int sequence;
 
+	//bi-directional many-to-one association to Function
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="FunctionID")
+	private Function function;
+
+	//bi-directional many-to-one association to State
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="StateID")
+	private State state;
+
 	public StateFunction() {
 	}
 
@@ -46,6 +56,22 @@ public class StateFunction implements Serializable {
 
 	public void setSequence(int sequence) {
 		this.sequence = sequence;
+	}
+
+	public Function getFunction() {
+		return this.function;
+	}
+
+	public void setFunction(Function function) {
+		this.function = function;
+	}
+
+	public State getState() {
+		return this.state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
 	}
 
 }

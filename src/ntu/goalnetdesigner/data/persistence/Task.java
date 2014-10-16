@@ -2,7 +2,7 @@ package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.math.BigInteger;
+import java.util.List;
 
 
 /**
@@ -15,14 +15,13 @@ public class Task implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private String id;
 
 	private int achievement;
 
-	private int childrenTaskNumber;
+	private int childrenTaskCount;
 
-	private BigInteger childTaskID;
+	private String childTaskID;
 
 	private String className;
 
@@ -33,6 +32,14 @@ public class Task implements Serializable {
 	private String description;
 
 	private String name;
+
+	//bi-directional many-to-one association to TaskFunction
+	@OneToMany(mappedBy="task")
+	private List<TaskFunction> taskFunctions;
+
+	//bi-directional many-to-one association to TasklistTask
+	@OneToMany(mappedBy="task")
+	private List<TasklistTask> tasklistTasks;
 
 	public Task() {
 	}
@@ -53,19 +60,19 @@ public class Task implements Serializable {
 		this.achievement = achievement;
 	}
 
-	public int getChildrenTaskNumber() {
-		return this.childrenTaskNumber;
+	public int getChildrenTaskCount() {
+		return this.childrenTaskCount;
 	}
 
-	public void setChildrenTaskNumber(int childrenTaskNumber) {
-		this.childrenTaskNumber = childrenTaskNumber;
+	public void setChildrenTaskCount(int childrenTaskCount) {
+		this.childrenTaskCount = childrenTaskCount;
 	}
 
-	public BigInteger getChildTaskID() {
+	public String getChildTaskID() {
 		return this.childTaskID;
 	}
 
-	public void setChildTaskID(BigInteger childTaskID) {
+	public void setChildTaskID(String childTaskID) {
 		this.childTaskID = childTaskID;
 	}
 
@@ -107,6 +114,50 @@ public class Task implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public List<TaskFunction> getTaskFunctions() {
+		return this.taskFunctions;
+	}
+
+	public void setTaskFunctions(List<TaskFunction> taskFunctions) {
+		this.taskFunctions = taskFunctions;
+	}
+
+	public TaskFunction addTaskFunction(TaskFunction taskFunction) {
+		getTaskFunctions().add(taskFunction);
+		taskFunction.setTask(this);
+
+		return taskFunction;
+	}
+
+	public TaskFunction removeTaskFunction(TaskFunction taskFunction) {
+		getTaskFunctions().remove(taskFunction);
+		taskFunction.setTask(null);
+
+		return taskFunction;
+	}
+
+	public List<TasklistTask> getTasklistTasks() {
+		return this.tasklistTasks;
+	}
+
+	public void setTasklistTasks(List<TasklistTask> tasklistTasks) {
+		this.tasklistTasks = tasklistTasks;
+	}
+
+	public TasklistTask addTasklistTask(TasklistTask tasklistTask) {
+		getTasklistTasks().add(tasklistTask);
+		tasklistTask.setTask(this);
+
+		return tasklistTask;
+	}
+
+	public TasklistTask removeTasklistTask(TasklistTask tasklistTask) {
+		getTasklistTasks().remove(tasklistTask);
+		tasklistTask.setTask(null);
+
+		return tasklistTask;
 	}
 
 }

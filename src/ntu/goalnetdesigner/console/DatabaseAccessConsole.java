@@ -7,6 +7,9 @@ public class DatabaseAccessConsole {
 
 	public static void main(String[] args) {
 		TestManager tm = new TestManager();
-		System.out.println(tm.fetchFirstArc().getGNetID());
+		//System.out.println(tm.fetchFirstArc().getGNetID());
+		//tm.insertArc();
+		//tm.modifyArc();
+		tm.removeArc();
 	}
 }

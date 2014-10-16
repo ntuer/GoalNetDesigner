@@ -2,6 +2,7 @@ package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -14,7 +15,6 @@ public class Function implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private String id;
 
 	private String alias;
@@ -30,6 +30,14 @@ public class Function implements Serializable {
 	private String RTType;
 
 	private String values;
+
+	//bi-directional many-to-one association to StateFunction
+	@OneToMany(mappedBy="function")
+	private List<StateFunction> stateFunctions;
+
+	//bi-directional many-to-one association to TaskFunction
+	@OneToMany(mappedBy="function")
+	private List<TaskFunction> taskFunctions;
 
 	public Function() {
 	}
@@ -96,6 +104,50 @@ public class Function implements Serializable {
 
 	public void setValues(String values) {
 		this.values = values;
+	}
+
+	public List<StateFunction> getStateFunctions() {
+		return this.stateFunctions;
+	}
+
+	public void setStateFunctions(List<StateFunction> stateFunctions) {
+		this.stateFunctions = stateFunctions;
+	}
+
+	public StateFunction addStateFunction(StateFunction stateFunction) {
+		getStateFunctions().add(stateFunction);
+		stateFunction.setFunction(this);
+
+		return stateFunction;
+	}
+
+	public StateFunction removeStateFunction(StateFunction stateFunction) {
+		getStateFunctions().remove(stateFunction);
+		stateFunction.setFunction(null);
+
+		return stateFunction;
+	}
+
+	public List<TaskFunction> getTaskFunctions() {
+		return this.taskFunctions;
+	}
+
+	public void setTaskFunctions(List<TaskFunction> taskFunctions) {
+		this.taskFunctions = taskFunctions;
+	}
+
+	public TaskFunction addTaskFunction(TaskFunction taskFunction) {
+		getTaskFunctions().add(taskFunction);
+		taskFunction.setFunction(this);
+
+		return taskFunction;
+	}
+
+	public TaskFunction removeTaskFunction(TaskFunction taskFunction) {
+		getTaskFunctions().remove(taskFunction);
+		taskFunction.setFunction(null);
+
+		return taskFunction;
 	}
 
 }

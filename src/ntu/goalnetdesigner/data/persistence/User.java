@@ -2,6 +2,7 @@ package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -15,7 +16,6 @@ public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private String id;
 
 	private String answer;
@@ -25,6 +25,10 @@ public class User implements Serializable {
 	private String password;
 
 	private String question;
+
+	//bi-directional many-to-one association to UserUsergroup
+	@OneToMany(mappedBy="user")
+	private List<UserUsergroup> userUsergroups;
 
 	public User() {
 	}
@@ -67,6 +71,28 @@ public class User implements Serializable {
 
 	public void setQuestion(String question) {
 		this.question = question;
+	}
+
+	public List<UserUsergroup> getUserUsergroups() {
+		return this.userUsergroups;
+	}
+
+	public void setUserUsergroups(List<UserUsergroup> userUsergroups) {
+		this.userUsergroups = userUsergroups;
+	}
+
+	public UserUsergroup addUserUsergroup(UserUsergroup userUsergroup) {
+		getUserUsergroups().add(userUsergroup);
+		userUsergroup.setUser(this);
+
+		return userUsergroup;
+	}
+
+	public UserUsergroup removeUserUsergroup(UserUsergroup userUsergroup) {
+		getUserUsergroups().remove(userUsergroup);
+		userUsergroup.setUser(null);
+
+		return userUsergroup;
 	}
 
 }

@@ -21,6 +21,16 @@ public class TaskFunction implements Serializable {
 
 	private int sequence;
 
+	//bi-directional many-to-one association to Function
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="FunctionID")
+	private Function function;
+
+	//bi-directional many-to-one association to Task
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="TaskID")
+	private Task task;
+
 	public TaskFunction() {
 	}
 
@@ -46,6 +56,22 @@ public class TaskFunction implements Serializable {
 
 	public void setSequence(int sequence) {
 		this.sequence = sequence;
+	}
+
+	public Function getFunction() {
+		return this.function;
+	}
+
+	public void setFunction(Function function) {
+		this.function = function;
+	}
+
+	public Task getTask() {
+		return this.task;
+	}
+
+	public void setTask(Task task) {
+		this.task = task;
 	}
 
 }

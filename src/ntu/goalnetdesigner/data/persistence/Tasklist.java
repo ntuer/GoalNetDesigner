@@ -2,6 +2,7 @@ package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -14,12 +15,15 @@ public class Tasklist implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private String id;
 
 	private String description;
 
 	private String name;
+
+	//bi-directional many-to-one association to TasklistTask
+	@OneToMany(mappedBy="tasklist")
+	private List<TasklistTask> tasklistTasks;
 
 	public Tasklist() {
 	}
@@ -46,6 +50,28 @@ public class Tasklist implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public List<TasklistTask> getTasklistTasks() {
+		return this.tasklistTasks;
+	}
+
+	public void setTasklistTasks(List<TasklistTask> tasklistTasks) {
+		this.tasklistTasks = tasklistTasks;
+	}
+
+	public TasklistTask addTasklistTask(TasklistTask tasklistTask) {
+		getTasklistTasks().add(tasklistTask);
+		tasklistTask.setTasklist(this);
+
+		return tasklistTask;
+	}
+
+	public TasklistTask removeTasklistTask(TasklistTask tasklistTask) {
+		getTasklistTasks().remove(tasklistTask);
+		tasklistTask.setTasklist(null);
+
+		return tasklistTask;
 	}
 
 }

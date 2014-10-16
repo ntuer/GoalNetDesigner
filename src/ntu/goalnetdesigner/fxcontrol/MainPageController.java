@@ -123,10 +123,10 @@ public class MainPageController {
 
     @FXML
     void initialize() {
-        TreeItem<String> rootItem = new TreeItem<String> ("Inbox");
+        TreeItem<String> rootItem = new TreeItem<String> ("Arcs");
         rootItem.setExpanded(true);
         for (int i = 1; i < 60; i++) {
-            TreeItem<String> item = new TreeItem<String> ("Message" + i);            
+            TreeItem<String> item = new TreeItem<String> ("Arc" + i);            
             rootItem.getChildren().add(item);
         }
         arcTreeView.setRoot(rootItem);

@@ -3,6 +3,7 @@ package ntu.goalnetdesigner.data.persistence;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.util.List;
 
 
 /**
@@ -15,12 +16,11 @@ public class Gnet implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private String id;
 
 	private String description;
 
-	private BigInteger endStateID;
+	private String endStateID;
 
 	private byte goalSelectionType;
 
@@ -28,13 +28,17 @@ public class Gnet implements Serializable {
 
 	private String name;
 
-	private BigInteger rootID;
+	private String rootID;
 
-	private BigInteger startStateID;
+	private String startStateID;
 
-	private BigInteger stateNumber;
+	private BigInteger stateCount;
 
-	private BigInteger transitionNumber;
+	private BigInteger transitionCount;
+
+	//bi-directional many-to-one association to UsergroupGnet
+	@OneToMany(mappedBy="gnet")
+	private List<UsergroupGnet> usergroupGnets;
 
 	public Gnet() {
 	}
@@ -55,11 +59,11 @@ public class Gnet implements Serializable {
 		this.description = description;
 	}
 
-	public BigInteger getEndStateID() {
+	public String getEndStateID() {
 		return this.endStateID;
 	}
 
-	public void setEndStateID(BigInteger endStateID) {
+	public void setEndStateID(String endStateID) {
 		this.endStateID = endStateID;
 	}
 
@@ -87,36 +91,58 @@ public class Gnet implements Serializable {
 		this.name = name;
 	}
 
-	public BigInteger getRootID() {
+	public String getRootID() {
 		return this.rootID;
 	}
 
-	public void setRootID(BigInteger rootID) {
+	public void setRootID(String rootID) {
 		this.rootID = rootID;
 	}
 
-	public BigInteger getStartStateID() {
+	public String getStartStateID() {
 		return this.startStateID;
 	}
 
-	public void setStartStateID(BigInteger startStateID) {
+	public void setStartStateID(String startStateID) {
 		this.startStateID = startStateID;
 	}
 
-	public BigInteger getStateNumber() {
-		return this.stateNumber;
+	public BigInteger getStateCount() {
+		return this.stateCount;
 	}
 
-	public void setStateNumber(BigInteger stateNumber) {
-		this.stateNumber = stateNumber;
+	public void setStateCount(BigInteger stateCount) {
+		this.stateCount = stateCount;
 	}
 
-	public BigInteger getTransitionNumber() {
-		return this.transitionNumber;
+	public BigInteger getTransitionCount() {
+		return this.transitionCount;
 	}
 
-	public void setTransitionNumber(BigInteger transitionNumber) {
-		this.transitionNumber = transitionNumber;
+	public void setTransitionCount(BigInteger transitionCount) {
+		this.transitionCount = transitionCount;
+	}
+
+	public List<UsergroupGnet> getUsergroupGnets() {
+		return this.usergroupGnets;
+	}
+
+	public void setUsergroupGnets(List<UsergroupGnet> usergroupGnets) {
+		this.usergroupGnets = usergroupGnets;
+	}
+
+	public UsergroupGnet addUsergroupGnet(UsergroupGnet usergroupGnet) {
+		getUsergroupGnets().add(usergroupGnet);
+		usergroupGnet.setGnet(this);
+
+		return usergroupGnet;
+	}
+
+	public UsergroupGnet removeUsergroupGnet(UsergroupGnet usergroupGnet) {
+		getUsergroupGnets().remove(usergroupGnet);
+		usergroupGnet.setGnet(null);
+
+		return usergroupGnet;
 	}
 
 }

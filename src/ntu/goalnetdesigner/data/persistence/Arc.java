@@ -2,7 +2,6 @@ package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.math.BigInteger;
 
 
 /**
@@ -15,31 +14,30 @@ public class Arc implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private BigInteger id;
+	private String id;
 
 	private String description;
 
 	private boolean direction;
 
-	private BigInteger GNetID;
+	private String GNetID;
 
-	private BigInteger inputID;
+	private String inputID;
 
 	private boolean isDirect;
 
 	private String name;
 
-	private BigInteger outputID;
+	private String outputID;
 
 	public Arc() {
 	}
 
-	public BigInteger getId() {
+	public String getId() {
 		return this.id;
 	}
 
-	public void setId(BigInteger id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -59,19 +57,19 @@ public class Arc implements Serializable {
 		this.direction = direction;
 	}
 
-	public BigInteger getGNetID() {
+	public String getGNetID() {
 		return this.GNetID;
 	}
 
-	public void setGNetID(BigInteger GNetID) {
+	public void setGNetID(String GNetID) {
 		this.GNetID = GNetID;
 	}
 
-	public BigInteger getInputID() {
+	public String getInputID() {
 		return this.inputID;
 	}
 
-	public void setInputID(BigInteger inputID) {
+	public void setInputID(String inputID) {
 		this.inputID = inputID;
 	}
 
@@ -91,11 +89,11 @@ public class Arc implements Serializable {
 		this.name = name;
 	}
 
-	public BigInteger getOutputID() {
+	public String getOutputID() {
 		return this.outputID;
 	}
 
-	public void setOutputID(BigInteger outputID) {
+	public void setOutputID(String outputID) {
 		this.outputID = outputID;
 	}
 
