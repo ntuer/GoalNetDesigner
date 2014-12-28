@@ -1,15 +1,33 @@
 package ntu.goalnetdesigner.console;
 
-import ntu.goalnetdesigner.data.*;
+import java.util.List;
+
+import ntu.goalnetdesigner.data.manager.*;
 import ntu.goalnetdesigner.data.persistence.*;
 
 public class DatabaseAccessConsole {
 
 	public static void main(String[] args) {
-		TestManager tm = new TestManager();
-		//System.out.println(tm.fetchFirstArc().getGNetID());
-		//tm.insertArc();
-		//tm.modifyArc();
-		tm.removeArc();
+		ArcManager am = new ArcManager();
+		
+		Arc arc = new Arc();
+		arc.setId("11111");
+		arc.setGNetID("1");
+		arc.setDescription("s");
+		//arc.setIsDirect((byte) 1);
+		//arc.setDirection((byte) 1);
+		arc.setInputID("1");
+		arc.setName("sd");
+		arc.setOutputID("1");
+		am.insert(arc);
+		
+		List<Arc> a = am.findAll();
+		
+		arc = am.find("11111");
+		arc.setGNetID("2");
+		am.update(arc);
+		arc.setGNetID("4");
+		am.update(arc);
+		am.delete(arc);
 	}
 }

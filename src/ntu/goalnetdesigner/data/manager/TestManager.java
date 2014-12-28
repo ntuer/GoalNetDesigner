@@ -1,7 +1,9 @@
-package ntu.goalnetdesigner.data;
+package ntu.goalnetdesigner.data.manager;
 
 import javax.persistence.*;
-import java.math.BigInteger;
+
+import java.util.List;
+
 import ntu.goalnetdesigner.data.persistence.*;
 
 public class TestManager {
@@ -14,8 +16,14 @@ public class TestManager {
 		em = emf.createEntityManager();
 	}
 	
+	public void fetchAll(){
+		TypedQuery<Arc> query =
+				em.createNamedQuery("Arc.findAll", Arc.class);
+		List<Arc> obj =  query.getResultList();
+	}
+	
 	public Arc fetchFirstArc(){
-		return em.find(Arc.class, "1");
+		return em.find(Arc.class, "11111");
 	}
 	
 	public void insertArc(){

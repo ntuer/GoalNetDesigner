@@ -3,7 +3,7 @@ package ntu.goalnetdesigner.fxcontrol;
 import java.net.URL;
 import java.util.*;
 
-import ntu.goalnetdesigner.data.*;
+import ntu.goalnetdesigner.data.manager.*;
 import ntu.goalnetdesigner.data.persistence.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,6 +32,7 @@ public class LoginController implements Initializable{
 	@FXML
 	protected void handleSubmitButtonAction(ActionEvent event) {
 		TestManager tm = new TestManager();
+		Arc a = tm.fetchFirstArc();
 		actiontarget.setText(tm.fetchFirstArc().getGNetID().toString());
 		
 		try {
@@ -56,6 +57,10 @@ public class LoginController implements Initializable{
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		setServerSelectionComboBoxData();
+	}
+	
+	private void setServerSelectionComboBoxData(){
 		List<String> list = new ArrayList<String>();
 		list.add("localhost");
 		ObservableList obList = FXCollections.observableList(list);

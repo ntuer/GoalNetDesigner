@@ -9,7 +9,12 @@ import javax.persistence.*;
  * 
  */
 @Entity
-@NamedQuery(name="Arc.findAll", query="SELECT a FROM Arc a")
+@NamedQueries({
+    @NamedQuery(name="Arc.findAll",
+                query="SELECT c FROM Arc c"),
+    @NamedQuery(name="Arc.findById",
+                query="SELECT c FROM Arc c WHERE c.id = :id"),
+}) 
 public class Arc implements Serializable {
 	private static final long serialVersionUID = 1L;
 
