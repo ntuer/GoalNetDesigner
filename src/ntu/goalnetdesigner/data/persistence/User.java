@@ -1,7 +1,9 @@
 package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.List;
 
 
@@ -11,7 +13,12 @@ import java.util.List;
  */
 @Entity
 @Table(name="users")
-@NamedQuery(name="User.findAll", query="SELECT u FROM User u")
+@NamedQueries({
+    @NamedQuery(name="User.findAll",
+                query="SELECT c FROM User c"),
+    @NamedQuery(name="User.findById",
+                query="SELECT c FROM User c WHERE c.id = :id"),
+}) 
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 

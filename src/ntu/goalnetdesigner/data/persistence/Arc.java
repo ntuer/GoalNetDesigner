@@ -15,7 +15,7 @@ import javax.persistence.*;
     @NamedQuery(name="Arc.findById",
                 query="SELECT c FROM Arc c WHERE c.id = :id"),
 }) 
-public class Arc implements Serializable {
+public class Arc implements Serializable, IDrawable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

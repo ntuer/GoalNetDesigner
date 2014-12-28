@@ -3,8 +3,11 @@ package ntu.goalnetdesigner.fxcontrol;
 import java.net.URL;
 import java.util.*;
 
-import ntu.goalnetdesigner.data.manager.*;
 import ntu.goalnetdesigner.data.persistence.*;
+import ntu.goalnetdesigner.data.service.*;
+import ntu.goalnetdesigner.logic.LoginManager;
+import ntu.goalnetdesigner.utility.Navigation;
+import ntu.goalnetdesigner.session.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,9 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.MenuButton;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -28,32 +29,39 @@ public class LoginController implements Initializable{
 
 	@FXML
     private ComboBox serverSelectionComboBox;
-	
+
+    @FXML
+    private PasswordField passwordField;
+    
+    @FXML
+    private TextField usernameField;
+    
 	@FXML
-	protected void handleSubmitButtonAction(ActionEvent event) {
-		TestManager tm = new TestManager();
-		Arc a = tm.fetchFirstArc();
-		actiontarget.setText(tm.fetchFirstArc().getGNetID().toString());
-		
-		try {
-			replaceSceneContent("/ntu/goalnetdesigner/fxui/MainPage.fxml");
-		} catch (Exception e) {
-			
+	protected void handleSubmitButtonAction(ActionEvent event) throws Exception{
+		String id = usernameField.getText();
+		String password = passwordField.getText();
+		LoginManager lm = new LoginManager();
+		if (lm.isValidUser(id, password)) {
+			LoginSession.isLoggedIn = true;
+			LoginSession.id = id;
+			Navigation.switchScene("/ntu/goalnetdesigner/fxui/MainPage.fxml", this.stage);
 		}
+		else
+			actiontarget.setText("Invalid Login");
 	}
 	
-	private Parent replaceSceneContent(String fxml) throws Exception {
-        Parent page = (Parent) FXMLLoader.load(getClass().getResource(fxml), null, new JavaFXBuilderFactory());
-        Scene scene = stage.getScene();
-        if (scene == null) {
-            scene = new Scene(page);
-            stage.setScene(scene);
-        } else {
-            stage.getScene().setRoot(page);
-        }
-        stage.sizeToScene();
-        return page;
-    }
+//	private Parent replaceSceneContent(String fxml) throws Exception {
+//        Parent page = (Parent) FXMLLoader.load(getClass().getResource(fxml), null, new JavaFXBuilderFactory());
+//        Scene scene = stage.getScene();
+//        if (scene == null) {
+//            scene = new Scene(page);
+//            stage.setScene(scene);
+//        } else {
+//            stage.getScene().setRoot(page);
+//        }
+//        stage.sizeToScene();
+//        return page;
+//    }
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {

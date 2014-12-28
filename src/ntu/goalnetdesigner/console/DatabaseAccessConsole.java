@@ -2,14 +2,13 @@ package ntu.goalnetdesigner.console;
 
 import java.util.List;
 
-import ntu.goalnetdesigner.data.manager.*;
 import ntu.goalnetdesigner.data.persistence.*;
+import ntu.goalnetdesigner.data.service.*;
 
 public class DatabaseAccessConsole {
 
 	public static void main(String[] args) {
-		ArcManager am = new ArcManager();
-		
+		DataServiceUnit<Arc> pm = DataService.arc;
 		Arc arc = new Arc();
 		arc.setId("11111");
 		arc.setGNetID("1");
@@ -19,15 +18,15 @@ public class DatabaseAccessConsole {
 		arc.setInputID("1");
 		arc.setName("sd");
 		arc.setOutputID("1");
-		am.insert(arc);
+		pm.insert(arc);
 		
-		List<Arc> a = am.findAll();
+		List<Arc> a = pm.findAll();
 		
-		arc = am.find("11111");
-		arc.setGNetID("2");
-		am.update(arc);
-		arc.setGNetID("4");
-		am.update(arc);
-		am.delete(arc);
+		Arc arc2 = (Arc) pm.find("11111");
+		arc2.setGNetID("2");
+		pm.update(arc2);
+		arc2.setGNetID("4");
+		pm.update(arc2);
+		pm.delete(arc2);
 	}
 }
