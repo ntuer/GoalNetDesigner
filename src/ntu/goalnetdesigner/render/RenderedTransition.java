@@ -7,11 +7,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class RenderedState extends Renderable{
+public class RenderedTransition extends Renderable{
 	private Circle shape;
 	private State baseState;
 	
-	public RenderedState (){
+	public RenderedTransition (){
 		this.shape = new Circle();
 		this.baseState = new State();
 	}

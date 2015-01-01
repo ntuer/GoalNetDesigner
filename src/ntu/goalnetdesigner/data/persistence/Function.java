@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Entity
 @NamedQuery(name="Function.findAll", query="SELECT f FROM Function f")
-public class Function implements Serializable {
+public class Function implements Serializable, IDataServiceUnitSubscriber {
 	private static final long serialVersionUID = 1L;
 
 	@Id

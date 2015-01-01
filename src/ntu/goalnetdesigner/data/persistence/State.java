@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import ntu.goalnetdesigner.render.IDrawable;
+
 import java.math.BigInteger;
 import java.util.List;
 
@@ -14,7 +16,7 @@ import java.util.List;
  */
 @Entity
 @NamedQuery(name="State.findAll", query="SELECT s FROM State s")
-public class State implements Serializable, IDrawable {
+public class State implements Serializable, IDrawable, IDataServiceUnitSubscriber  {
 	private static final long serialVersionUID = 1L;
 
 	@Id

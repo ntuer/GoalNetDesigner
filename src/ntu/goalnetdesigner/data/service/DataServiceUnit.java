@@ -8,16 +8,16 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
-import ntu.goalnetdesigner.data.persistence.*;
+import ntu.goalnetdesigner.data.persistence.IDataServiceUnitSubscriber;
 
-public class DataServiceUnit<T> {
-	protected EntityManagerFactory emf = null;
-	protected EntityManager em = null;
+public class DataServiceUnit<T extends IDataServiceUnitSubscriber> {
+	protected EntityManagerFactory emf;
+	protected EntityManager em;
 	private final Class<T> type;
 	
 	public DataServiceUnit(Class<T> type){
 		this.type = type;
-		emf = Persistence.createEntityManagerFactory("GoalNetDesigner");
+		emf = DataService.getEntityManagerFactory();
 		em = emf.createEntityManager();
 	}
 	

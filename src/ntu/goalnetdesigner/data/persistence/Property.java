@@ -1,7 +1,9 @@
 package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.math.BigInteger;
 
 
@@ -11,7 +13,7 @@ import java.math.BigInteger;
  */
 @Entity
 @NamedQuery(name="Property.findAll", query="SELECT p FROM Property p")
-public class Property implements Serializable {
+public class Property implements Serializable, IDataServiceUnitSubscriber  {
 	private static final long serialVersionUID = 1L;
 
 	@Id

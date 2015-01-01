@@ -3,8 +3,6 @@ package ntu.goalnetdesigner.fxcontrol;
 import java.net.URL;
 import java.util.*;
 
-import ntu.goalnetdesigner.data.persistence.*;
-import ntu.goalnetdesigner.data.service.*;
 import ntu.goalnetdesigner.logic.LoginManager;
 import ntu.goalnetdesigner.utility.Navigation;
 import ntu.goalnetdesigner.session.*;
@@ -12,11 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.fxml.JavaFXBuilderFactory;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -27,8 +21,8 @@ public class LoginController implements Initializable{
 	@FXML
 	private Text actiontarget;
 
-	@FXML
-    private ComboBox serverSelectionComboBox;
+    @FXML
+    private TextField serverAddressField;
 
     @FXML
     private PasswordField passwordField;
@@ -38,6 +32,7 @@ public class LoginController implements Initializable{
     
 	@FXML
 	protected void handleSubmitButtonAction(ActionEvent event) throws Exception{
+		LoginSession.serverAddress = serverAddressField.getText();
 		String id = usernameField.getText();
 		String password = passwordField.getText();
 		LoginManager lm = new LoginManager();
@@ -48,6 +43,11 @@ public class LoginController implements Initializable{
 		}
 		else
 			actiontarget.setText("Invalid Login");
+	}
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		serverAddressField.setText("localhost/gnetdb_new");
 	}
 	
 //	private Parent replaceSceneContent(String fxml) throws Exception {
@@ -62,16 +62,4 @@ public class LoginController implements Initializable{
 //        stage.sizeToScene();
 //        return page;
 //    }
-
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		setServerSelectionComboBoxData();
-	}
-	
-	private void setServerSelectionComboBoxData(){
-		List<String> list = new ArrayList<String>();
-		list.add("localhost");
-		ObservableList obList = FXCollections.observableList(list);
-		serverSelectionComboBox.setItems(obList);
-	}
 }

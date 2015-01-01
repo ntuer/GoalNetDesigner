@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Entity
 @NamedQuery(name="Gnet.findAll", query="SELECT g FROM Gnet g")
-public class Gnet implements Serializable {
+public class Gnet implements Serializable, IDataServiceUnitSubscriber {
 	private static final long serialVersionUID = 1L;
 
 	@Id

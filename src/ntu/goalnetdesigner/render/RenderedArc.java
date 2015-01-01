@@ -7,11 +7,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class RenderedState extends Renderable{
+public class RenderedArc extends Renderable{
 	private Circle shape;
 	private State baseState;
 	
-	public RenderedState (){
+	public RenderedArc (){
 		this.shape = new Circle();
 		this.baseState = new State();
 	}
@@ -36,8 +36,6 @@ public class RenderedState extends Renderable{
 	public void setMeh(MouseEventHandler meh){
 		this.meh = meh;
 		this.shape.setOnMouseClicked(meh.mouseOnClickHandler);
-		this.shape.setOnMousePressed(meh.mousePressedHandler);
-		this.shape.setOnMouseDragged(meh.mouseDraggedHandler);
 	}
 	
 }

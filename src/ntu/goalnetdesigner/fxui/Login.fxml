@@ -16,11 +16,11 @@
    
    	<Label text="User Name:" GridPane.rowIndex="3" />
    
-   	<TextField fx:id="usernameField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+   	<TextField fx:id="usernameField" text="lisiyao" GridPane.columnIndex="1" GridPane.rowIndex="3" />
    
    	<Label text="Password:" GridPane.rowIndex="4" />
    
-   	<PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+   	<PasswordField fx:id="passwordField" text="lisiyao" GridPane.columnIndex="1" GridPane.rowIndex="4" />
    	<HBox alignment="bottom_right" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="6">
       <children>
       		<Button onAction="#handleSubmitButtonAction" text="Sign In" />
@@ -29,7 +29,7 @@
    
    	<Text fx:id="actiontarget" wrappingWidth="98.0" GridPane.rowIndex="6" />
       <Label text="Server to Connect:" GridPane.rowIndex="2" />
-      <ComboBox fx:id="serverSelectionComboBox" prefWidth="150.0" promptText="Please select ..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <TextField fx:id="serverAddressField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
    </children>
    <columnConstraints>
       <ColumnConstraints />

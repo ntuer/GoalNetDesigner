@@ -1,7 +1,16 @@
 package ntu.goalnetdesigner.fxcontrol;
 
 
+import com.sun.corba.se.spi.orbutil.fsm.State;
+
+import ntu.goalnetdesigner.render.RenderedIDrawableObjectFactory;
+import ntu.goalnetdesigner.render.RenderedState;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
@@ -10,10 +19,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 public class MainPageController {
-
-    @FXML
+	@FXML
     private MenuItem editMenuProperty;
 
     @FXML
@@ -119,10 +131,14 @@ public class MainPageController {
     private MenuItem sessionMenuLogOut;
 
     @FXML
+    private AnchorPane drawingPane;
+
+    @FXML
     private TreeView<?> functionTreeView;
 
     @FXML
-    void initialize() {
+    public void initialize() {
+    	drawingPane.setOnMouseClicked(mouseHandler);
         TreeItem<String> rootItem = new TreeItem<String> ("Arcs");
         rootItem.setExpanded(true);
         for (int i = 1; i < 60; i++) {
@@ -130,6 +146,22 @@ public class MainPageController {
             rootItem.getChildren().add(item);
         }
         arcTreeView.setRoot(rootItem);
-        outputField.setText("New Text");
     }
+    
+    private EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
+    	public void handle(MouseEvent me) 
+    	{
+    		try {
+    		RenderedState state = (RenderedState) 
+    				RenderedIDrawableObjectFactory.getRenderedObject(State.class, propertyTable, drawingPane);
+    		state.getShape().setCenterX(me.getX());
+    		state.getShape().setCenterY(me.getY());
+    		state.getShape().setRadius(50.0f);
+    		state.getShape().setFill(Color.RED);
+	    	drawingPane.getChildren().addAll(state.getShape());
+    		} catch (Exception e) {
+    			
+    		}
+    	}
+    };
 }

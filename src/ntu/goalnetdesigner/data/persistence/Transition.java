@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import ntu.goalnetdesigner.render.IDrawable;
+
 import java.math.BigInteger;
 
 
@@ -13,7 +15,7 @@ import java.math.BigInteger;
  */
 @Entity
 @NamedQuery(name="Transition.findAll", query="SELECT t FROM Transition t")
-public class Transition implements Serializable, IDrawable {
+public class Transition implements Serializable, IDrawable, IDataServiceUnitSubscriber  {
 	private static final long serialVersionUID = 1L;
 
 	@Id

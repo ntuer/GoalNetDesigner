@@ -1,7 +1,9 @@
 package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.List;
 
 
@@ -11,7 +13,7 @@ import java.util.List;
  */
 @Entity
 @NamedQuery(name="Usergroup.findAll", query="SELECT u FROM Usergroup u")
-public class Usergroup implements Serializable {
+public class Usergroup implements Serializable, IDataServiceUnitSubscriber  {
 	private static final long serialVersionUID = 1L;
 
 	@Id

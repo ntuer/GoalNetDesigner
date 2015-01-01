@@ -19,7 +19,7 @@ import java.util.List;
     @NamedQuery(name="User.findById",
                 query="SELECT c FROM User c WHERE c.id = :id"),
 }) 
-public class User implements Serializable {
+public class User implements Serializable, IDataServiceUnitSubscriber  {
 	private static final long serialVersionUID = 1L;
 
 	@Id
