@@ -1,9 +1,7 @@
 package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
-
 import javax.persistence.*;
-
 import java.util.List;
 
 
@@ -12,8 +10,13 @@ import java.util.List;
  * 
  */
 @Entity
-@NamedQuery(name="Tasklist.findAll", query="SELECT t FROM Tasklist t")
-public class Tasklist implements Serializable, IDataServiceUnitSubscriber  {
+@NamedQueries({
+    @NamedQuery(name="Tasklist.findAll",
+                query="SELECT c FROM Tasklist c"),
+    @NamedQuery(name="Tasklist.findById",
+                query="SELECT c FROM Tasklist c WHERE c.id = :id"),
+}) 
+public class Tasklist implements Serializable, IDataServiceUnitSubscriber{
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -26,6 +29,10 @@ public class Tasklist implements Serializable, IDataServiceUnitSubscriber  {
 	//bi-directional many-to-one association to TasklistTask
 	@OneToMany(mappedBy="tasklist")
 	private List<TasklistTask> tasklistTasks;
+
+	//bi-directional many-to-one association to Transition
+	@OneToMany(mappedBy="tasklist")
+	private List<Transition> transitions;
 
 	public Tasklist() {
 	}
@@ -74,6 +81,28 @@ public class Tasklist implements Serializable, IDataServiceUnitSubscriber  {
 		tasklistTask.setTasklist(null);
 
 		return tasklistTask;
+	}
+
+	public List<Transition> getTransitions() {
+		return this.transitions;
+	}
+
+	public void setTransitions(List<Transition> transitions) {
+		this.transitions = transitions;
+	}
+
+	public Transition addTransition(Transition transition) {
+		getTransitions().add(transition);
+		transition.setTasklist(this);
+
+		return transition;
+	}
+
+	public Transition removeTransition(Transition transition) {
+		getTransitions().remove(transition);
+		transition.setTasklist(null);
+
+		return transition;
 	}
 
 }

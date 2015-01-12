@@ -12,52 +12,52 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-                  <MenuItem fx:id="fileMenuNew" mnemonicParsing="false" text="New" />
-              <MenuItem fx:id="fileMenuOpen" mnemonicParsing="false" text="Open" />
-                  <MenuItem fx:id="fileMenuSave" mnemonicParsing="false" text="Save" />
-                  <MenuItem fx:id="fileMenuNSaveAs" mnemonicParsing="false" text="Save As" />
-                  <MenuItem fx:id="fileMenuClose" mnemonicParsing="false" text="Close" />
-                  <MenuItem fx:id="fileMenuPrint" mnemonicParsing="false" text="Print" />
-                  <MenuItem fx:id="fileMenuExit" mnemonicParsing="false" text="Exit" />
+                  <MenuItem fx:id="fileMenuNew" mnemonicParsing="false" onAction="#fileMenuNewClicked" text="New" />
+              <MenuItem fx:id="fileMenuOpen" mnemonicParsing="false" onAction="#fileMenuOpenClicked" text="Open" />
+                  <MenuItem fx:id="fileMenuSave" mnemonicParsing="false" onAction="#fileMenuSaveClicked" text="Save" />
+                  <MenuItem fx:id="fileMenuNSaveAs" mnemonicParsing="false" onAction="#fileMenuNSaveAsClicked" text="Save As" />
+                  <MenuItem fx:id="fileMenuClose" mnemonicParsing="false" onAction="#fileMenuCloseClicked" text="Close" />
+                  <MenuItem fx:id="fileMenuPrint" mnemonicParsing="false" onAction="#fileMenuPrintClicked" text="Print" />
+                  <MenuItem fx:id="fileMenuExit" mnemonicParsing="false" onAction="#fileMenuExitClicked" text="Exit" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem fx:id="editMenuUndo" mnemonicParsing="false" text="Undo" />
-                  <MenuItem fx:id="editMenuDelete" mnemonicParsing="false" text="Delete" />
-                  <MenuItem fx:id="editMenuProperty" mnemonicParsing="false" text="Property" />
+              <MenuItem fx:id="editMenuUndo" mnemonicParsing="false" onAction="#editMenuUndoClicked" text="Undo" />
+                  <MenuItem fx:id="editMenuDelete" mnemonicParsing="false" onAction="#editMenuDeleteClicked" text="Delete" />
+                  <MenuItem fx:id="editMenuProperty" mnemonicParsing="false" onAction="#editMenuPropertyClicked" text="Property" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Run">
             <items>
-                  <MenuItem fx:id="runMenuVerify" mnemonicParsing="false" text="Verity" />
-              <MenuItem fx:id="runMenuRun" mnemonicParsing="false" text="Run" />
+                  <MenuItem fx:id="runMenuVerify" mnemonicParsing="false" onAction="#runMenuVerifyClicked" text="Verity" />
+              <MenuItem fx:id="runMenuRun" mnemonicParsing="false" onAction="#runMenuRunClicked" text="Run" />
                   <CheckMenuItem fx:id="runMenuDisplayWarning" mnemonicParsing="false" text="Display Warnings" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Session">
                <items>
-                  <MenuItem fx:id="sessionMenuCurrentUser" mnemonicParsing="false" text="View Current User" />
-                  <MenuItem fx:id="sessionMenuLogOut" mnemonicParsing="false" text="Log Out" />
+                  <MenuItem fx:id="sessionMenuCurrentUser" mnemonicParsing="false" onAction="#sessionMenuCurrentUserClicked" text="View Current User" />
+                  <MenuItem fx:id="sessionMenuLogOut" mnemonicParsing="false" onAction="#sessionMenuLogOutClicked" text="Log Out" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Help">
                <items>
-                  <MenuItem fx:id="helpMenuAbout" mnemonicParsing="false" text="About" />
-                  <MenuItem fx:id="helpMenuContactAuthor" mnemonicParsing="false" text="Contact Author" />
+                  <MenuItem fx:id="helpMenuAbout" mnemonicParsing="false" onAction="#helpMenuAboutClicked" text="About" />
+                  <MenuItem fx:id="helpMenuFeedback" mnemonicParsing="false" onAction="#helpMenuFeedbackClicked" text="Feedback" />
                </items>
             </Menu>
         </menus>
       </MenuBar>
       <ToolBar layoutY="25.0" prefHeight="40.0" prefWidth="1024.0">
         <items>
-          <Button mnemonicParsing="false" text="Button" />
-            <Button mnemonicParsing="false" text="Button" />
+          <Button fx:id="simpleStateButton" mnemonicParsing="false" onAction="#simpleStateButtonClicked" text="S" />
+            <Button fx:id="compositeStateButton" mnemonicParsing="false" onAction="#compositeStateButtonClicked" text="C" />
             <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" />
-            <Button mnemonicParsing="false" text="Button" />
-            <Button mnemonicParsing="false" text="Button" />
+            <Button fx:id="transitionButton" mnemonicParsing="false" onAction="#transitionButtonClicked" text="T" />
+            <Button fx:id="arcbutton" mnemonicParsing="false" onAction="#arcButtonClicked" text="A" />
             <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" />
-            <Button mnemonicParsing="false" text="Button" />
+            <Button fx:id="moveButton" mnemonicParsing="false" onAction="#moveButtonClicked" text="M" />
         </items>
       </ToolBar>
       <TabPane layoutX="726.0" layoutY="65.0" prefHeight="367.0" prefWidth="298.0" tabClosingPolicy="UNAVAILABLE">

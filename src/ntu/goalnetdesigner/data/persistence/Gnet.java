@@ -11,7 +11,12 @@ import java.util.List;
  * 
  */
 @Entity
-@NamedQuery(name="Gnet.findAll", query="SELECT g FROM Gnet g")
+@NamedQueries({
+    @NamedQuery(name="Gnet.findAll",
+                query="SELECT c FROM Gnet c"),
+    @NamedQuery(name="Gnet.findById",
+                query="SELECT c FROM Gnet c WHERE c.id = :id"),
+}) 
 public class Gnet implements Serializable, IDataServiceUnitSubscriber {
 	private static final long serialVersionUID = 1L;
 
@@ -20,17 +25,11 @@ public class Gnet implements Serializable, IDataServiceUnitSubscriber {
 
 	private String description;
 
-	private String endStateID;
+	private boolean goalSelectionType;
 
-	private byte goalSelectionType;
-
-	private byte isOpen;
+	private boolean isOpen;
 
 	private String name;
-
-	private String rootID;
-
-	private String startStateID;
 
 	private BigInteger stateCount;
 
@@ -39,6 +38,37 @@ public class Gnet implements Serializable, IDataServiceUnitSubscriber {
 	//bi-directional many-to-one association to UsergroupGnet
 	@OneToMany(mappedBy="gnet")
 	private List<UsergroupGnet> usergroupGnets;
+
+	//bi-directional many-to-one association to ActionLog
+	@OneToMany(mappedBy="gnet")
+	private List<ActionLog> actionLogs;
+
+	//bi-directional many-to-one association to Arc
+	@OneToMany(mappedBy="gnet")
+	private List<Arc> arcs;
+
+	//bi-directional many-to-one association to State
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="RootID")
+	private State state1;
+
+	//bi-directional many-to-one association to State
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="EndStateID")
+	private State state2;
+
+	//bi-directional many-to-one association to State
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="StartStateID")
+	private State state3;
+
+	//bi-directional many-to-one association to State
+	@OneToMany(mappedBy="gnet")
+	private List<State> states;
+
+	//bi-directional many-to-one association to Transition
+	@OneToMany(mappedBy="gnet")
+	private List<Transition> transitions;
 
 	public Gnet() {
 	}
@@ -59,27 +89,19 @@ public class Gnet implements Serializable, IDataServiceUnitSubscriber {
 		this.description = description;
 	}
 
-	public String getEndStateID() {
-		return this.endStateID;
-	}
-
-	public void setEndStateID(String endStateID) {
-		this.endStateID = endStateID;
-	}
-
-	public byte getGoalSelectionType() {
+	public boolean getGoalSelectionType() {
 		return this.goalSelectionType;
 	}
 
-	public void setGoalSelectionType(byte goalSelectionType) {
+	public void setGoalSelectionType(boolean goalSelectionType) {
 		this.goalSelectionType = goalSelectionType;
 	}
 
-	public byte getIsOpen() {
+	public boolean getIsOpen() {
 		return this.isOpen;
 	}
 
-	public void setIsOpen(byte isOpen) {
+	public void setIsOpen(boolean isOpen) {
 		this.isOpen = isOpen;
 	}
 
@@ -89,22 +111,6 @@ public class Gnet implements Serializable, IDataServiceUnitSubscriber {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getRootID() {
-		return this.rootID;
-	}
-
-	public void setRootID(String rootID) {
-		this.rootID = rootID;
-	}
-
-	public String getStartStateID() {
-		return this.startStateID;
-	}
-
-	public void setStartStateID(String startStateID) {
-		this.startStateID = startStateID;
 	}
 
 	public BigInteger getStateCount() {
@@ -143,6 +149,118 @@ public class Gnet implements Serializable, IDataServiceUnitSubscriber {
 		usergroupGnet.setGnet(null);
 
 		return usergroupGnet;
+	}
+
+	public List<ActionLog> getActionLogs() {
+		return this.actionLogs;
+	}
+
+	public void setActionLogs(List<ActionLog> actionLogs) {
+		this.actionLogs = actionLogs;
+	}
+
+	public ActionLog addActionLog(ActionLog actionLog) {
+		getActionLogs().add(actionLog);
+		actionLog.setGnet(this);
+
+		return actionLog;
+	}
+
+	public ActionLog removeActionLog(ActionLog actionLog) {
+		getActionLogs().remove(actionLog);
+		actionLog.setGnet(null);
+
+		return actionLog;
+	}
+
+	public List<Arc> getArcs() {
+		return this.arcs;
+	}
+
+	public void setArcs(List<Arc> arcs) {
+		this.arcs = arcs;
+	}
+
+	public Arc addArc(Arc arc) {
+		getArcs().add(arc);
+		arc.setGnet(this);
+
+		return arc;
+	}
+
+	public Arc removeArc(Arc arc) {
+		getArcs().remove(arc);
+		arc.setGnet(null);
+
+		return arc;
+	}
+
+	public State getState1() {
+		return this.state1;
+	}
+
+	public void setState1(State state1) {
+		this.state1 = state1;
+	}
+
+	public State getState2() {
+		return this.state2;
+	}
+
+	public void setState2(State state2) {
+		this.state2 = state2;
+	}
+
+	public State getState3() {
+		return this.state3;
+	}
+
+	public void setState3(State state3) {
+		this.state3 = state3;
+	}
+
+	public List<State> getStates() {
+		return this.states;
+	}
+
+	public void setStates(List<State> states) {
+		this.states = states;
+	}
+
+	public State addState(State state) {
+		getStates().add(state);
+		state.setGnet(this);
+
+		return state;
+	}
+
+	public State removeState(State state) {
+		getStates().remove(state);
+		state.setGnet(null);
+
+		return state;
+	}
+
+	public List<Transition> getTransitions() {
+		return this.transitions;
+	}
+
+	public void setTransitions(List<Transition> transitions) {
+		this.transitions = transitions;
+	}
+
+	public Transition addTransition(Transition transition) {
+		getTransitions().add(transition);
+		transition.setGnet(this);
+
+		return transition;
+	}
+
+	public Transition removeTransition(Transition transition) {
+		getTransitions().remove(transition);
+		transition.setGnet(null);
+
+		return transition;
 	}
 
 }

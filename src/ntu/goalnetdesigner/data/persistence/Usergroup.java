@@ -1,9 +1,7 @@
 package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
-
 import javax.persistence.*;
-
 import java.util.List;
 
 
@@ -12,14 +10,19 @@ import java.util.List;
  * 
  */
 @Entity
-@NamedQuery(name="Usergroup.findAll", query="SELECT u FROM Usergroup u")
-public class Usergroup implements Serializable, IDataServiceUnitSubscriber  {
+@NamedQueries({
+    @NamedQuery(name="Usergroup.findAll",
+                query="SELECT c FROM Usergroup c"),
+    @NamedQuery(name="Usergroup.findById",
+                query="SELECT c FROM Usergroup c WHERE c.id = :id"),
+}) 
+public class Usergroup implements Serializable, IDataServiceUnitSubscriber {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	private String id;
 
-	private String desc;
+	private String description;
 
 	private String name;
 
@@ -42,12 +45,12 @@ public class Usergroup implements Serializable, IDataServiceUnitSubscriber  {
 		this.id = id;
 	}
 
-	public String getDesc() {
-		return this.desc;
+	public String getDescription() {
+		return this.description;
 	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getName() {

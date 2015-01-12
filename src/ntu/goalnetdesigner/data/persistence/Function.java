@@ -10,7 +10,12 @@ import java.util.List;
  * 
  */
 @Entity
-@NamedQuery(name="Function.findAll", query="SELECT f FROM Function f")
+@NamedQueries({
+    @NamedQuery(name="Function.findAll",
+                query="SELECT c FROM Function c"),
+    @NamedQuery(name="Function.findById",
+                query="SELECT c FROM Function c WHERE c.id = :id"),
+}) 
 public class Function implements Serializable, IDataServiceUnitSubscriber {
 	private static final long serialVersionUID = 1L;
 

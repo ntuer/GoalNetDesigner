@@ -1,9 +1,7 @@
 package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
-
 import javax.persistence.*;
-
 import java.util.List;
 
 
@@ -12,8 +10,13 @@ import java.util.List;
  * 
  */
 @Entity
-@NamedQuery(name="Task.findAll", query="SELECT t FROM Task t")
-public class Task implements Serializable, IDataServiceUnitSubscriber  {
+@NamedQueries({
+    @NamedQuery(name="Task.findAll",
+                query="SELECT c FROM Task c"),
+    @NamedQuery(name="Task.findById",
+                query="SELECT c FROM Task c WHERE c.id = :id"),
+}) 
+public class Task implements Serializable, IDataServiceUnitSubscriber{
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -27,7 +30,7 @@ public class Task implements Serializable, IDataServiceUnitSubscriber  {
 
 	private String className;
 
-	private byte composite;
+	private boolean composite;
 
 	private int cost;
 
@@ -86,11 +89,11 @@ public class Task implements Serializable, IDataServiceUnitSubscriber  {
 		this.className = className;
 	}
 
-	public byte getComposite() {
+	public boolean getComposite() {
 		return this.composite;
 	}
 
-	public void setComposite(byte composite) {
+	public void setComposite(boolean composite) {
 		this.composite = composite;
 	}
 

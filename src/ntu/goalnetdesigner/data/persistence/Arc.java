@@ -28,8 +28,6 @@ public class Arc implements Serializable, IDrawable, IDataServiceUnitSubscriber 
 
 	private boolean direction;
 
-	private String GNetID;
-
 	private String inputID;
 
 	private boolean isDirect;
@@ -37,6 +35,11 @@ public class Arc implements Serializable, IDrawable, IDataServiceUnitSubscriber 
 	private String name;
 
 	private String outputID;
+
+	//bi-directional many-to-one association to Gnet
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="GNetID")
+	private Gnet gnet;
 
 	public Arc() {
 	}
@@ -63,14 +66,6 @@ public class Arc implements Serializable, IDrawable, IDataServiceUnitSubscriber 
 
 	public void setDirection(boolean direction) {
 		this.direction = direction;
-	}
-
-	public String getGNetID() {
-		return this.GNetID;
-	}
-
-	public void setGNetID(String GNetID) {
-		this.GNetID = GNetID;
 	}
 
 	public String getInputID() {
@@ -103,6 +98,14 @@ public class Arc implements Serializable, IDrawable, IDataServiceUnitSubscriber 
 
 	public void setOutputID(String outputID) {
 		this.outputID = outputID;
+	}
+
+	public Gnet getGnet() {
+		return this.gnet;
+	}
+
+	public void setGnet(Gnet gnet) {
+		this.gnet = gnet;
 	}
 
 }

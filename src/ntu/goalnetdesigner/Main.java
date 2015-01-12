@@ -1,7 +1,7 @@
 package ntu.goalnetdesigner;
 
 import ntu.goalnetdesigner.fxcontrol.*;
-
+import ntu.goalnetdesigner.session.UISession;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,10 +18,7 @@ public class Main extends Application {
         primaryStage.setTitle("Goal Net Designer Login");
         primaryStage.setScene(scene);
         primaryStage.show();
-        
-        // Set login controller data for stage tracking
-        LoginController ctrl  = loader.getController();
-        ctrl.stage = primaryStage;
+        UISession.primaryStage = primaryStage;
 	}
 
 	public static void main(String[] args) {

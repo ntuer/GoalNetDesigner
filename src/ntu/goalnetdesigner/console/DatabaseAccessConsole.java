@@ -1,32 +1,25 @@
 package ntu.goalnetdesigner.console;
 
-import java.util.List;
-
-import ntu.goalnetdesigner.data.persistence.*;
-import ntu.goalnetdesigner.data.service.*;
+import ntu.goalnetdesigner.data.persistence.ActionLog;
+import ntu.goalnetdesigner.data.persistence.User;
+import ntu.goalnetdesigner.data.persistence.UserUsergroup;
+import ntu.goalnetdesigner.data.service.DataService;
+import ntu.goalnetdesigner.data.service.DataServiceUnit;
 
 public class DatabaseAccessConsole {
 
 	public static void main(String[] args) {
-		DataServiceUnit<Arc> pm = DataService.arc;
-		Arc arc = new Arc();
-		arc.setId("11111");
-		arc.setGNetID("1");
-		arc.setDescription("s");
-		//arc.setIsDirect((byte) 1);
-		//arc.setDirection((byte) 1);
-		arc.setInputID("1");
-		arc.setName("sd");
-		arc.setOutputID("1");
-		pm.insert(arc);
+//		DataServiceUnit<ActionLog> pm = DataService.actionLog;
+//		ActionLog a = pm.find("f34c7687-9a6f-11e4-a7a6-002556c2fbd9");
+//		User u = a.getUser();
+//		System.out.print(u.getId());
+//		System.out.print(u.getActionLogs().get(0).getId());
 		
-		List<Arc> a = pm.findAll();
+		DataServiceUnit<User> pm2 = DataService.user;
+		User u = pm2.find("lisiyao");
+		UserUsergroup uug = u.getUserUsergroups().get(0).getUser().getUserUsergroups().get(0);
 		
-		Arc arc2 = (Arc) pm.find("11111");
-		arc2.setGNetID("2");
-		pm.update(arc2);
-		arc2.setGNetID("4");
-		pm.update(arc2);
-		pm.delete(arc2);
+		System.out.print(uug.getIsAdmin() + "sd");
+		
 	}
 }

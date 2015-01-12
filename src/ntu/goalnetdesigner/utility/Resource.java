@@ -12,7 +12,7 @@ public class Resource {
 		
 	}
 	
-	public static Resource instance = null;
+	private static Resource instance = null;
 	
 	public static Resource getInstance(){
 		if (instance == null){
@@ -26,4 +26,14 @@ public class Resource {
 		Parent root = (Parent) loader.load();
         return new Scene(root);
 	}
+	
+	public static final String ABOUT_PATH = "/ntu/goalnetdesigner/fxui/About.fxml";
+	public static final String FEEDBACK_PATH = "/ntu/goalnetdesigner/fxui/Feedback.fxml";
+	public static final String LOGIN_PATH = "/ntu/goalnetdesigner/fxui/Login.fxml";
+	public static final String MAINPAGE_PATH = "/ntu/goalnetdesigner/fxui/MainPage.fxml";
+	public static final String NEW_GNET_PATH = "/ntu/goalnetdesigner/fxui/NewGNet.fxml";
+	public static final String OPEN_GNET_PATH = "/ntu/goalnetdesigner/fxui/OpenGNet.fxml";
+	public static final String REGISTER_PATH = "/ntu/goalnetdesigner/fxui/Register.fxml";
+	public static final String RESET_PASSWORD_PATH = "/ntu/goalnetdesigner/fxui/ResetPassword.fxml";
+	
 }

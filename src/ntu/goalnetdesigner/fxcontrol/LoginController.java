@@ -1,22 +1,21 @@
 package ntu.goalnetdesigner.fxcontrol;
 
 import java.net.URL;
-import java.util.*;
+import java.util.ResourceBundle;
 
-import ntu.goalnetdesigner.logic.LoginManager;
-import ntu.goalnetdesigner.utility.Navigation;
-import ntu.goalnetdesigner.session.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
+import ntu.goalnetdesigner.logic.LoginManager;
+import ntu.goalnetdesigner.session.LoginSession;
+import ntu.goalnetdesigner.session.UISession;
+import ntu.goalnetdesigner.utility.Navigation;
+import ntu.goalnetdesigner.utility.Resource;
 
 public class LoginController implements Initializable{
-	public Stage stage;
 	
 	@FXML
 	private Text actiontarget;
@@ -39,7 +38,7 @@ public class LoginController implements Initializable{
 		if (lm.isValidUser(id, password)) {
 			LoginSession.isLoggedIn = true;
 			LoginSession.id = id;
-			Navigation.switchScene("/ntu/goalnetdesigner/fxui/MainPage.fxml", this.stage);
+			Navigation.switchTo(Resource.MAINPAGE_PATH, UISession.primaryStage);
 		}
 		else
 			actiontarget.setText("Invalid Login");
@@ -49,17 +48,4 @@ public class LoginController implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		serverAddressField.setText("localhost/gnetdb_new");
 	}
-	
-//	private Parent replaceSceneContent(String fxml) throws Exception {
-//        Parent page = (Parent) FXMLLoader.load(getClass().getResource(fxml), null, new JavaFXBuilderFactory());
-//        Scene scene = stage.getScene();
-//        if (scene == null) {
-//            scene = new Scene(page);
-//            stage.setScene(scene);
-//        } else {
-//            stage.getScene().setRoot(page);
-//        }
-//        stage.sizeToScene();
-//        return page;
-//    }
 }

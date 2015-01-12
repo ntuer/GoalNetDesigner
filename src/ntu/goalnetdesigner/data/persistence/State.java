@@ -1,13 +1,19 @@
 package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
-
-import javax.persistence.*;
-
-import ntu.goalnetdesigner.render.IDrawable;
-
 import java.math.BigInteger;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+
+import ntu.goalnetdesigner.render.IDrawable;
 
 
 /**
@@ -15,8 +21,13 @@ import java.util.List;
  * 
  */
 @Entity
-@NamedQuery(name="State.findAll", query="SELECT s FROM State s")
-public class State implements Serializable, IDrawable, IDataServiceUnitSubscriber  {
+@NamedQueries({
+    @NamedQuery(name="State.findAll",
+                query="SELECT c FROM State c"),
+    @NamedQuery(name="State.findById",
+                query="SELECT c FROM State c WHERE c.id = :id"),
+}) 
+public class State implements Serializable, IDrawable, IDataServiceUnitSubscriber {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -24,21 +35,13 @@ public class State implements Serializable, IDrawable, IDataServiceUnitSubscribe
 
 	private int achievement;
 
-	private byte composite;
+	private boolean composite;
 
 	private int cost;
 
 	private String description;
 
-	private BigInteger GNetID;
-
 	private String name;
-
-	private String parentGNetID;
-
-	private String subGNetEndID;
-
-	private String subGNetStartID;
 
 	private BigInteger token;
 
@@ -49,6 +52,50 @@ public class State implements Serializable, IDrawable, IDataServiceUnitSubscribe
 	//bi-directional many-to-one association to StateFunction
 	@OneToMany(mappedBy="state")
 	private List<StateFunction> stateFunctions;
+
+	//bi-directional many-to-one association to Gnet
+	@OneToMany(mappedBy="state1")
+	private List<Gnet> gnets1;
+
+	//bi-directional many-to-one association to Gnet
+	@OneToMany(mappedBy="state2")
+	private List<Gnet> gnets2;
+
+	//bi-directional many-to-one association to Gnet
+	@OneToMany(mappedBy="state3")
+	private List<Gnet> gnets3;
+
+	//bi-directional many-to-one association to State
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="SubGNetEndID")
+	private State state1;
+
+	//bi-directional many-to-one association to State
+	@OneToMany(mappedBy="state1")
+	private List<State> states1;
+
+	//bi-directional many-to-one association to Gnet
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="GNetID")
+	private Gnet gnet;
+
+	//bi-directional many-to-one association to State
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="ParentGNetID")
+	private State state2;
+
+	//bi-directional many-to-one association to State
+	@OneToMany(mappedBy="state2")
+	private List<State> states2;
+
+	//bi-directional many-to-one association to State
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="SubGNetStartID")
+	private State state3;
+
+	//bi-directional many-to-one association to State
+	@OneToMany(mappedBy="state3")
+	private List<State> states3;
 
 	public State() {
 	}
@@ -69,11 +116,11 @@ public class State implements Serializable, IDrawable, IDataServiceUnitSubscribe
 		this.achievement = achievement;
 	}
 
-	public byte getComposite() {
+	public boolean getComposite() {
 		return this.composite;
 	}
 
-	public void setComposite(byte composite) {
+	public void setComposite(boolean composite) {
 		this.composite = composite;
 	}
 
@@ -93,44 +140,12 @@ public class State implements Serializable, IDrawable, IDataServiceUnitSubscribe
 		this.description = description;
 	}
 
-	public BigInteger getGNetID() {
-		return this.GNetID;
-	}
-
-	public void setGNetID(BigInteger GNetID) {
-		this.GNetID = GNetID;
-	}
-
 	public String getName() {
 		return this.name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getParentGNetID() {
-		return this.parentGNetID;
-	}
-
-	public void setParentGNetID(String parentGNetID) {
-		this.parentGNetID = parentGNetID;
-	}
-
-	public String getSubGNetEndID() {
-		return this.subGNetEndID;
-	}
-
-	public void setSubGNetEndID(String subGNetEndID) {
-		this.subGNetEndID = subGNetEndID;
-	}
-
-	public String getSubGNetStartID() {
-		return this.subGNetStartID;
-	}
-
-	public void setSubGNetStartID(String subGNetStartID) {
-		this.subGNetStartID = subGNetStartID;
 	}
 
 	public BigInteger getToken() {
@@ -177,6 +192,170 @@ public class State implements Serializable, IDrawable, IDataServiceUnitSubscribe
 		stateFunction.setState(null);
 
 		return stateFunction;
+	}
+
+	public List<Gnet> getGnets1() {
+		return this.gnets1;
+	}
+
+	public void setGnets1(List<Gnet> gnets1) {
+		this.gnets1 = gnets1;
+	}
+
+	public Gnet addGnets1(Gnet gnets1) {
+		getGnets1().add(gnets1);
+		gnets1.setState1(this);
+
+		return gnets1;
+	}
+
+	public Gnet removeGnets1(Gnet gnets1) {
+		getGnets1().remove(gnets1);
+		gnets1.setState1(null);
+
+		return gnets1;
+	}
+
+	public List<Gnet> getGnets2() {
+		return this.gnets2;
+	}
+
+	public void setGnets2(List<Gnet> gnets2) {
+		this.gnets2 = gnets2;
+	}
+
+	public Gnet addGnets2(Gnet gnets2) {
+		getGnets2().add(gnets2);
+		gnets2.setState2(this);
+
+		return gnets2;
+	}
+
+	public Gnet removeGnets2(Gnet gnets2) {
+		getGnets2().remove(gnets2);
+		gnets2.setState2(null);
+
+		return gnets2;
+	}
+
+	public List<Gnet> getGnets3() {
+		return this.gnets3;
+	}
+
+	public void setGnets3(List<Gnet> gnets3) {
+		this.gnets3 = gnets3;
+	}
+
+	public Gnet addGnets3(Gnet gnets3) {
+		getGnets3().add(gnets3);
+		gnets3.setState3(this);
+
+		return gnets3;
+	}
+
+	public Gnet removeGnets3(Gnet gnets3) {
+		getGnets3().remove(gnets3);
+		gnets3.setState3(null);
+
+		return gnets3;
+	}
+
+	public State getState1() {
+		return this.state1;
+	}
+
+	public void setState1(State state1) {
+		this.state1 = state1;
+	}
+
+	public List<State> getStates1() {
+		return this.states1;
+	}
+
+	public void setStates1(List<State> states1) {
+		this.states1 = states1;
+	}
+
+	public State addStates1(State states1) {
+		getStates1().add(states1);
+		states1.setState1(this);
+
+		return states1;
+	}
+
+	public State removeStates1(State states1) {
+		getStates1().remove(states1);
+		states1.setState1(null);
+
+		return states1;
+	}
+
+	public Gnet getGnet() {
+		return this.gnet;
+	}
+
+	public void setGnet(Gnet gnet) {
+		this.gnet = gnet;
+	}
+
+	public State getState2() {
+		return this.state2;
+	}
+
+	public void setState2(State state2) {
+		this.state2 = state2;
+	}
+
+	public List<State> getStates2() {
+		return this.states2;
+	}
+
+	public void setStates2(List<State> states2) {
+		this.states2 = states2;
+	}
+
+	public State addStates2(State states2) {
+		getStates2().add(states2);
+		states2.setState2(this);
+
+		return states2;
+	}
+
+	public State removeStates2(State states2) {
+		getStates2().remove(states2);
+		states2.setState2(null);
+
+		return states2;
+	}
+
+	public State getState3() {
+		return this.state3;
+	}
+
+	public void setState3(State state3) {
+		this.state3 = state3;
+	}
+
+	public List<State> getStates3() {
+		return this.states3;
+	}
+
+	public void setStates3(List<State> states3) {
+		this.states3 = states3;
+	}
+
+	public State addStates3(State states3) {
+		getStates3().add(states3);
+		states3.setState3(this);
+
+		return states3;
+	}
+
+	public State removeStates3(State states3) {
+		getStates3().remove(states3);
+		states3.setState3(null);
+
+		return states3;
 	}
 
 }

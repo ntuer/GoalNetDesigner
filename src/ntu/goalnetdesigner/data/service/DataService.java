@@ -21,12 +21,16 @@ public class DataService {
 			properties.put("javax.persistence.jdbc.url", "jdbc:mysql://" + LoginSession.serverAddress);
 			properties.put("javax.persistence.jdbc.user", "root");
 			properties.put("javax.persistence.jdbc.password", "root");
+			properties.put("eclipselink.logging.level", "FINE");
 			emf = Persistence.createEntityManagerFactory("GoalNetDesigner",properties);
 		}
 		return emf;
 	}
 	
 	// TODO: change to singleton for safety
+	public static DataServiceUnit<ActionLog> actionLog = new DataServiceUnit<ActionLog>(ActionLog.class);
+	public static DataServiceUnit<FeedbackLog> feedbackLog = new DataServiceUnit<FeedbackLog>(FeedbackLog.class);
+	public static DataServiceUnit<Question> question = new DataServiceUnit<Question>(Question.class);
 	public static DataServiceUnit<Arc> arc = new DataServiceUnit<Arc>(Arc.class);
 	public static DataServiceUnit<Function> function = new DataServiceUnit<Function>(Function.class);
 	public static DataServiceUnit<Gnet> gnet = new DataServiceUnit<Gnet>(Gnet.class);

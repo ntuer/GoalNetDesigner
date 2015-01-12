@@ -1,9 +1,7 @@
 package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
-
 import javax.persistence.*;
-
 import java.util.List;
 
 
@@ -19,7 +17,7 @@ import java.util.List;
     @NamedQuery(name="User.findById",
                 query="SELECT c FROM User c WHERE c.id = :id"),
 }) 
-public class User implements Serializable, IDataServiceUnitSubscriber  {
+public class User implements Serializable, IDataServiceUnitSubscriber {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -33,9 +31,17 @@ public class User implements Serializable, IDataServiceUnitSubscriber  {
 
 	private String question;
 
+	//bi-directional many-to-one association to ActionLog
+	@OneToMany(mappedBy="user")
+	private List<ActionLog> actionLogs;
+
 	//bi-directional many-to-one association to UserUsergroup
 	@OneToMany(mappedBy="user")
 	private List<UserUsergroup> userUsergroups;
+
+	//bi-directional many-to-one association to FeedbackLog
+	@OneToMany(mappedBy="user")
+	private List<FeedbackLog> feedbackLogs;
 
 	public User() {
 	}
@@ -80,6 +86,28 @@ public class User implements Serializable, IDataServiceUnitSubscriber  {
 		this.question = question;
 	}
 
+	public List<ActionLog> getActionLogs() {
+		return this.actionLogs;
+	}
+
+	public void setActionLogs(List<ActionLog> actionLogs) {
+		this.actionLogs = actionLogs;
+	}
+
+	public ActionLog addActionLog(ActionLog actionLog) {
+		getActionLogs().add(actionLog);
+		actionLog.setUser(this);
+
+		return actionLog;
+	}
+
+	public ActionLog removeActionLog(ActionLog actionLog) {
+		getActionLogs().remove(actionLog);
+		actionLog.setUser(null);
+
+		return actionLog;
+	}
+
 	public List<UserUsergroup> getUserUsergroups() {
 		return this.userUsergroups;
 	}
@@ -100,6 +128,28 @@ public class User implements Serializable, IDataServiceUnitSubscriber  {
 		userUsergroup.setUser(null);
 
 		return userUsergroup;
+	}
+
+	public List<FeedbackLog> getFeedbackLogs() {
+		return this.feedbackLogs;
+	}
+
+	public void setFeedbackLogs(List<FeedbackLog> feedbackLogs) {
+		this.feedbackLogs = feedbackLogs;
+	}
+
+	public FeedbackLog addFeedbackLog(FeedbackLog feedbackLog) {
+		getFeedbackLogs().add(feedbackLog);
+		feedbackLog.setUser(this);
+
+		return feedbackLog;
+	}
+
+	public FeedbackLog removeFeedbackLog(FeedbackLog feedbackLog) {
+		getFeedbackLogs().remove(feedbackLog);
+		feedbackLog.setUser(null);
+
+		return feedbackLog;
 	}
 
 }

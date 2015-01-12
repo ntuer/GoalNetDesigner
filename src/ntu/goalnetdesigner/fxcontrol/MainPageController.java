@@ -3,8 +3,15 @@ package ntu.goalnetdesigner.fxcontrol;
 
 import com.sun.corba.se.spi.orbutil.fsm.State;
 
+import ntu.goalnetdesigner.logger.UserConsoleLogger;
 import ntu.goalnetdesigner.render.RenderedIDrawableObjectFactory;
 import ntu.goalnetdesigner.render.RenderedState;
+import ntu.goalnetdesigner.session.DataSession;
+import ntu.goalnetdesigner.session.LoginSession;
+import ntu.goalnetdesigner.session.UISession;
+import ntu.goalnetdesigner.utility.CurrentGNetObjectSelection;
+import ntu.goalnetdesigner.utility.Navigation;
+import ntu.goalnetdesigner.utility.Resource;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -23,6 +30,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 
 public class MainPageController {
 	@FXML
@@ -59,7 +67,7 @@ public class MainPageController {
     private MenuItem fileMenuClose;
 
     @FXML
-    private MenuItem helpMenuContactAuthor;
+    private MenuItem helpMenuFeedback;
 
     @FXML
     private Tab stateTab;
@@ -138,7 +146,13 @@ public class MainPageController {
 
     @FXML
     public void initialize() {
+    	// Set Logger
+    	UserConsoleLogger.setOutputArea(this.outputField);
+    	
+    	// Set drawing handler
     	drawingPane.setOnMouseClicked(mouseHandler);
+    	
+    	
         TreeItem<String> rootItem = new TreeItem<String> ("Arcs");
         rootItem.setExpanded(true);
         for (int i = 1; i < 60; i++) {
@@ -164,4 +178,112 @@ public class MainPageController {
     		}
     	}
     };
+    
+    
+    @FXML
+    void fileMenuNewClicked(ActionEvent event) throws Exception{
+    	Navigation.popUp(Resource.NEW_GNET_PATH, UISession.primaryStage);
+    }
+
+    @FXML
+    void fileMenuOpenClicked(ActionEvent event) throws Exception{
+    	Navigation.popUp(Resource.OPEN_GNET_PATH, UISession.primaryStage);
+    }
+
+    @FXML
+    void fileMenuSaveClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void fileMenuNSaveAsClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void fileMenuCloseClicked(ActionEvent event) {
+        
+    }
+
+    @FXML
+    void fileMenuPrintClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void fileMenuExitClicked(ActionEvent event) {
+    	UISession.primaryStage.close();
+    }
+
+    @FXML
+    void editMenuUndoClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void editMenuDeleteClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void editMenuPropertyClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void runMenuVerifyClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void runMenuRunClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void sessionMenuCurrentUserClicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void sessionMenuLogOutClicked(ActionEvent event) throws Exception{
+    	Navigation.switchTo(Resource.LOGIN_PATH, UISession.primaryStage);
+    	LoginSession.isLoggedIn = false;
+    }
+
+    @FXML
+    void helpMenuAboutClicked(ActionEvent event) throws Exception{
+    	Navigation.popUp(Resource.ABOUT_PATH, UISession.primaryStage);
+    }
+
+    @FXML
+    void helpMenuFeedbackClicked(ActionEvent event) throws Exception{
+    	Navigation.popUp(Resource.FEEDBACK_PATH, UISession.primaryStage);
+    }
+
+    @FXML
+    void simpleStateButtonClicked(ActionEvent event) {
+    	DataSession.currentGNetObjectSelection = CurrentGNetObjectSelection.STATE;
+    }
+
+    @FXML
+    void compositeStateButtonClicked(ActionEvent event) {
+    	DataSession.currentGNetObjectSelection = CurrentGNetObjectSelection.COMPOSITE_STATE;
+    }
+
+    @FXML
+    void transitionButtonClicked(ActionEvent event) {
+    	DataSession.currentGNetObjectSelection = CurrentGNetObjectSelection.TRANSITION;
+    }
+
+    @FXML
+    void arcButtonClicked(ActionEvent event) {
+    	DataSession.currentGNetObjectSelection = CurrentGNetObjectSelection.ARC;
+    }
+
+    @FXML
+    void moveButtonClicked(ActionEvent event) {
+    	DataSession.currentGNetObjectSelection = CurrentGNetObjectSelection.MOVE;
+    }
+    
 }

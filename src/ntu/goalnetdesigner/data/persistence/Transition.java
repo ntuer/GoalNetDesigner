@@ -1,12 +1,17 @@
 package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 import ntu.goalnetdesigner.render.IDrawable;
-
-import java.math.BigInteger;
 
 
 /**
@@ -14,8 +19,13 @@ import java.math.BigInteger;
  * 
  */
 @Entity
-@NamedQuery(name="Transition.findAll", query="SELECT t FROM Transition t")
-public class Transition implements Serializable, IDrawable, IDataServiceUnitSubscriber  {
+@NamedQueries({
+    @NamedQuery(name="Transition.findAll",
+                query="SELECT c FROM Transition c"),
+    @NamedQuery(name="Transition.findById",
+                query="SELECT c FROM Transition c WHERE c.id = :id"),
+}) 
+public class Transition implements Serializable, IDrawable, IDataServiceUnitSubscriber {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -27,11 +37,9 @@ public class Transition implements Serializable, IDrawable, IDataServiceUnitSubs
 
 	private String description;
 
-	private byte enabled;
+	private boolean enabled;
 
 	private int exceptionStateID;
-
-	private String GNetID;
 
 	private int level;
 
@@ -39,13 +47,21 @@ public class Transition implements Serializable, IDrawable, IDataServiceUnitSubs
 
 	private BigInteger taskCount;
 
-	private String taskListID;
-
 	private String type;
 
 	private int x;
 
 	private int y;
+
+	//bi-directional many-to-one association to Tasklist
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="TaskListID")
+	private Tasklist tasklist;
+
+	//bi-directional many-to-one association to Gnet
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="GNetID")
+	private Gnet gnet;
 
 	public Transition() {
 	}
@@ -82,11 +98,11 @@ public class Transition implements Serializable, IDrawable, IDataServiceUnitSubs
 		this.description = description;
 	}
 
-	public byte getEnabled() {
+	public boolean getEnabled() {
 		return this.enabled;
 	}
 
-	public void setEnabled(byte enabled) {
+	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
 
@@ -96,14 +112,6 @@ public class Transition implements Serializable, IDrawable, IDataServiceUnitSubs
 
 	public void setExceptionStateID(int exceptionStateID) {
 		this.exceptionStateID = exceptionStateID;
-	}
-
-	public String getGNetID() {
-		return this.GNetID;
-	}
-
-	public void setGNetID(String GNetID) {
-		this.GNetID = GNetID;
 	}
 
 	public int getLevel() {
@@ -130,14 +138,6 @@ public class Transition implements Serializable, IDrawable, IDataServiceUnitSubs
 		this.taskCount = taskCount;
 	}
 
-	public String getTaskListID() {
-		return this.taskListID;
-	}
-
-	public void setTaskListID(String taskListID) {
-		this.taskListID = taskListID;
-	}
-
 	public String getType() {
 		return this.type;
 	}
@@ -160,6 +160,22 @@ public class Transition implements Serializable, IDrawable, IDataServiceUnitSubs
 
 	public void setY(int y) {
 		this.y = y;
+	}
+
+	public Tasklist getTasklist() {
+		return this.tasklist;
+	}
+
+	public void setTasklist(Tasklist tasklist) {
+		this.tasklist = tasklist;
+	}
+
+	public Gnet getGnet() {
+		return this.gnet;
+	}
+
+	public void setGnet(Gnet gnet) {
+		this.gnet = gnet;
 	}
 
 }
