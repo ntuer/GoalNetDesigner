@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 28, 2014 at 08:47 AM
+-- Generation Time: Jan 12, 2015 at 03:53 PM
 -- Server version: 5.5.40
 -- PHP Version: 5.4.32
 
@@ -38,6 +38,13 @@ CREATE TABLE IF NOT EXISTS `action_log` (
   `TargetObjectID` char(36) NOT NULL COMMENT 'Target object''s ID',
   `Timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Time of action'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Record user behaviors for analytics';
+
+--
+-- Dumping data for table `action_log`
+--
+
+INSERT INTO `action_log` (`UserID`, `ID`, `Action`, `GNetID`, `OperationTargetObject`, `TargetObjectID`, `Timestamp`) VALUES
+('lisiyao', 'f34c7687-9a6f-11e4-a7a6-002556c2fbd9', '', '22af170a-2677-406b-bf31-3c5c412d865d', '', '', '2015-01-12 15:30:34');
 
 -- --------------------------------------------------------
 
@@ -110,6 +117,14 @@ CREATE TABLE IF NOT EXISTS `gnet` (
   `IsOpen` tinyint(1) DEFAULT '0' COMMENT 'Mutex lock to ensure one goal net is not simultaneously being edited by more than one user. Yes means it is being edited.'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `gnet`
+--
+
+INSERT INTO `gnet` (`ID`, `Name`, `Description`, `StateCount`, `TransitionCount`, `StartStateID`, `EndStateID`, `RootID`, `GoalSelectionType`, `IsOpen`) VALUES
+('22af170a-2677-406b-bf31-3c5c412d865d', 'G2', '', NULL, NULL, NULL, NULL, NULL, 0, 0),
+('d944a252-972c-4707-9537-275e4e723b5e', 'G1', 'Desc', NULL, NULL, NULL, NULL, NULL, 0, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -147,15 +162,15 @@ CREATE TABLE IF NOT EXISTS `question` (
 DROP TABLE IF EXISTS `state`;
 CREATE TABLE IF NOT EXISTS `state` (
   `ID` char(36) NOT NULL,
-  `GNetID` bigint(20) NOT NULL COMMENT 'GoalNetID of the goal net it belongs to',
-  `ParentGNetID` char(36) DEFAULT '0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0' COMMENT 'Parent State ID of this state (>=1). Value may be invalid since only the start and end state of a sub goal net has a parent.',
+  `GNetID` char(36) DEFAULT NULL COMMENT 'GoalNetID of the goal net it belongs to',
+  `ParentGNetID` char(36) DEFAULT NULL COMMENT 'Parent State ID of this state (>=1). Value may be invalid since only the start and end state of a sub goal net has a parent.',
   `Name` varchar(50) NOT NULL COMMENT 'Name of the state',
   `Description` varchar(255) DEFAULT NULL COMMENT 'Description of the state',
   `Composite` tinyint(1) NOT NULL COMMENT 'Indicating whether the state is composite(Yes) or atomic(No)',
   `Cost` int(11) DEFAULT '0' COMMENT 'Cost of achieving the state',
   `Achievement` int(11) DEFAULT '0' COMMENT 'The benefit of achieving the state',
-  `SubGNetStartID` char(36) DEFAULT '0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0' COMMENT 'State goal id if it is a composite state',
-  `SubGNetEndID` char(36) DEFAULT '0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0' COMMENT 'End goal id if it is a composite state',
+  `SubGNetStartID` char(36) DEFAULT NULL COMMENT 'State goal id if it is a composite state',
+  `SubGNetEndID` char(36) DEFAULT NULL COMMENT 'End goal id if it is a composite state',
   `Token` bigint(20) DEFAULT '0' COMMENT 'Whether there is a token and the value of the token. no token means 0.',
   `X` int(11) NOT NULL COMMENT 'X coordinate of the state on the canvas',
   `Y` int(11) NOT NULL COMMENT 'Y coordinate of the state on the canvas'
@@ -268,8 +283,15 @@ DROP TABLE IF EXISTS `usergroup`;
 CREATE TABLE IF NOT EXISTS `usergroup` (
   `ID` char(36) NOT NULL,
   `Name` varchar(50) NOT NULL COMMENT 'User group name.',
-  `Desc` varchar(255) DEFAULT NULL COMMENT 'User group description.'
+  `Description` varchar(255) DEFAULT NULL COMMENT 'User group description.'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `usergroup`
+--
+
+INSERT INTO `usergroup` (`ID`, `Name`, `Description`) VALUES
+('7cad18fc-9a4c-11e4-9b96-002556c2fbd9', 'Group1', NULL);
 
 -- --------------------------------------------------------
 
@@ -300,6 +322,13 @@ CREATE TABLE IF NOT EXISTS `users` (
   `Answer` varchar(255) NOT NULL COMMENT 'Answer to secret question.'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`ID`, `Email`, `Password`, `Question`, `Answer`) VALUES
+('lisiyao', 'lisi0010@e.ntu.edu.sg', 'lisiyao', 'lisiyao', 'lisiyao');
+
 -- --------------------------------------------------------
 
 --
@@ -314,6 +343,13 @@ CREATE TABLE IF NOT EXISTS `user_usergroup` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
+-- Dumping data for table `user_usergroup`
+--
+
+INSERT INTO `user_usergroup` (`UserID`, `UserGroupID`, `IsAdmin`) VALUES
+('lisiyao', '7cad18fc-9a4c-11e4-9b96-002556c2fbd9', 1);
+
+--
 -- Indexes for dumped tables
 --
 
@@ -321,19 +357,19 @@ CREATE TABLE IF NOT EXISTS `user_usergroup` (
 -- Indexes for table `action_log`
 --
 ALTER TABLE `action_log`
- ADD PRIMARY KEY (`ID`);
+ ADD PRIMARY KEY (`ID`), ADD KEY `UserID` (`UserID`), ADD KEY `GNetID` (`GNetID`);
 
 --
 -- Indexes for table `arc`
 --
 ALTER TABLE `arc`
- ADD PRIMARY KEY (`ID`);
+ ADD PRIMARY KEY (`ID`), ADD KEY `GNetID` (`GNetID`,`InputID`,`OutputID`), ADD KEY `InputID` (`InputID`), ADD KEY `OutputID` (`OutputID`), ADD KEY `OutputID_2` (`OutputID`), ADD KEY `InputID_2` (`InputID`,`OutputID`);
 
 --
 -- Indexes for table `feedback_log`
 --
 ALTER TABLE `feedback_log`
- ADD PRIMARY KEY (`ID`);
+ ADD PRIMARY KEY (`ID`), ADD KEY `QuestionID` (`QuestionID`,`UserID`), ADD KEY `UserID` (`UserID`);
 
 --
 -- Indexes for table `function`
@@ -345,7 +381,7 @@ ALTER TABLE `function`
 -- Indexes for table `gnet`
 --
 ALTER TABLE `gnet`
- ADD PRIMARY KEY (`ID`);
+ ADD PRIMARY KEY (`ID`), ADD KEY `StartStateID` (`StartStateID`), ADD KEY `EndStateID` (`EndStateID`), ADD KEY `RootID` (`RootID`);
 
 --
 -- Indexes for table `property`
@@ -363,7 +399,7 @@ ALTER TABLE `question`
 -- Indexes for table `state`
 --
 ALTER TABLE `state`
- ADD PRIMARY KEY (`ID`);
+ ADD PRIMARY KEY (`ID`), ADD KEY `SubGNetStartID` (`SubGNetStartID`), ADD KEY `SubGNetEndID` (`SubGNetEndID`), ADD KEY `ParentGNetID` (`ParentGNetID`), ADD KEY `GNetID` (`GNetID`);
 
 --
 -- Indexes for table `state_function`
@@ -375,7 +411,7 @@ ALTER TABLE `state_function`
 -- Indexes for table `task`
 --
 ALTER TABLE `task`
- ADD PRIMARY KEY (`ID`);
+ ADD PRIMARY KEY (`ID`), ADD KEY `ChildTaskID` (`ChildTaskID`);
 
 --
 -- Indexes for table `tasklist`
@@ -399,7 +435,7 @@ ALTER TABLE `task_function`
 -- Indexes for table `transition`
 --
 ALTER TABLE `transition`
- ADD PRIMARY KEY (`ID`);
+ ADD PRIMARY KEY (`ID`), ADD KEY `GNetID` (`GNetID`), ADD KEY `TaskListID` (`TaskListID`);
 
 --
 -- Indexes for table `usergroup`
@@ -430,6 +466,43 @@ ALTER TABLE `user_usergroup`
 --
 
 --
+-- Constraints for table `action_log`
+--
+ALTER TABLE `action_log`
+ADD CONSTRAINT `action_log_gnet_id` FOREIGN KEY (`GNetID`) REFERENCES `gnet` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `action_log_userid_id` FOREIGN KEY (`UserID`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `arc`
+--
+ALTER TABLE `arc`
+ADD CONSTRAINT `arc_gnet_id` FOREIGN KEY (`GNetID`) REFERENCES `gnet` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `feedback_log`
+--
+ALTER TABLE `feedback_log`
+ADD CONSTRAINT `feedback_log_user_id` FOREIGN KEY (`UserID`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `feedback_log_question_id` FOREIGN KEY (`QuestionID`) REFERENCES `question` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `gnet`
+--
+ALTER TABLE `gnet`
+ADD CONSTRAINT `gnet_root_id` FOREIGN KEY (`RootID`) REFERENCES `state` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `gnet_end_id` FOREIGN KEY (`EndStateID`) REFERENCES `state` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `gnet_start_id` FOREIGN KEY (`StartStateID`) REFERENCES `state` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `state`
+--
+ALTER TABLE `state`
+ADD CONSTRAINT `state_sub_end_id` FOREIGN KEY (`SubGNetEndID`) REFERENCES `state` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `state_gnet_id` FOREIGN KEY (`GNetID`) REFERENCES `gnet` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `state_parent_state_id` FOREIGN KEY (`ParentGNetID`) REFERENCES `state` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `state_sub_start_id` FOREIGN KEY (`SubGNetStartID`) REFERENCES `state` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `state_function`
 --
 ALTER TABLE `state_function`
@@ -449,6 +522,13 @@ ADD CONSTRAINT `tasklist_task_ibfk_2` FOREIGN KEY (`TaskID`) REFERENCES `task` (
 ALTER TABLE `task_function`
 ADD CONSTRAINT `task_function_ibfk_1` FOREIGN KEY (`TaskID`) REFERENCES `task` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT `task_function_ibfk_2` FOREIGN KEY (`FunctionID`) REFERENCES `function` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `transition`
+--
+ALTER TABLE `transition`
+ADD CONSTRAINT `transition_tasklist_id` FOREIGN KEY (`TaskListID`) REFERENCES `tasklist` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `transition_gnet_id` FOREIGN KEY (`GNetID`) REFERENCES `gnet` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `usergroup_gnet`
