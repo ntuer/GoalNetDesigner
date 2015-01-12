@@ -1,22 +1,29 @@
 package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.List;
 
 
 /**
- * The persistent class for the function database table.
+ * The persistent class for the method database table.
  * 
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name="Function.findAll",
-                query="SELECT c FROM Function c"),
-    @NamedQuery(name="Function.findById",
-                query="SELECT c FROM Function c WHERE c.id = :id"),
+    @NamedQuery(name="Method.findAll",
+                query="SELECT c FROM Method c"),
+    @NamedQuery(name="Method.findById",
+                query="SELECT c FROM Method c WHERE c.id = :id"),
 }) 
-public class Function implements Serializable, IDataServiceUnitSubscriber {
+public class Method implements Serializable, IDataServiceUnitSubscriber {
+	
+	public String toString(){
+		return this.getName();
+	}
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -32,19 +39,19 @@ public class Function implements Serializable, IDataServiceUnitSubscriber {
 
 	private String params;
 
+	private String PValues;
+
 	private String RTType;
 
-	private String values;
-
 	//bi-directional many-to-one association to StateFunction
-	@OneToMany(mappedBy="function")
+	@OneToMany(mappedBy="method")
 	private List<StateFunction> stateFunctions;
 
 	//bi-directional many-to-one association to TaskFunction
-	@OneToMany(mappedBy="function")
+	@OneToMany(mappedBy="method")
 	private List<TaskFunction> taskFunctions;
 
-	public Function() {
+	public Method() {
 	}
 
 	public String getId() {
@@ -95,20 +102,20 @@ public class Function implements Serializable, IDataServiceUnitSubscriber {
 		this.params = params;
 	}
 
+	public String getPValues() {
+		return this.PValues;
+	}
+
+	public void setPValues(String PValues) {
+		this.PValues = PValues;
+	}
+
 	public String getRTType() {
 		return this.RTType;
 	}
 
 	public void setRTType(String RTType) {
 		this.RTType = RTType;
-	}
-
-	public String getValues() {
-		return this.values;
-	}
-
-	public void setValues(String values) {
-		this.values = values;
 	}
 
 	public List<StateFunction> getStateFunctions() {
@@ -121,14 +128,14 @@ public class Function implements Serializable, IDataServiceUnitSubscriber {
 
 	public StateFunction addStateFunction(StateFunction stateFunction) {
 		getStateFunctions().add(stateFunction);
-		stateFunction.setFunction(this);
+		stateFunction.setMethod(this);
 
 		return stateFunction;
 	}
 
 	public StateFunction removeStateFunction(StateFunction stateFunction) {
 		getStateFunctions().remove(stateFunction);
-		stateFunction.setFunction(null);
+		stateFunction.setMethod(null);
 
 		return stateFunction;
 	}
@@ -143,14 +150,14 @@ public class Function implements Serializable, IDataServiceUnitSubscriber {
 
 	public TaskFunction addTaskFunction(TaskFunction taskFunction) {
 		getTaskFunctions().add(taskFunction);
-		taskFunction.setFunction(this);
+		taskFunction.setMethod(this);
 
 		return taskFunction;
 	}
 
 	public TaskFunction removeTaskFunction(TaskFunction taskFunction) {
 		getTaskFunctions().remove(taskFunction);
-		taskFunction.setFunction(null);
+		taskFunction.setMethod(null);
 
 		return taskFunction;
 	}

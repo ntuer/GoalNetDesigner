@@ -1,19 +1,11 @@
 package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
+
+import javax.persistence.*;
+
 import java.math.BigInteger;
 import java.util.List;
-
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-
-import ntu.goalnetdesigner.render.IDrawable;
 
 
 /**
@@ -27,7 +19,12 @@ import ntu.goalnetdesigner.render.IDrawable;
     @NamedQuery(name="State.findById",
                 query="SELECT c FROM State c WHERE c.id = :id"),
 }) 
-public class State implements Serializable, IDrawable, IDataServiceUnitSubscriber {
+public class State implements Serializable, IDataServiceUnitSubscriber, ntu.goalnetdesigner.render.IDrawable {
+	
+	public String toString(){
+		return this.getName();
+	}
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -49,10 +46,6 @@ public class State implements Serializable, IDrawable, IDataServiceUnitSubscribe
 
 	private int y;
 
-	//bi-directional many-to-one association to StateFunction
-	@OneToMany(mappedBy="state")
-	private List<StateFunction> stateFunctions;
-
 	//bi-directional many-to-one association to Gnet
 	@OneToMany(mappedBy="state1")
 	private List<Gnet> gnets1;
@@ -65,6 +58,11 @@ public class State implements Serializable, IDrawable, IDataServiceUnitSubscribe
 	@OneToMany(mappedBy="state3")
 	private List<Gnet> gnets3;
 
+	//bi-directional many-to-one association to Gnet
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="GNetID")
+	private Gnet gnet;
+
 	//bi-directional many-to-one association to State
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="SubGNetEndID")
@@ -73,11 +71,6 @@ public class State implements Serializable, IDrawable, IDataServiceUnitSubscribe
 	//bi-directional many-to-one association to State
 	@OneToMany(mappedBy="state1")
 	private List<State> states1;
-
-	//bi-directional many-to-one association to Gnet
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="GNetID")
-	private Gnet gnet;
 
 	//bi-directional many-to-one association to State
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -96,6 +89,10 @@ public class State implements Serializable, IDrawable, IDataServiceUnitSubscribe
 	//bi-directional many-to-one association to State
 	@OneToMany(mappedBy="state3")
 	private List<State> states3;
+
+	//bi-directional many-to-one association to StateFunction
+	@OneToMany(mappedBy="state")
+	private List<StateFunction> stateFunctions;
 
 	public State() {
 	}
@@ -172,28 +169,6 @@ public class State implements Serializable, IDrawable, IDataServiceUnitSubscribe
 		this.y = y;
 	}
 
-	public List<StateFunction> getStateFunctions() {
-		return this.stateFunctions;
-	}
-
-	public void setStateFunctions(List<StateFunction> stateFunctions) {
-		this.stateFunctions = stateFunctions;
-	}
-
-	public StateFunction addStateFunction(StateFunction stateFunction) {
-		getStateFunctions().add(stateFunction);
-		stateFunction.setState(this);
-
-		return stateFunction;
-	}
-
-	public StateFunction removeStateFunction(StateFunction stateFunction) {
-		getStateFunctions().remove(stateFunction);
-		stateFunction.setState(null);
-
-		return stateFunction;
-	}
-
 	public List<Gnet> getGnets1() {
 		return this.gnets1;
 	}
@@ -260,6 +235,14 @@ public class State implements Serializable, IDrawable, IDataServiceUnitSubscribe
 		return gnets3;
 	}
 
+	public Gnet getGnet() {
+		return this.gnet;
+	}
+
+	public void setGnet(Gnet gnet) {
+		this.gnet = gnet;
+	}
+
 	public State getState1() {
 		return this.state1;
 	}
@@ -288,14 +271,6 @@ public class State implements Serializable, IDrawable, IDataServiceUnitSubscribe
 		states1.setState1(null);
 
 		return states1;
-	}
-
-	public Gnet getGnet() {
-		return this.gnet;
-	}
-
-	public void setGnet(Gnet gnet) {
-		this.gnet = gnet;
 	}
 
 	public State getState2() {
@@ -356,6 +331,28 @@ public class State implements Serializable, IDrawable, IDataServiceUnitSubscribe
 		states3.setState3(null);
 
 		return states3;
+	}
+
+	public List<StateFunction> getStateFunctions() {
+		return this.stateFunctions;
+	}
+
+	public void setStateFunctions(List<StateFunction> stateFunctions) {
+		this.stateFunctions = stateFunctions;
+	}
+
+	public StateFunction addStateFunction(StateFunction stateFunction) {
+		getStateFunctions().add(stateFunction);
+		stateFunction.setState(this);
+
+		return stateFunction;
+	}
+
+	public StateFunction removeStateFunction(StateFunction stateFunction) {
+		getStateFunctions().remove(stateFunction);
+		stateFunction.setState(null);
+
+		return stateFunction;
 	}
 
 }

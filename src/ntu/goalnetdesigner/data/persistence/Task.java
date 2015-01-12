@@ -1,7 +1,9 @@
 package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.List;
 
 
@@ -16,7 +18,12 @@ import java.util.List;
     @NamedQuery(name="Task.findById",
                 query="SELECT c FROM Task c WHERE c.id = :id"),
 }) 
-public class Task implements Serializable, IDataServiceUnitSubscriber{
+public class Task implements Serializable, IDataServiceUnitSubscriber {
+	
+	public String toString(){
+		return this.getName();
+	}
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id

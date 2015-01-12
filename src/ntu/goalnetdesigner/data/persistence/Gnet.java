@@ -35,10 +35,6 @@ public class Gnet implements Serializable, IDataServiceUnitSubscriber {
 
 	private BigInteger transitionCount;
 
-	//bi-directional many-to-one association to UsergroupGnet
-	@OneToMany(mappedBy="gnet")
-	private List<UsergroupGnet> usergroupGnets;
-
 	//bi-directional many-to-one association to ActionLog
 	@OneToMany(mappedBy="gnet")
 	private List<ActionLog> actionLogs;
@@ -69,6 +65,10 @@ public class Gnet implements Serializable, IDataServiceUnitSubscriber {
 	//bi-directional many-to-one association to Transition
 	@OneToMany(mappedBy="gnet")
 	private List<Transition> transitions;
+
+	//bi-directional many-to-one association to UsergroupGnet
+	@OneToMany(mappedBy="gnet")
+	private List<UsergroupGnet> usergroupGnets;
 
 	public Gnet() {
 	}
@@ -127,28 +127,6 @@ public class Gnet implements Serializable, IDataServiceUnitSubscriber {
 
 	public void setTransitionCount(BigInteger transitionCount) {
 		this.transitionCount = transitionCount;
-	}
-
-	public List<UsergroupGnet> getUsergroupGnets() {
-		return this.usergroupGnets;
-	}
-
-	public void setUsergroupGnets(List<UsergroupGnet> usergroupGnets) {
-		this.usergroupGnets = usergroupGnets;
-	}
-
-	public UsergroupGnet addUsergroupGnet(UsergroupGnet usergroupGnet) {
-		getUsergroupGnets().add(usergroupGnet);
-		usergroupGnet.setGnet(this);
-
-		return usergroupGnet;
-	}
-
-	public UsergroupGnet removeUsergroupGnet(UsergroupGnet usergroupGnet) {
-		getUsergroupGnets().remove(usergroupGnet);
-		usergroupGnet.setGnet(null);
-
-		return usergroupGnet;
 	}
 
 	public List<ActionLog> getActionLogs() {
@@ -261,6 +239,28 @@ public class Gnet implements Serializable, IDataServiceUnitSubscriber {
 		transition.setGnet(null);
 
 		return transition;
+	}
+
+	public List<UsergroupGnet> getUsergroupGnets() {
+		return this.usergroupGnets;
+	}
+
+	public void setUsergroupGnets(List<UsergroupGnet> usergroupGnets) {
+		this.usergroupGnets = usergroupGnets;
+	}
+
+	public UsergroupGnet addUsergroupGnet(UsergroupGnet usergroupGnet) {
+		getUsergroupGnets().add(usergroupGnet);
+		usergroupGnet.setGnet(this);
+
+		return usergroupGnet;
+	}
+
+	public UsergroupGnet removeUsergroupGnet(UsergroupGnet usergroupGnet) {
+		getUsergroupGnets().remove(usergroupGnet);
+		usergroupGnet.setGnet(null);
+
+		return usergroupGnet;
 	}
 
 }

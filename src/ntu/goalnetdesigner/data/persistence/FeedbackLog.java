@@ -27,15 +27,15 @@ public class FeedbackLog implements Serializable, IDataServiceUnitSubscriber {
 
 	private String version;
 
-	//bi-directional many-to-one association to User
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="UserID")
-	private User user;
-
 	//bi-directional many-to-one association to Question
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="QuestionID")
 	private Question question;
+
+	//bi-directional many-to-one association to User
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="UserID")
+	private User user;
 
 	public FeedbackLog() {
 	}
@@ -64,20 +64,20 @@ public class FeedbackLog implements Serializable, IDataServiceUnitSubscriber {
 		this.version = version;
 	}
 
-	public User getUser() {
-		return this.user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 	public Question getQuestion() {
 		return this.question;
 	}
 
 	public void setQuestion(Question question) {
 		this.question = question;
+	}
+
+	public User getUser() {
+		return this.user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }

@@ -1,10 +1,7 @@
 package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
-
 import javax.persistence.*;
-
-import ntu.goalnetdesigner.render.IDrawable;
 
 
 /**
@@ -18,7 +15,7 @@ import ntu.goalnetdesigner.render.IDrawable;
     @NamedQuery(name="Arc.findById",
                 query="SELECT c FROM Arc c WHERE c.id = :id"),
 }) 
-public class Arc implements Serializable, IDrawable, IDataServiceUnitSubscriber {
+public class Arc implements Serializable, IDataServiceUnitSubscriber, ntu.goalnetdesigner.render.IDrawable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -108,4 +105,8 @@ public class Arc implements Serializable, IDrawable, IDataServiceUnitSubscriber 
 		this.gnet = gnet;
 	}
 
+	public String toString(){
+		return this.getName();
+	}
+	
 }

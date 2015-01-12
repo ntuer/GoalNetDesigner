@@ -16,7 +16,7 @@ import java.util.List;
     @NamedQuery(name="Tasklist.findById",
                 query="SELECT c FROM Tasklist c WHERE c.id = :id"),
 }) 
-public class Tasklist implements Serializable, IDataServiceUnitSubscriber{
+public class Tasklist implements Serializable, IDataServiceUnitSubscriber {
 	private static final long serialVersionUID = 1L;
 
 	@Id

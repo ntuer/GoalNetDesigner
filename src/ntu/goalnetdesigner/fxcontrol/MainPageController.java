@@ -1,23 +1,9 @@
 package ntu.goalnetdesigner.fxcontrol;
 
 
-import com.sun.corba.se.spi.orbutil.fsm.State;
-
-import ntu.goalnetdesigner.logger.UserConsoleLogger;
-import ntu.goalnetdesigner.render.RenderedIDrawableObjectFactory;
-import ntu.goalnetdesigner.render.RenderedState;
-import ntu.goalnetdesigner.session.DataSession;
-import ntu.goalnetdesigner.session.LoginSession;
-import ntu.goalnetdesigner.session.UISession;
-import ntu.goalnetdesigner.utility.CurrentGNetObjectSelection;
-import ntu.goalnetdesigner.utility.Navigation;
-import ntu.goalnetdesigner.utility.Resource;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Group;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
@@ -29,8 +15,20 @@ import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.stage.Stage;
+import ntu.goalnetdesigner.data.persistence.Arc;
+import ntu.goalnetdesigner.data.persistence.Method;
+import ntu.goalnetdesigner.logger.UserConsoleLogger;
+import ntu.goalnetdesigner.logic.MainPageManager;
+import ntu.goalnetdesigner.render.RenderedIDrawableObjectFactory;
+import ntu.goalnetdesigner.render.RenderedState;
+import ntu.goalnetdesigner.session.DataSession;
+import ntu.goalnetdesigner.session.LoginSession;
+import ntu.goalnetdesigner.session.UISession;
+import ntu.goalnetdesigner.utility.CurrentGNetObjectSelection;
+import ntu.goalnetdesigner.utility.Navigation;
+import ntu.goalnetdesigner.utility.Resource;
+
+import com.sun.corba.se.spi.orbutil.fsm.State;
 
 public class MainPageController {
 	@FXML
@@ -73,7 +71,7 @@ public class MainPageController {
     private Tab stateTab;
 
     @FXML
-    private TreeView<String> arcTreeView;
+    private TreeView<Arc> arcTreeView;
 
     @FXML
     private CheckMenuItem runMenuDisplayWarning;
@@ -142,24 +140,26 @@ public class MainPageController {
     private AnchorPane drawingPane;
 
     @FXML
-    private TreeView<?> functionTreeView;
+    private TreeView<Method> functionTreeView;
 
     @FXML
     public void initialize() {
     	// Set Logger
-    	UserConsoleLogger.setOutputArea(this.outputField);
+    	UserConsoleLogger.setOutputArea(this.eventLogField);
     	
     	// Set drawing handler
     	drawingPane.setOnMouseClicked(mouseHandler);
     	
-    	
-        TreeItem<String> rootItem = new TreeItem<String> ("Arcs");
-        rootItem.setExpanded(true);
-        for (int i = 1; i < 60; i++) {
-            TreeItem<String> item = new TreeItem<String> ("Arc" + i);            
-            rootItem.getChildren().add(item);
+    	MainPageManager mpm = new MainPageManager();
+        TreeItem<Method> rootNode = new TreeItem<Method>();
+        rootNode.setExpanded(true);
+        for(Method func: mpm.getMethods()){
+        	TreeItem<Method> leaf = new TreeItem<Method>(func);
+        	rootNode.getChildren().add(leaf);
         }
-        arcTreeView.setRoot(rootItem);
+        
+        functionTreeView.setRoot(rootNode);
+        functionTreeView.showRootProperty().set(false);
     }
     
     private EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {

@@ -6,8 +6,8 @@
 		<class>ntu.goalnetdesigner.data.persistence.ActionLog</class>
 		<class>ntu.goalnetdesigner.data.persistence.Arc</class>
 		<class>ntu.goalnetdesigner.data.persistence.FeedbackLog</class>
-		<class>ntu.goalnetdesigner.data.persistence.Function</class>
 		<class>ntu.goalnetdesigner.data.persistence.Gnet</class>
+		<class>ntu.goalnetdesigner.data.persistence.Method</class>
 		<class>ntu.goalnetdesigner.data.persistence.Property</class>
 		<class>ntu.goalnetdesigner.data.persistence.Question</class>
 		<class>ntu.goalnetdesigner.data.persistence.State</class>

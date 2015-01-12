@@ -22,7 +22,6 @@ public class Question implements Serializable, IDataServiceUnitSubscriber {
 	@Id
 	private String id;
 
-	@Lob
 	private String body;
 
 	//bi-directional many-to-one association to FeedbackLog

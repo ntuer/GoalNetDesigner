@@ -35,13 +35,13 @@ public class User implements Serializable, IDataServiceUnitSubscriber {
 	@OneToMany(mappedBy="user")
 	private List<ActionLog> actionLogs;
 
-	//bi-directional many-to-one association to UserUsergroup
-	@OneToMany(mappedBy="user")
-	private List<UserUsergroup> userUsergroups;
-
 	//bi-directional many-to-one association to FeedbackLog
 	@OneToMany(mappedBy="user")
 	private List<FeedbackLog> feedbackLogs;
+
+	//bi-directional many-to-one association to UserUsergroup
+	@OneToMany(mappedBy="user")
+	private List<UserUsergroup> userUsergroups;
 
 	public User() {
 	}
@@ -108,28 +108,6 @@ public class User implements Serializable, IDataServiceUnitSubscriber {
 		return actionLog;
 	}
 
-	public List<UserUsergroup> getUserUsergroups() {
-		return this.userUsergroups;
-	}
-
-	public void setUserUsergroups(List<UserUsergroup> userUsergroups) {
-		this.userUsergroups = userUsergroups;
-	}
-
-	public UserUsergroup addUserUsergroup(UserUsergroup userUsergroup) {
-		getUserUsergroups().add(userUsergroup);
-		userUsergroup.setUser(this);
-
-		return userUsergroup;
-	}
-
-	public UserUsergroup removeUserUsergroup(UserUsergroup userUsergroup) {
-		getUserUsergroups().remove(userUsergroup);
-		userUsergroup.setUser(null);
-
-		return userUsergroup;
-	}
-
 	public List<FeedbackLog> getFeedbackLogs() {
 		return this.feedbackLogs;
 	}
@@ -150,6 +128,28 @@ public class User implements Serializable, IDataServiceUnitSubscriber {
 		feedbackLog.setUser(null);
 
 		return feedbackLog;
+	}
+
+	public List<UserUsergroup> getUserUsergroups() {
+		return this.userUsergroups;
+	}
+
+	public void setUserUsergroups(List<UserUsergroup> userUsergroups) {
+		this.userUsergroups = userUsergroups;
+	}
+
+	public UserUsergroup addUserUsergroup(UserUsergroup userUsergroup) {
+		getUserUsergroups().add(userUsergroup);
+		userUsergroup.setUser(this);
+
+		return userUsergroup;
+	}
+
+	public UserUsergroup removeUserUsergroup(UserUsergroup userUsergroup) {
+		getUserUsergroups().remove(userUsergroup);
+		userUsergroup.setUser(null);
+
+		return userUsergroup;
 	}
 
 }

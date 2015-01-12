@@ -31,15 +31,15 @@ public class ActionLog implements Serializable, IDataServiceUnitSubscriber {
 
 	private Timestamp timestamp;
 
-	//bi-directional many-to-one association to User
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="UserID")
-	private User user;
-
 	//bi-directional many-to-one association to Gnet
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="GNetID")
 	private Gnet gnet;
+
+	//bi-directional many-to-one association to User
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="UserID")
+	private User user;
 
 	public ActionLog() {
 	}
@@ -84,20 +84,20 @@ public class ActionLog implements Serializable, IDataServiceUnitSubscriber {
 		this.timestamp = timestamp;
 	}
 
-	public User getUser() {
-		return this.user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 	public Gnet getGnet() {
 		return this.gnet;
 	}
 
 	public void setGnet(Gnet gnet) {
 		this.gnet = gnet;
+	}
+
+	public User getUser() {
+		return this.user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }

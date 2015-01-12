@@ -1,17 +1,10 @@
 package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
+
+import javax.persistence.*;
+
 import java.math.BigInteger;
-
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-
-import ntu.goalnetdesigner.render.IDrawable;
 
 
 /**
@@ -25,7 +18,12 @@ import ntu.goalnetdesigner.render.IDrawable;
     @NamedQuery(name="Transition.findById",
                 query="SELECT c FROM Transition c WHERE c.id = :id"),
 }) 
-public class Transition implements Serializable, IDrawable, IDataServiceUnitSubscriber {
+public class Transition implements Serializable, IDataServiceUnitSubscriber, ntu.goalnetdesigner.render.IDrawable {
+	
+	public String toString(){
+		return this.getName();
+	}
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -53,15 +51,15 @@ public class Transition implements Serializable, IDrawable, IDataServiceUnitSubs
 
 	private int y;
 
-	//bi-directional many-to-one association to Tasklist
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="TaskListID")
-	private Tasklist tasklist;
-
 	//bi-directional many-to-one association to Gnet
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="GNetID")
 	private Gnet gnet;
+
+	//bi-directional many-to-one association to Tasklist
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="TaskListID")
+	private Tasklist tasklist;
 
 	public Transition() {
 	}
@@ -162,20 +160,20 @@ public class Transition implements Serializable, IDrawable, IDataServiceUnitSubs
 		this.y = y;
 	}
 
-	public Tasklist getTasklist() {
-		return this.tasklist;
-	}
-
-	public void setTasklist(Tasklist tasklist) {
-		this.tasklist = tasklist;
-	}
-
 	public Gnet getGnet() {
 		return this.gnet;
 	}
 
 	public void setGnet(Gnet gnet) {
 		this.gnet = gnet;
+	}
+
+	public Tasklist getTasklist() {
+		return this.tasklist;
+	}
+
+	public void setTasklist(Tasklist tasklist) {
+		this.tasklist = tasklist;
 	}
 
 }
