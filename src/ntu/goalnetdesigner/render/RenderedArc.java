@@ -1,41 +1,51 @@
 package ntu.goalnetdesigner.render;
 
-import ntu.goalnetdesigner.data.persistence.State;
-import javafx.event.EventHandler;
-import javafx.scene.Node;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
+import ntu.goalnetdesigner.data.persistence.State;
+import ntu.goalnetdesigner.logger.UserConsoleLogger;
+import ntu.goalnetdesigner.utility.Resource;
 
 public class RenderedArc extends Renderable{
-	private Circle shape;
-	private State baseState;
 	
-	public RenderedArc (){
+	public RenderedArc (double x, double y){
+		super();
+		
+		// base object
+		this.baseObject = new State();
+		
+		// Graphical representation
 		this.shape = new Circle();
-		this.baseState = new State();
+		((Circle)this.shape).setRadius(Resource.STATE_RADIUS);
+		((Circle)this.shape).setFill(Resource.STATE_COLOR);
+		this.text = new Text("State");
+		this.display.setLayoutX(x - Resource.STATE_RADIUS);
+		this.display.setLayoutY(y - Resource.STATE_RADIUS);
+		this.display.getChildren().addAll(shape, text);
 	}
 
 	public Circle getShape() {
-		return shape;
+		return (Circle)shape;
 	}
 
 	public void setShape(Circle shape) {
 		this.shape = shape;
 	}
 
-	public State getBaseState() {
-		return baseState;
+	public State getBaseObject() {
+		return (State) baseObject;
 	}
 
-	public void setBaseState(State baseState) {
-		this.baseState = baseState;
+	public void setBaseObject(State baseState) {
+		this.baseObject = baseState;
 	}
 	
 	@Override
 	public void setMeh(MouseEventHandler meh){
 		this.meh = meh;
 		this.shape.setOnMouseClicked(meh.mouseOnClickHandler);
+		this.shape.setOnMousePressed(meh.mousePressedHandler);
+		this.shape.setOnMouseDragged(meh.mouseDraggedHandler);
 	}
 	
 }

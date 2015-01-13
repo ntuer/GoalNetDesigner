@@ -21,6 +21,7 @@ import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.logger.UserConsoleLogger;
+import ntu.goalnetdesigner.render.Renderable;
 import ntu.goalnetdesigner.render.RenderedIDrawableObjectFactory;
 import ntu.goalnetdesigner.render.RenderedState;
 import ntu.goalnetdesigner.session.DataSession;
@@ -173,32 +174,21 @@ public class MainPageController {
     	
         UserConsoleLogger.log("TreeViews and Drawing Pane refreshed");
     }
-//    
-//    private void refreshOnCloseGNet(){
-//    	drawingPane.setOnMouseClicked(null);
-//    	
-//    	arcTreeView.setRoot(null);
-//        stateTreeView.setRoot(null);
-//        transitionTreeView.setRoot(null);
-//    	
-//    	functionTreeView.setRoot(null);
-//        taskTreeView.setRoot(null);
-//        UserConsoleLogger.log("TreeViews closed");
-//    }
+
     
     private EventHandler<MouseEvent> drawingHandler = new EventHandler<MouseEvent>() {
     	public void handle(MouseEvent me) 
     	{
     		try {
-	    		RenderedState state = (RenderedState) 
-	    				RenderedIDrawableObjectFactory.getRenderedObject(State.class, propertyTable, drawingPane);
-	    		state.getShape().setCenterX(me.getX());
-	    		state.getShape().setCenterY(me.getY());
-	    		state.getShape().setRadius(50.0f);
-	    		state.getShape().setFill(Color.RED);
-	    	drawingPane.getChildren().addAll(state.getShape());
+    			UserConsoleLogger.log("User Click on " + me.getX() + "," + me.getY());
+    			// generate an object in factory according to current selection
+    			Renderable object = RenderedIDrawableObjectFactory.getRenderedObject(
+    					me.getX(), me.getY(), propertyTable, drawingPane);
+    			// display it on screen
+    			drawingPane.getChildren().addAll(object.getDisplay());
     		} catch (Exception e) {
-    			
+    			UserConsoleLogger.log("Error when creating RenderableObject " 
+    					+ DataSession.currentGNetObjectSelection.toString());
     		}
     	}
     };

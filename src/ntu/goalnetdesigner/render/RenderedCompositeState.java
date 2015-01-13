@@ -6,9 +6,9 @@ import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.logger.UserConsoleLogger;
 import ntu.goalnetdesigner.utility.Resource;
 
-public class RenderedState extends Renderable{
+public class RenderedCompositeState extends Renderable{
 	
-	public RenderedState (double x, double y){
+	public RenderedCompositeState (double x, double y){
 		super();
 		
 		// base object
@@ -17,7 +17,7 @@ public class RenderedState extends Renderable{
 		// Graphical representation
 		this.shape = new Circle();
 		((Circle)this.shape).setRadius(Resource.STATE_RADIUS);
-		((Circle)this.shape).setFill(Resource.STATE_COLOR);
+		((Circle)this.shape).setFill(Resource.COMPOSITE_STATE_COLOR);
 		this.text = new Text("State");
 		this.display.setLayoutX(x - Resource.STATE_RADIUS);
 		this.display.setLayoutY(y - Resource.STATE_RADIUS);

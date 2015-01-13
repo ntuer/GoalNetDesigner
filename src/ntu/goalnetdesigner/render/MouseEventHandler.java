@@ -26,6 +26,7 @@ public class MouseEventHandler {
     	}
     };
 	
+    // handle dragging event
     public EventHandler<MouseEvent> mousePressedHandler = new EventHandler<MouseEvent>() {
     	public void handle(MouseEvent e)
     	{

@@ -6,9 +6,9 @@ import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.logger.UserConsoleLogger;
 import ntu.goalnetdesigner.utility.Resource;
 
-public class RenderedState extends Renderable{
+public class RenderedSelection extends Renderable{
 	
-	public RenderedState (double x, double y){
+	public RenderedSelection (double x, double y){
 		super();
 		
 		// base object

@@ -28,7 +28,6 @@ public class OpenGNetController {
     @FXML
     private TableColumn<Gnet, String> descriptionColumn;
 
-    
     @FXML
     public void initialize(){
     	ObservableList<Gnet> gNets = FXCollections.observableArrayList(DataService.gnet.findAll());
