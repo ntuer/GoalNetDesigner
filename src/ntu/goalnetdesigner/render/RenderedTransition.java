@@ -45,9 +45,9 @@ public class RenderedTransition extends Renderable{
 	@Override
 	public void setMeh(MouseEventHandler meh){
 		this.meh = meh;
-		this.shape.setOnMouseClicked(meh.mouseOnClickHandler);
-		this.shape.setOnMousePressed(meh.mousePressedHandler);
-		this.shape.setOnMouseDragged(meh.mouseDraggedHandler);
+		this.display.setOnMouseClicked(meh.mouseOnClickHandler);
+		this.display.setOnMousePressed(meh.mousePressedHandler);
+		this.display.setOnMouseDragged(meh.mouseDraggedHandler);
 	}
 	
 }

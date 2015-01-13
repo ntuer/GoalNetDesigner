@@ -157,7 +157,7 @@ public class MainPageController {
     	if(DataSession.Cache.gnet == null)
     		drawingPane.setOnMouseClicked(null);
     	else
-    		drawingPane.setOnMouseClicked(drawingHandler);
+    		drawingPane.setOnMouseClicked(drawingNewObjectHandler);
     	// set gnet related properties
     	arcTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.arcs));
     	arcTreeView.showRootProperty().set(false);
@@ -176,9 +176,14 @@ public class MainPageController {
     }
 
     
-    private EventHandler<MouseEvent> drawingHandler = new EventHandler<MouseEvent>() {
+    private EventHandler<MouseEvent> drawingNewObjectHandler = new EventHandler<MouseEvent>() {
     	public void handle(MouseEvent me) 
     	{
+    		// Prevent additional object while dragging
+    		if (UISession.isInRenderedObject){
+    			UISession.isInRenderedObject = false;
+    			return;
+    		}
     		try {
     			UserConsoleLogger.log("User Click on " + me.getX() + "," + me.getY());
     			// generate an object in factory according to current selection

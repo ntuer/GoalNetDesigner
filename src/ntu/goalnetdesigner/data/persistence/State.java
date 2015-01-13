@@ -1,11 +1,18 @@
 package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
-
-import javax.persistence.*;
-
 import java.math.BigInteger;
 import java.util.List;
+import java.util.UUID;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 
 /**
@@ -95,6 +102,14 @@ public class State implements Serializable, IDataServiceUnitSubscriber, ntu.goal
 	private List<StateFunction> stateFunctions;
 
 	public State() {
+	}
+	
+	public State(double x, double y, boolean isComposite) {
+		this.id = UUID.randomUUID().toString();
+		this.name = "State";
+		this.x = (int)x;
+		this.y = (int)y;
+		this.composite = isComposite;
 	}
 
 	public String getId() {

@@ -12,15 +12,15 @@ public class RenderedState extends Renderable{
 		super();
 		
 		// base object
-		this.baseObject = new State();
+		this.baseObject = new State(x, y, false);
 		
 		// Graphical representation
 		this.shape = new Circle();
 		((Circle)this.shape).setRadius(Resource.STATE_RADIUS);
 		((Circle)this.shape).setFill(Resource.STATE_COLOR);
-		this.text = new Text("State");
-		this.display.setLayoutX(x - Resource.STATE_RADIUS);
-		this.display.setLayoutY(y - Resource.STATE_RADIUS);
+		this.text = new Text(((State)this.baseObject).getName());
+		this.display.setTranslateX(x - Resource.STATE_RADIUS);
+		this.display.setTranslateY(y - Resource.STATE_RADIUS);
 		this.display.getChildren().addAll(shape, text);
 	}
 
@@ -43,9 +43,9 @@ public class RenderedState extends Renderable{
 	@Override
 	public void setMeh(MouseEventHandler meh){
 		this.meh = meh;
-		this.shape.setOnMouseClicked(meh.mouseOnClickHandler);
-		this.shape.setOnMousePressed(meh.mousePressedHandler);
-		this.shape.setOnMouseDragged(meh.mouseDraggedHandler);
+		this.display.setOnMouseClicked(meh.mouseOnClickHandler);
+		this.display.setOnMousePressed(meh.mousePressedHandler);
+		this.display.setOnMouseDragged(meh.mouseDraggedHandler);
 	}
 	
 }
