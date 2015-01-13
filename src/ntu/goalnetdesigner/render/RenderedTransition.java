@@ -2,6 +2,7 @@ package ntu.goalnetdesigner.render;
 
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.Transition;
@@ -21,7 +22,10 @@ public class RenderedTransition extends Renderable{
 		this.shape = new Rectangle();
 		((Rectangle)this.shape).setWidth(Resource.TRANSITION_WIDTH);
 		((Rectangle)this.shape).setHeight(Resource.TRANSITION_HEIGHT);
-		((Rectangle)this.shape).setFill(Resource.TRANSITION_COLOR);
+		((Rectangle)this.shape).setFill(Resource.TRANSITION_COLOR.deriveColor(1, 1, 1, 0.5));
+		((Rectangle)this.shape).setStroke(Resource.TRANSITION_COLOR);
+		((Rectangle)this.shape).setStrokeWidth(2);
+		((Rectangle)this.shape).setStrokeType(StrokeType.OUTSIDE);
 		this.text = new Text("Transition");
 		this.display.setTranslateX(x - Resource.TRANSITION_WIDTH / 2);
 		this.display.setTranslateY(y - Resource.TRANSITION_HEIGHT / 2);

@@ -13,6 +13,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Polygon;
 import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.data.persistence.Method;
 import ntu.goalnetdesigner.data.persistence.State;
@@ -210,7 +211,8 @@ public class MainPageController {
     			if (DataSession.currentGNetObjectSelection == CurrentGNetObjectSelection.ARC &&
     					UISession.objectsForArc.size() == 2){
     				RenderedArc a = drawArc();
-    				drawingPane.getChildren().add(a.getShape());
+    				drawingPane.getChildren().addAll(a.getShape());
+    				drawingPane.getChildren().addAll(a.getShape().getArrow());
     			}
     			
     			return;

@@ -4,6 +4,8 @@ import java.lang.reflect.Constructor;
 
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.StrokeType;
 import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.utility.CurrentGNetObjectSelection;
@@ -20,7 +22,10 @@ public class RenderedIDrawableObjectFactory{
 		Renderable returnValue = (Renderable) c.newInstance(new Object[]{new Double(x), new Double(y)});
 		if (DataSession.currentGNetObjectSelection == CurrentGNetObjectSelection.COMPOSITE_STATE){
 			((RenderedState) returnValue).getBaseObject().setComposite(true);
-			((RenderedState) returnValue).getShape().setFill(Resource.COMPOSITE_STATE_COLOR);
+			((RenderedState) returnValue).getShape().setFill(Resource.COMPOSITE_STATE_COLOR.deriveColor(1, 1, 1, 0.5));
+			((RenderedState) returnValue).getShape().setStroke(Resource.COMPOSITE_STATE_COLOR);
+			((RenderedState) returnValue).getShape().setStrokeWidth(2);
+			((RenderedState) returnValue).getShape().setStrokeType(StrokeType.OUTSIDE);
 		}
 		MouseEventHandler meh = new MouseEventHandler(tv, drawingPane);
 		returnValue.setMeh(meh);
@@ -31,7 +36,7 @@ public class RenderedIDrawableObjectFactory{
 	public static RenderedArc getRenderedObject(double sx, double sy, double ex, double ey, TableView tv, AnchorPane drawingPane) throws Exception {
 		
 		// create the rendered object
-		Class clazz = Class.forName("ntu.goalnetdesigner.render.Rendered" + getClassName());
+		Class clazz = Class.forName("ntu.goalnetdesigner.render.RenderedArc");
 		Constructor c = clazz.getConstructor(new Class[]{double.class, double.class, double.class, double.class});
 		RenderedArc returnValue = (RenderedArc) c.newInstance(
 				new Object[]{new Double(sx), new Double(sy), new Double(ex), new Double(ey)});

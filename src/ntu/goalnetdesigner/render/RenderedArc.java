@@ -1,9 +1,8 @@
 package ntu.goalnetdesigner.render;
 
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.text.Text;
 import ntu.goalnetdesigner.data.persistence.Arc;
+import ntu.goalnetdesigner.render.customcontrol.Arrow;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.utility.Resource;
 
@@ -16,7 +15,7 @@ public class RenderedArc extends Renderable{
 		this.baseObject = new Arc();
 		DataSession.Cache.arcs.add(this.getBaseObject());
 		// Graphical representation
-		this.shape = new Line(sx, sy, ex, ey);
+		this.shape = new Arrow(sx, sy, ex, ey);
 		this.shape.setFill(Resource.ARC_COLOR);
 	}
 	
@@ -28,13 +27,14 @@ public class RenderedArc extends Renderable{
 			this.getShape().setEndX(x);
 			this.getShape().setEndY(y);
 		}
+		this.getShape().handleChange();
 	}
 	
-	public Line getShape() {
-		return (Line)shape;
+	public Arrow getShape() {
+		return (Arrow)shape;
 	}
 
-	public void setShape(Line shape) {
+	public void setShape(Arrow shape) {
 		this.shape = shape;
 	}
 

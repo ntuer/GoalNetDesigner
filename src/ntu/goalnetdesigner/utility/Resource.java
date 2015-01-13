@@ -39,9 +39,9 @@ public class Resource {
 	public static final String REGISTER_PATH = "/ntu/goalnetdesigner/fxui/Register.fxml";
 	public static final String RESET_PASSWORD_PATH = "/ntu/goalnetdesigner/fxui/ResetPassword.fxml";
 	
-	public static final Color STATE_COLOR = Color.GREEN;
-	public static final Color COMPOSITE_STATE_COLOR = Color.RED;
-	public static final Color TRANSITION_COLOR = Color.GREEN;
+	public static final Color STATE_COLOR = Color.PALEGREEN;
+	public static final Color COMPOSITE_STATE_COLOR = Color.TOMATO;
+	public static final Color TRANSITION_COLOR = Color.PALEGREEN;
 	public static final Color SELECTION_COLOR = Color.GREEN;
 	public static final Color ARC_COLOR = Color.BLACK;
 	
