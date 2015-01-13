@@ -12,7 +12,6 @@ import javafx.stage.Stage;
 public class UIUtility {
 	
 	
-	
 	public static class TreeView{
 		public static <I> TreeItem<I> convertToTreeItem(List<I> model){
 			if (model == null)

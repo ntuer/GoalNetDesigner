@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import ntu.goalnetdesigner.data.persistence.Gnet;
 import ntu.goalnetdesigner.data.service.DataService;
-import ntu.goalnetdesigner.logger.UserConsoleLogger;
+import ntu.goalnetdesigner.logger.ConsoleLogger;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.utility.UIUtility;
 
@@ -33,7 +33,7 @@ public class NewGNetController {
     	t.setDescription(descriptionField.getText());
     	DataSession.Cache.setGNet(t);
     	DataService.gnet.insert(t);
-    	UserConsoleLogger.log("New Goal Net Created: " + t.getName());
+    	ConsoleLogger.log("New Goal Net Created: " + t.getName());
     	UIUtility.Navigation.closeContainingStage(okButton);
     }
 

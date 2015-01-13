@@ -62,25 +62,25 @@
       </ToolBar>
       <TabPane layoutX="726.0" layoutY="65.0" prefHeight="367.0" prefWidth="298.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-            <Tab fx:id="arcTab" text="Arc">
+            <Tab fx:id="arcTab" onSelectionChanged="#refreshArcTreeView" text="Arc">
                <content>
                   <TreeView fx:id="arcTreeView" prefHeight="336.0" prefWidth="296.0" />
                </content>
             </Tab>
-          <Tab fx:id="functionTab" text="Function">
+          <Tab fx:id="functionTab" onSelectionChanged="#refreshFunctionTreeView" text="Function">
                <content>
                   <TreeView fx:id="functionTreeView" prefHeight="200.0" prefWidth="200.0" />
                </content></Tab>
-            <Tab fx:id="stateTab" text="State">
+            <Tab fx:id="stateTab" onSelectionChanged="#refreshStateTreeView" text="State">
                <content>
                   <TreeView fx:id="stateTreeView" prefHeight="200.0" prefWidth="200.0" />
                </content>
             </Tab>
-          <Tab fx:id="taskTab" text="Task">
+          <Tab fx:id="taskTab" onSelectionChanged="#refreshTaskTreeView" text="Task">
                <content>
                   <TreeView fx:id="taskTreeView" prefHeight="200.0" prefWidth="200.0" />
                </content></Tab>
-            <Tab fx:id="transitionTab" text="Transition">
+            <Tab fx:id="transitionTab" onSelectionChanged="#refreshTransitionTreeView" text="Transition">
                <content>
                   <TreeView fx:id="transitionTreeView" prefHeight="200.0" prefWidth="200.0" />
                </content>

@@ -10,7 +10,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import ntu.goalnetdesigner.data.persistence.Gnet;
 import ntu.goalnetdesigner.data.service.DataService;
-import ntu.goalnetdesigner.logger.UserConsoleLogger;
+import ntu.goalnetdesigner.logger.ConsoleLogger;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.utility.UIUtility;
 
@@ -41,7 +41,7 @@ public class OpenGNetController {
     	Gnet selectedGNet = GNetTable.getSelectionModel().getSelectedItem();
     	DataSession.Cache.setGNet(selectedGNet);
     	DataSession.Cache.loadTasksAndMethods();
-    	UserConsoleLogger.log("Existing GNet Opened:" + selectedGNet.getName());
+    	ConsoleLogger.log("Existing GNet Opened:" + selectedGNet.getName());
     	UIUtility.Navigation.closeContainingStage(OKButton);
     }
 

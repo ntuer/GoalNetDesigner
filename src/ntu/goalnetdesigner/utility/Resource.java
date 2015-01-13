@@ -28,6 +28,8 @@ public class Resource {
         return new Scene(root);
 	}
 	
+	public static final String CSS_PATH = "/ntu/goalnetdesigner/css/JMetroLightTheme.css";
+	
 	public static final String ABOUT_PATH = "/ntu/goalnetdesigner/fxui/About.fxml";
 	public static final String FEEDBACK_PATH = "/ntu/goalnetdesigner/fxui/Feedback.fxml";
 	public static final String LOGIN_PATH = "/ntu/goalnetdesigner/fxui/Login.fxml";

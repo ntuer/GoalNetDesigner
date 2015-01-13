@@ -4,19 +4,19 @@ import java.util.Date;
 
 import javafx.scene.control.TextArea;
 
-public class UserConsoleLogger {
+public class ConsoleLogger {
 	
 	private static TextArea outputArea;
 	
 	public static TextArea getOutputArea() {
-		return UserConsoleLogger.outputArea;
+		return ConsoleLogger.outputArea;
 	}
 
 	public static void setOutputArea(TextArea outputArea) {
-		UserConsoleLogger.outputArea = outputArea;
+		ConsoleLogger.outputArea = outputArea;
 	}
 	
-	public static void log(String message){
+	public static void log(Object message){
 		
 		outputArea.appendText(new Date() + " " + message + "\n");
 	}

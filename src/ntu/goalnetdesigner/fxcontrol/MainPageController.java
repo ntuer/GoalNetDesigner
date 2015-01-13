@@ -10,20 +10,20 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.data.persistence.Method;
-import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.data.persistence.State;
+import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.data.persistence.Transition;
-import ntu.goalnetdesigner.logger.UserConsoleLogger;
+import ntu.goalnetdesigner.logger.ConsoleLogger;
 import ntu.goalnetdesigner.render.Renderable;
+import ntu.goalnetdesigner.render.RenderedArc;
 import ntu.goalnetdesigner.render.RenderedIDrawableObjectFactory;
 import ntu.goalnetdesigner.render.RenderedState;
+import ntu.goalnetdesigner.render.RenderedTransition;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.LoginSession;
 import ntu.goalnetdesigner.session.UISession;
@@ -149,55 +149,134 @@ public class MainPageController {
     @FXML
     public void initialize() {
     	// Set Logger
-    	UserConsoleLogger.setOutputArea(this.eventLogField);
+    	ConsoleLogger.setOutputArea(this.eventLogField);
     }
     
     private void refreshTreeViewsAndDrawingPane(){
     	// Set drawing handler
-    	if(DataSession.Cache.gnet == null)
+    	if(DataSession.Cache.gnet == null){
     		drawingPane.setOnMouseClicked(null);
-    	else
+    		
+    	}
+    	else {
     		drawingPane.setOnMouseClicked(drawingNewObjectHandler);
+    	}
     	// set gnet related properties
-    	arcTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.arcs));
-    	arcTreeView.showRootProperty().set(false);
-        stateTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.states));
-        stateTreeView.showRootProperty().set(false);
-        transitionTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.transitions));
-        transitionTreeView.showRootProperty().set(false);
+    	refreshArcTreeView();
+        refreshStateTreeView();
+        refreshTransitionTreeView();
     	
         // set global properties visible
-    	functionTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.functions));
-        functionTreeView.showRootProperty().set(false);
-        taskTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.tasks));
-        taskTreeView.showRootProperty().set(false);
+    	refreshFunctionTreeView();
+        refreshTaskTreeView();
     	
-        UserConsoleLogger.log("TreeViews and Drawing Pane refreshed");
+        ConsoleLogger.log("TreeViews and Drawing Pane refreshed");
     }
+    
+	public void refreshTaskTreeView() {
+		taskTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.tasks));
+        taskTreeView.showRootProperty().set(false);
+	}
+
+	public void refreshFunctionTreeView() {
+		functionTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.functions));
+        functionTreeView.showRootProperty().set(false);
+	}
+
+	public void refreshTransitionTreeView() {
+		transitionTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.transitions));
+        transitionTreeView.showRootProperty().set(false);
+	}
+
+	public void refreshStateTreeView() {
+		stateTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.states));
+        stateTreeView.showRootProperty().set(false);
+	}
+
+	public void refreshArcTreeView() {
+		arcTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.arcs));
+    	arcTreeView.showRootProperty().set(false);
+	}
 
     
-    private EventHandler<MouseEvent> drawingNewObjectHandler = new EventHandler<MouseEvent>() {
+    public EventHandler<MouseEvent> drawingNewObjectHandler = new EventHandler<MouseEvent>() {
     	public void handle(MouseEvent me) 
     	{
     		// Prevent additional object while dragging
     		if (UISession.isInRenderedObject){
     			UISession.isInRenderedObject = false;
+    			
+    			// if this is a drawing arc state
+    			if (DataSession.currentGNetObjectSelection == CurrentGNetObjectSelection.ARC &&
+    					UISession.objectsForArc.size() == 2){
+    				RenderedArc a = drawArc();
+    				drawingPane.getChildren().add(a.getShape());
+    			}
+    			
     			return;
     		}
     		try {
-    			UserConsoleLogger.log("User Click on " + me.getX() + "," + me.getY());
+    			ConsoleLogger.log("User Click on " + me.getX() + "," + me.getY());
     			// generate an object in factory according to current selection
     			Renderable object = RenderedIDrawableObjectFactory.getRenderedObject(
     					me.getX(), me.getY(), propertyTable, drawingPane);
     			// display it on screen
     			drawingPane.getChildren().addAll(object.getDisplay());
     		} catch (Exception e) {
-    			UserConsoleLogger.log("Error when creating RenderableObject " 
+    			ConsoleLogger.log("Error when creating RenderableObject " 
     					+ DataSession.currentGNetObjectSelection.toString());
     		}
     	}
     };
     
+    private RenderedArc drawArc(){
+    	ConsoleLogger.log("ARC DRAW");
+    	Renderable s = UISession.objectsForArc.poll();
+    	Renderable e = UISession.objectsForArc.poll();
+    	RenderedArc a = null;
+    	if (s instanceof RenderedState){
+    		if (!(e instanceof RenderedTransition)){
+    			UISession.objectsForArc.clear();
+    			return a;
+    		}
+    		try {
+				a = RenderedIDrawableObjectFactory.getRenderedObject(
+						((RenderedState) s).getDisplay().getTranslateX(), ((RenderedState) s).getDisplay().getTranslateY(),
+						((RenderedTransition) e).getDisplay().getTranslateX(), ((RenderedTransition) e).getDisplay().getTranslateY(),
+						propertyTable, drawingPane);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+    		a.getBaseObject().setDirection(true);
+    		a.getBaseObject().setInputID(((RenderedState) s).getBaseObject().getId());
+    		a.getBaseObject().setOutputID(((RenderedTransition) e).getBaseObject().getId());
+    		
+    	} else if (s instanceof RenderedTransition){
+    		if (!(e instanceof RenderedState)){
+    			UISession.objectsForArc.clear();
+    			return a;
+    		}
+    		try {
+				a = RenderedIDrawableObjectFactory.getRenderedObject(
+						((RenderedTransition) s).getDisplay().getTranslateX(), ((RenderedTransition) s).getDisplay().getTranslateY(),
+						((RenderedState) e).getDisplay().getTranslateX(), ((RenderedState) e).getDisplay().getTranslateY(),
+						propertyTable, drawingPane);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+    		a.getBaseObject().setDirection(false);
+    		a.getBaseObject().setInputID(((RenderedTransition) s).getBaseObject().getId());
+    		a.getBaseObject().setOutputID(((RenderedState) e).getBaseObject().getId());
+    	} 
+    	
+    	s.getAssociatedRenderedArcs().add(a);
+    	e.getAssociatedRenderedArcs().add(a);
+    	a.getBaseObject().setGnet(DataSession.Cache.gnet);
+    	a.getBaseObject().setIsDirect(true);
+    	
+    	UISession.objectsForArc.clear();
+    	return a;
+    }
     
     @FXML
     void fileMenuNewClicked(ActionEvent event) throws Exception{

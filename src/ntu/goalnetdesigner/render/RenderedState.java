@@ -1,9 +1,12 @@
 package ntu.goalnetdesigner.render;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import ntu.goalnetdesigner.data.persistence.State;
-import ntu.goalnetdesigner.logger.UserConsoleLogger;
+import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.utility.Resource;
 
 public class RenderedState extends Renderable{
@@ -13,7 +16,8 @@ public class RenderedState extends Renderable{
 		
 		// base object
 		this.baseObject = new State(x, y, false);
-		
+		this.getBaseObject().setGnet(DataSession.Cache.gnet);
+		DataSession.Cache.states.add(this.getBaseObject());
 		// Graphical representation
 		this.shape = new Circle();
 		((Circle)this.shape).setRadius(Resource.STATE_RADIUS);
@@ -46,6 +50,7 @@ public class RenderedState extends Renderable{
 		this.display.setOnMouseClicked(meh.mouseOnClickHandler);
 		this.display.setOnMousePressed(meh.mousePressedHandler);
 		this.display.setOnMouseDragged(meh.mouseDraggedHandler);
+		this.display.setOnMouseReleased(meh.mouseReleasedHandler);
 	}
 	
 }
