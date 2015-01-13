@@ -6,11 +6,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import ntu.goalnetdesigner.data.persistence.Gnet;
 import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.logger.UserConsoleLogger;
 import ntu.goalnetdesigner.session.DataSession;
-import ntu.goalnetdesigner.utility.Navigation;
+import ntu.goalnetdesigner.utility.UIUtility;
 
 public class NewGNetController {
 
@@ -30,14 +31,14 @@ public class NewGNetController {
     	Gnet t = new Gnet();
     	t.setName(this.nameOfGoalNetField.getText());
     	t.setDescription(descriptionField.getText());
-    	DataSession.currentGNet = t;
+    	DataSession.Cache.setGNet(t);
     	DataService.gnet.insert(t);
     	UserConsoleLogger.log("New Goal Net Created: " + t.getName());
-    	Navigation.closeParentStage(okButton);
+    	UIUtility.Navigation.closeContainingStage(okButton);
     }
 
     @FXML
     void cancelButtonClicked(ActionEvent event) {
-    	Navigation.closeParentStage(cancelButton);
+    	UIUtility.Navigation.closeContainingStage(cancelButton);
     }
 }

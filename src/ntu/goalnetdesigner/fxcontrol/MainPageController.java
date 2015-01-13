@@ -17,18 +17,21 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.data.persistence.Method;
+import ntu.goalnetdesigner.data.persistence.Task;
+import ntu.goalnetdesigner.data.persistence.State;
+import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.logger.UserConsoleLogger;
-import ntu.goalnetdesigner.logic.MainPageManager;
 import ntu.goalnetdesigner.render.RenderedIDrawableObjectFactory;
 import ntu.goalnetdesigner.render.RenderedState;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.LoginSession;
 import ntu.goalnetdesigner.session.UISession;
 import ntu.goalnetdesigner.utility.CurrentGNetObjectSelection;
-import ntu.goalnetdesigner.utility.Navigation;
 import ntu.goalnetdesigner.utility.Resource;
+import ntu.goalnetdesigner.utility.UIUtility;
+import ntu.goalnetdesigner.utility.UIUtility.Navigation;
 
-import com.sun.corba.se.spi.orbutil.fsm.State;
+
 
 public class MainPageController {
 	@FXML
@@ -56,7 +59,7 @@ public class MainPageController {
     private Tab taskTab;
 
     @FXML
-    private TreeView<?> stateTreeView;
+    private TreeView<State> stateTreeView;
 
     @FXML
     private MenuItem fileMenuPrint;
@@ -107,7 +110,7 @@ public class MainPageController {
     private Tab functionTab;
 
     @FXML
-    private TreeView<?> transitionTreeView;
+    private TreeView<Transition> transitionTreeView;
 
     @FXML
     private Tab propertyTab;
@@ -116,7 +119,7 @@ public class MainPageController {
     private TableColumn<?, ?> propertyTablePropertyColumn;
 
     @FXML
-    private TreeView<?> taskTreeView;
+    private TreeView<Task> taskTreeView;
 
     @FXML
     private MenuItem fileMenuNew;
@@ -146,32 +149,53 @@ public class MainPageController {
     public void initialize() {
     	// Set Logger
     	UserConsoleLogger.setOutputArea(this.eventLogField);
-    	
-    	// Set drawing handler
-    	drawingPane.setOnMouseClicked(mouseHandler);
-    	
-    	MainPageManager mpm = new MainPageManager();
-        TreeItem<Method> rootNode = new TreeItem<Method>();
-        rootNode.setExpanded(true);
-        for(Method func: mpm.getMethods()){
-        	TreeItem<Method> leaf = new TreeItem<Method>(func);
-        	rootNode.getChildren().add(leaf);
-        }
-        
-        functionTreeView.setRoot(rootNode);
-        functionTreeView.showRootProperty().set(false);
     }
     
-    private EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
+    private void refreshTreeViewsAndDrawingPane(){
+    	// Set drawing handler
+    	if(DataSession.Cache.gnet == null)
+    		drawingPane.setOnMouseClicked(null);
+    	else
+    		drawingPane.setOnMouseClicked(drawingHandler);
+    	// set gnet related properties
+    	arcTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.arcs));
+    	arcTreeView.showRootProperty().set(false);
+        stateTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.states));
+        stateTreeView.showRootProperty().set(false);
+        transitionTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.transitions));
+        transitionTreeView.showRootProperty().set(false);
+    	
+        // set global properties visible
+    	functionTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.functions));
+        functionTreeView.showRootProperty().set(false);
+        taskTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.tasks));
+        taskTreeView.showRootProperty().set(false);
+    	
+        UserConsoleLogger.log("TreeViews and Drawing Pane refreshed");
+    }
+//    
+//    private void refreshOnCloseGNet(){
+//    	drawingPane.setOnMouseClicked(null);
+//    	
+//    	arcTreeView.setRoot(null);
+//        stateTreeView.setRoot(null);
+//        transitionTreeView.setRoot(null);
+//    	
+//    	functionTreeView.setRoot(null);
+//        taskTreeView.setRoot(null);
+//        UserConsoleLogger.log("TreeViews closed");
+//    }
+    
+    private EventHandler<MouseEvent> drawingHandler = new EventHandler<MouseEvent>() {
     	public void handle(MouseEvent me) 
     	{
     		try {
-    		RenderedState state = (RenderedState) 
-    				RenderedIDrawableObjectFactory.getRenderedObject(State.class, propertyTable, drawingPane);
-    		state.getShape().setCenterX(me.getX());
-    		state.getShape().setCenterY(me.getY());
-    		state.getShape().setRadius(50.0f);
-    		state.getShape().setFill(Color.RED);
+	    		RenderedState state = (RenderedState) 
+	    				RenderedIDrawableObjectFactory.getRenderedObject(State.class, propertyTable, drawingPane);
+	    		state.getShape().setCenterX(me.getX());
+	    		state.getShape().setCenterY(me.getY());
+	    		state.getShape().setRadius(50.0f);
+	    		state.getShape().setFill(Color.RED);
 	    	drawingPane.getChildren().addAll(state.getShape());
     		} catch (Exception e) {
     			
@@ -182,32 +206,37 @@ public class MainPageController {
     
     @FXML
     void fileMenuNewClicked(ActionEvent event) throws Exception{
-    	Navigation.popUp(Resource.NEW_GNET_PATH, UISession.primaryStage);
+    	UIUtility.Navigation.popUp(Resource.NEW_GNET_PATH, UISession.primaryStage);
+    	if (DataSession.Cache.gnet != null)
+    		this.refreshTreeViewsAndDrawingPane();
     }
 
     @FXML
     void fileMenuOpenClicked(ActionEvent event) throws Exception{
-    	Navigation.popUp(Resource.OPEN_GNET_PATH, UISession.primaryStage);
-    }
+    	UIUtility.Navigation.popUp(Resource.OPEN_GNET_PATH, UISession.primaryStage);
+    	if (DataSession.Cache.gnet != null)
+    		this.refreshTreeViewsAndDrawingPane();
+    	}
 
     @FXML
     void fileMenuSaveClicked(ActionEvent event) {
-
+    	// save to database
     }
 
     @FXML
     void fileMenuNSaveAsClicked(ActionEvent event) {
-
+    	// save as to database
     }
 
     @FXML
     void fileMenuCloseClicked(ActionEvent event) {
-        
+        DataSession.Cache.setGNet(null);
+        this.refreshTreeViewsAndDrawingPane();
     }
 
     @FXML
     void fileMenuPrintClicked(ActionEvent event) {
-
+    	// print
     }
 
     @FXML

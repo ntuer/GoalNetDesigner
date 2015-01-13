@@ -18,6 +18,6 @@ public class UserConsoleLogger {
 	
 	public static void log(String message){
 		
-		outputArea.appendText(new Date() + message);
+		outputArea.appendText(new Date() + " " + message + "\n");
 	}
 }

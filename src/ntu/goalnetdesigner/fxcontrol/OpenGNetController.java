@@ -12,7 +12,7 @@ import ntu.goalnetdesigner.data.persistence.Gnet;
 import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.logger.UserConsoleLogger;
 import ntu.goalnetdesigner.session.DataSession;
-import ntu.goalnetdesigner.utility.Navigation;
+import ntu.goalnetdesigner.utility.UIUtility;
 
 public class OpenGNetController {
 
@@ -40,9 +40,10 @@ public class OpenGNetController {
     @FXML
     void OKButtonClicked(ActionEvent event) {
     	Gnet selectedGNet = GNetTable.getSelectionModel().getSelectedItem();
-    	DataSession.currentGNet = selectedGNet;
+    	DataSession.Cache.setGNet(selectedGNet);
+    	DataSession.Cache.loadTasksAndMethods();
     	UserConsoleLogger.log("Existing GNet Opened:" + selectedGNet.getName());
-    	Navigation.closeParentStage(OKButton);
+    	UIUtility.Navigation.closeContainingStage(OKButton);
     }
 
 }

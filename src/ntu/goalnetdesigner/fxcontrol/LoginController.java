@@ -12,7 +12,7 @@ import javafx.scene.text.Text;
 import ntu.goalnetdesigner.logic.LoginManager;
 import ntu.goalnetdesigner.session.LoginSession;
 import ntu.goalnetdesigner.session.UISession;
-import ntu.goalnetdesigner.utility.Navigation;
+import ntu.goalnetdesigner.utility.UIUtility;
 import ntu.goalnetdesigner.utility.Resource;
 
 public class LoginController implements Initializable{
@@ -38,7 +38,7 @@ public class LoginController implements Initializable{
 		if (lm.isValidUser(id, password)) {
 			LoginSession.isLoggedIn = true;
 			LoginSession.id = id;
-			Navigation.switchTo(Resource.MAINPAGE_PATH, UISession.primaryStage);
+			UIUtility.Navigation.switchTo(Resource.MAINPAGE_PATH, UISession.primaryStage);
 		}
 		else
 			actiontarget.setText("Invalid Login");
