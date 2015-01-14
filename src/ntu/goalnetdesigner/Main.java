@@ -17,7 +17,7 @@ public class Main extends Application {
 		Parent root = (Parent) loader.load();
 		root.getStylesheets().add(this.getClass().getResource(Resource.CSS_PATH).toExternalForm());
         Scene scene = new Scene(root);
-        primaryStage.setTitle("Goal Net Designer Login");
+        primaryStage.setTitle("GoalNet Designer");
         primaryStage.setScene(scene);
         primaryStage.show();
         UISession.primaryStage = primaryStage;

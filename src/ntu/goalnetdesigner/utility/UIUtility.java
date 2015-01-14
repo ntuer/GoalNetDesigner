@@ -28,7 +28,7 @@ public class UIUtility {
 	
 	public static class Navigation{
 		public static void switchTo(String fxmlPath, Stage targetStage) throws Exception{
-			Scene scene = Resource.getInstance().getFxmlScene(fxmlPath);
+			Scene scene = Resource.getInstance().getSceneByFxml(fxmlPath);
 	//        if (scene == null) {
 	//            scene = new Scene(page);
 	//            stage.setScene(scene);
@@ -43,7 +43,7 @@ public class UIUtility {
 			Stage st = new Stage();
 			st.initModality(Modality.APPLICATION_MODAL);
 			st.initOwner(ownerStage.getScene().getWindow());
-	        Scene scene = Resource.getInstance().getFxmlScene(fxmlPath);
+	        Scene scene = Resource.getInstance().getSceneByFxml(fxmlPath);
 	        st.setScene(scene);
 	        st.showAndWait();
 	        return st;

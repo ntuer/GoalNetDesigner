@@ -1,15 +1,21 @@
 package ntu.goalnetdesigner.fxcontrol;
 
 
+import java.io.IOException;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -36,6 +42,9 @@ import ntu.goalnetdesigner.utility.UIUtility.Navigation;
 
 
 public class MainPageController {
+    @FXML
+    private ScrollPane propertyPane;
+	
 	@FXML
     private MenuItem editMenuProperty;
 
@@ -88,9 +97,6 @@ public class MainPageController {
     private Tab transitionTab;
 
     @FXML
-    private TableColumn<?, ?> propertyTableValueColumn;
-
-    @FXML
     private MenuItem editMenuDelete;
 
     @FXML
@@ -103,9 +109,6 @@ public class MainPageController {
     private MenuItem sessionMenuCurrentUser;
 
     @FXML
-    private TableView<?> propertyTable;
-
-    @FXML
     private MenuItem editMenuUndo;
 
     @FXML
@@ -116,9 +119,6 @@ public class MainPageController {
 
     @FXML
     private Tab propertyTab;
-
-    @FXML
-    private TableColumn<?, ?> propertyTablePropertyColumn;
 
     @FXML
     private TreeView<Task> taskTreeView;
@@ -170,49 +170,122 @@ public class MainPageController {
         // set global properties visible
     	refreshFunctionTreeView();
         refreshTaskTreeView();
-    	
+        setTreeViewChangeHandler();
+        UISession.isTreeVieewRefreshing = false;
         ConsoleLogger.log("TreeViews and Drawing Pane refreshed");
     }
     
+    
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public void setTreeViewChangeHandler(){
+    	 arcTreeView.getSelectionModel().selectedItemProperty().addListener( new ChangeListener() {
+
+    	        @Override
+    	        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+
+    	            if (UISession.isTreeVieewRefreshing)
+    	            	return;
+    	            
+    	            UISession.currentSelection = ((TreeItem<Arc>) newValue).getValue();
+    	            try {
+						propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.ARC_PROPERTY_PANE_PATH));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+    	            UISession.currentPaneController.refresh();
+    	        }
+
+    	      });
+    	 stateTreeView.getSelectionModel().selectedItemProperty().addListener( new ChangeListener() {
+
+ 	        @Override
+ 	        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+ 	        	if (UISession.isTreeVieewRefreshing)
+	            	return;
+ 	        	
+ 	            UISession.currentSelection = ((TreeItem<State>) newValue).getValue();
+ 	            try {
+						propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.STATE_PROPERTY_PANE_PATH));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+ 	            UISession.currentPaneController.refresh();
+ 	        }
+
+ 	      });
+    	 transitionTreeView.getSelectionModel().selectedItemProperty().addListener( new ChangeListener() {
+
+ 	        @Override
+ 	        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+ 	            
+ 	        	if (UISession.isTreeVieewRefreshing)
+	            	return;
+ 	        	
+ 	        	UISession.currentSelection = ((TreeItem<Transition>) newValue).getValue();
+ 	            try {
+						propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.TRANSITION_PROPERTY_PANE_PATH));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+ 	            UISession.currentPaneController.refresh();
+ 	        }
+
+ 	      });
+    }
+    
+    
 	public void refreshTaskTreeView() {
+        UISession.isTreeVieewRefreshing = true;
 		taskTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.tasks));
         taskTreeView.showRootProperty().set(false);
+        UISession.isTreeVieewRefreshing = false;
 	}
 
 	public void refreshFunctionTreeView() {
+        UISession.isTreeVieewRefreshing = true;
 		functionTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.functions));
         functionTreeView.showRootProperty().set(false);
+        UISession.isTreeVieewRefreshing = false;
 	}
 
 	public void refreshTransitionTreeView() {
+        UISession.isTreeVieewRefreshing = true;
 		transitionTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.transitions));
         transitionTreeView.showRootProperty().set(false);
+        UISession.isTreeVieewRefreshing = false;
 	}
 
 	public void refreshStateTreeView() {
+        UISession.isTreeVieewRefreshing = true;
 		stateTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.states));
         stateTreeView.showRootProperty().set(false);
+        UISession.isTreeVieewRefreshing = false;
 	}
 
 	public void refreshArcTreeView() {
+        UISession.isTreeVieewRefreshing = true;
 		arcTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.arcs));
     	arcTreeView.showRootProperty().set(false);
+    	UISession.isTreeVieewRefreshing = false;
 	}
 
     
     public EventHandler<MouseEvent> drawingNewObjectHandler = new EventHandler<MouseEvent>() {
     	public void handle(MouseEvent me) 
     	{
-    		// Prevent additional object while dragging
+    		// Prevent additional object while clicking on existing object
     		if (UISession.isInRenderedObject){
+    			
     			UISession.isInRenderedObject = false;
     			
     			// if this is a drawing arc state
     			if (DataSession.currentGNetObjectSelection == CurrentGNetObjectSelection.ARC &&
     					UISession.objectsForArc.size() == 2){
     				RenderedArc a = drawArc();
-    				drawingPane.getChildren().addAll(a.getShape());
-    				drawingPane.getChildren().addAll(a.getShape().getArrow());
+    				if (a!= null){
+	    				drawingPane.getChildren().addAll(a.getShape());
+	    				drawingPane.getChildren().addAll(a.getShape().getArrow());
+    				}
     			}
     			
     			return;
@@ -221,7 +294,7 @@ public class MainPageController {
     			ConsoleLogger.log("User Click on " + me.getX() + "," + me.getY());
     			// generate an object in factory according to current selection
     			Renderable object = RenderedIDrawableObjectFactory.getRenderedObject(
-    					me.getX(), me.getY(), propertyTable, drawingPane);
+    					me.getX(), me.getY(), propertyPane, drawingPane);
     			// display it on screen
     			drawingPane.getChildren().addAll(object.getDisplay());
     		} catch (Exception e) {
@@ -245,7 +318,7 @@ public class MainPageController {
 				a = RenderedIDrawableObjectFactory.getRenderedObject(
 						((RenderedState) s).getDisplay().getTranslateX(), ((RenderedState) s).getDisplay().getTranslateY(),
 						((RenderedTransition) e).getDisplay().getTranslateX(), ((RenderedTransition) e).getDisplay().getTranslateY(),
-						propertyTable, drawingPane);
+						propertyPane, drawingPane);
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -262,7 +335,7 @@ public class MainPageController {
 				a = RenderedIDrawableObjectFactory.getRenderedObject(
 						((RenderedTransition) s).getDisplay().getTranslateX(), ((RenderedTransition) s).getDisplay().getTranslateY(),
 						((RenderedState) e).getDisplay().getTranslateX(), ((RenderedState) e).getDisplay().getTranslateY(),
-						propertyTable, drawingPane);
+						propertyPane, drawingPane);
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}

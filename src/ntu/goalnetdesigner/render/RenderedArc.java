@@ -49,7 +49,6 @@ public class RenderedArc extends Renderable{
 	@Override
 	public void setMeh(MouseEventHandler meh){
 		this.meh = meh;
-		this.display.setOnMouseClicked(meh.mouseOnClickHandler);
 	}
 	
 }

@@ -5,7 +5,10 @@ import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import ntu.goalnetdesigner.fxcontrol.IPaneController;
+import ntu.goalnetdesigner.session.UISession;
 
 public class Resource {
 	
@@ -22,10 +25,17 @@ public class Resource {
 		return instance;
 	}
 	
-	public Scene getFxmlScene(String fxmlPath) throws IOException{
+	public Scene getSceneByFxml(String fxmlPath) throws IOException{
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
 		Parent root = (Parent) loader.load();
         return new Scene(root);
+	}
+	
+	public Pane getPaneByFxml(String fxmlPath) throws IOException{
+		FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+		Pane root = (Pane) loader.load();
+		UISession.currentPaneController = (IPaneController) loader.getController();
+        return root;
 	}
 	
 	public static final String CSS_PATH = "/ntu/goalnetdesigner/css/JMetroLightTheme.css";
@@ -38,6 +48,11 @@ public class Resource {
 	public static final String OPEN_GNET_PATH = "/ntu/goalnetdesigner/fxui/OpenGNet.fxml";
 	public static final String REGISTER_PATH = "/ntu/goalnetdesigner/fxui/Register.fxml";
 	public static final String RESET_PASSWORD_PATH = "/ntu/goalnetdesigner/fxui/ResetPassword.fxml";
+	
+	
+	public static final String ARC_PROPERTY_PANE_PATH ="/ntu/goalnetdesigner/fxui/ArcPropertyPane.fxml";
+	public static final String STATE_PROPERTY_PANE_PATH ="/ntu/goalnetdesigner/fxui/StatePropertyPane.fxml";
+	public static final String TRANSITION_PROPERTY_PANE_PATH ="/ntu/goalnetdesigner/fxui/TransitionPropertyPane.fxml";
 	
 	public static final Color STATE_COLOR = Color.PALEGREEN;
 	public static final Color COMPOSITE_STATE_COLOR = Color.TOMATO;

@@ -1,9 +1,11 @@
 package ntu.goalnetdesigner.render;
 
+import java.io.IOException;
+
 import javafx.event.EventHandler;
-import javafx.scene.control.TableView;
+import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.RotateEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import ntu.goalnetdesigner.logger.ConsoleLogger;
@@ -14,31 +16,50 @@ import ntu.goalnetdesigner.utility.CurrentGNetObjectSelection;
 import ntu.goalnetdesigner.utility.Resource;
 
 public class MouseEventHandler {
-	private TableView propertyDisplayPane;
+	private ScrollPane propertyPane;
 	private AnchorPane drawingPane;
 	private double orgSceneX, orgSceneY;
 	private double orgTranslateX, orgTranslateY;
 	private double newTranslateX, newTranslateY;
 	
-	public MouseEventHandler(TableView propertyDisplayPane,
+	public MouseEventHandler(ScrollPane propertyDisplayPane,
 			AnchorPane drawingPane) {
 		super();
-		this.propertyDisplayPane = propertyDisplayPane;
+		this.propertyPane = propertyDisplayPane;
 		this.drawingPane = drawingPane;
 	}
 
 	public EventHandler<MouseEvent> mouseOnClickHandler = new EventHandler<MouseEvent>() {
     	public void handle(MouseEvent e)
     	{
+    		UISession.currentSelection = ((BidirectionalStackPane)(e.getSource())).getParentRenderable();
     		UISession.isInRenderedObject = true;
+    		
+    		// If user action is to add arc
     		if (DataSession.currentGNetObjectSelection == CurrentGNetObjectSelection.ARC &&
     				UISession.isDragging != true){
     			UISession.objectsForArc.add(((BidirectionalStackPane)(e.getSource())).getParentRenderable());
     		} else {
+    			
     			UISession.isDragging = false;
 	    		ConsoleLogger.log("Object clicked/Dragged and selected!");
-	    		// select property
-	    		// TODO
+
+	    		if (UISession.currentSelection instanceof RenderedState){
+	    			try {
+						propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.STATE_PROPERTY_PANE_PATH));
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+	    		} else if (UISession.currentSelection instanceof RenderedTransition){
+	    			try {
+						propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.TRANSITION_PROPERTY_PANE_PATH));
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+	    		} 
+	    		UISession.currentPaneController.refresh();
     		}
     	}
     };
@@ -92,15 +113,17 @@ public class MouseEventHandler {
     public EventHandler<MouseEvent> mouseReleasedHandler = new EventHandler<MouseEvent>() {
     	public void handle(MouseEvent e)
     	{
-    		Renderable r = ((BidirectionalStackPane)(e.getSource())).getParentRenderable();
-            if (r instanceof RenderedState){
-            	((RenderedState) r).getBaseObject().setX((int) (newTranslateX + Resource.STATE_RADIUS));
-            	((RenderedState) r).getBaseObject().setX((int) (newTranslateY + Resource.STATE_RADIUS));
-            } else {
-            	((RenderedTransition) r).getBaseObject().setX((int) newTranslateX);
-            	((RenderedTransition) r).getBaseObject().setX((int) newTranslateY);
-            }
-            // set underlying object
+    		if (UISession.isDragging){
+    			// after dragging, set underlying object value.
+	    		Renderable r = ((BidirectionalStackPane)(e.getSource())).getParentRenderable();
+	            if (r instanceof RenderedState){
+	            	((RenderedState) r).getBaseObject().setX((int) (newTranslateX + Resource.STATE_RADIUS));
+	            	((RenderedState) r).getBaseObject().setY((int) (newTranslateY + Resource.STATE_RADIUS));
+	            } else {
+	            	((RenderedTransition) r).getBaseObject().setX((int) newTranslateX);
+	            	((RenderedTransition) r).getBaseObject().setY((int) newTranslateY);
+	            }
+    		}
     	}
     };
 }

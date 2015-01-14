@@ -89,16 +89,11 @@
       </TabPane>
       <TabPane layoutX="726.0" layoutY="434.0" prefHeight="339.0" prefWidth="298.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
+          <Tab fx:id="linkTab" text="Link" />
           <Tab fx:id="propertyTab" text="Property">
                <content>
-                  <TableView fx:id="propertyTable" prefHeight="200.0" prefWidth="200.0">
-                    <columns>
-                      <TableColumn fx:id="propertyTablePropertyColumn" prefWidth="150.0" text="Property" />
-                      <TableColumn fx:id="propertyTableValueColumn" minWidth="0.0" prefWidth="148.0" text="Value" />
-                    </columns>
-                  </TableView>
+                  <ScrollPane fx:id="propertyPane" prefHeight="200.0" prefWidth="200.0"/>
                </content></Tab>
-          <Tab fx:id="linkTab" text="Link" />
         </tabs>
       </TabPane>
       <TitledPane animated="false" layoutY="65.0" prefHeight="523.0" prefWidth="726.0" text="Drawing">

@@ -2,18 +2,16 @@ package ntu.goalnetdesigner.render;
 
 import java.lang.reflect.Constructor;
 
-import javafx.scene.control.TableView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeType;
-import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.utility.CurrentGNetObjectSelection;
 import ntu.goalnetdesigner.utility.Resource;
 
 public class RenderedIDrawableObjectFactory{
 	
-	public static Renderable getRenderedObject(double x, double y, TableView tv, AnchorPane drawingPane)
+	public static Renderable getRenderedObject(double x, double y, ScrollPane tv, AnchorPane drawingPane)
 			throws Exception {
 		
 		// create the rendered object
@@ -33,7 +31,7 @@ public class RenderedIDrawableObjectFactory{
 	}
 	
 	// for arc
-	public static RenderedArc getRenderedObject(double sx, double sy, double ex, double ey, TableView tv, AnchorPane drawingPane) throws Exception {
+	public static RenderedArc getRenderedObject(double sx, double sy, double ex, double ey, ScrollPane tv, AnchorPane drawingPane) throws Exception {
 		
 		// create the rendered object
 		Class clazz = Class.forName("ntu.goalnetdesigner.render.RenderedArc");
