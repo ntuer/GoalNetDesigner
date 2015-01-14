@@ -324,7 +324,16 @@
  * PopupMenu                                                                   *
  *                                                                             *
  ******************************************************************************/
+.menu-bar {
+    -fx-background-color: derive(#1d1d1d,20%);
+    -fx-selection-bar: derive(-fx-background,-7%);
+}
 
+.menu-bar .label {
+    -fx-font-size: 12pt;
+    -fx-text-fill: white;
+    -fx-opacity: 0.9;
+}
 .context-menu {
     -fx-background-color: white;
     -fx-background-insets: 0, 1, 2;

@@ -28,17 +28,19 @@ public class Resource {
 	public Scene getSceneByFxml(String fxmlPath) throws IOException{
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
 		Parent root = (Parent) loader.load();
+		root.getStylesheets().add(this.getClass().getResource(Resource.CSS_PATH).toExternalForm());
         return new Scene(root);
 	}
 	
 	public Pane getPaneByFxml(String fxmlPath) throws IOException{
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
 		Pane root = (Pane) loader.load();
+		root.getStylesheets().add(this.getClass().getResource(Resource.CSS_PATH).toExternalForm());
 		UISession.currentPaneController = (IPaneController) loader.getController();
         return root;
 	}
 	
-	public static final String CSS_PATH = "/ntu/goalnetdesigner/css/JMetroLightTheme.css";
+	public static final String CSS_PATH = "/ntu/goalnetdesigner/css/Modena.css";
 	
 	public static final String ABOUT_PATH = "/ntu/goalnetdesigner/fxui/About.fxml";
 	public static final String FEEDBACK_PATH = "/ntu/goalnetdesigner/fxui/Feedback.fxml";
