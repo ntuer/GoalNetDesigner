@@ -1,6 +1,7 @@
 package ntu.goalnetdesigner.fxcontrol;
 
 
+import java.io.File;
 import java.io.IOException;
 
 import javafx.beans.value.ChangeListener;
@@ -9,23 +10,23 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.Dialogs;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Polygon;
+import javafx.stage.FileChooser;
 import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.data.persistence.Method;
 import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.logger.ConsoleLogger;
+import ntu.goalnetdesigner.logic.SaveManager;
 import ntu.goalnetdesigner.render.Renderable;
 import ntu.goalnetdesigner.render.RenderedArc;
 import ntu.goalnetdesigner.render.RenderedIDrawableObjectFactory;
@@ -41,7 +42,13 @@ import ntu.goalnetdesigner.utility.UIUtility.Navigation;
 
 
 
-public class MainPageController {
+public class MainPageController {    
+	@FXML
+    private MenuItem fileMenuOpenLocal;
+	
+    @FXML
+    private MenuItem fileMenuSaveAsLocal;
+    
     @FXML
     private ScrollPane propertyPane;
 	
@@ -377,6 +384,25 @@ public class MainPageController {
     	// save as to database
     }
 
+    @FXML
+    void fileMenuOpenLocalClicked(ActionEvent event) {
+    	FileChooser fileChooser = new FileChooser();
+    	fileChooser.setTitle("Open Resource File");
+    	File file = fileChooser.showOpenDialog(UISession.primaryStage);
+    	if (file != null) {
+	    	SaveManager sm = new SaveManager();
+	    	DataSession.Cache.setGNet(sm.openLocally(file.getPath()));
+	    	if (DataSession.Cache.gnet != null)
+	    		this.refreshTreeViewsAndDrawingPane();
+    	}
+    }
+
+    @FXML
+    void fileMenuSaveAsLocalClicked(ActionEvent event) {
+    	String input = Dialogs.showInputDialog(UISession.primaryStage, "Enter file name:", "Save Local", "Save Local");
+    	SaveManager sm = new SaveManager();
+    	sm.saveLocally(input, DataSession.Cache.gnet);
+    }
     @FXML
     void fileMenuCloseClicked(ActionEvent event) {
         DataSession.Cache.setGNet(null);

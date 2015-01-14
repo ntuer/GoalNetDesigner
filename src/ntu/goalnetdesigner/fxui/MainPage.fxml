@@ -16,6 +16,10 @@
               <MenuItem fx:id="fileMenuOpen" mnemonicParsing="false" onAction="#fileMenuOpenClicked" text="Open" />
                   <MenuItem fx:id="fileMenuSave" mnemonicParsing="false" onAction="#fileMenuSaveClicked" text="Save" />
                   <MenuItem fx:id="fileMenuNSaveAs" mnemonicParsing="false" onAction="#fileMenuNSaveAsClicked" text="Save As" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="fileMenuOpenLocal" mnemonicParsing="false" onAction="#fileMenuOpenLocalClicked" text="Open Local" />
+                  <MenuItem fx:id="fileMenuSaveAsLocal" mnemonicParsing="false" onAction="#fileMenuSaveAsLocalClicked" text="Save As Local" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem fx:id="fileMenuClose" mnemonicParsing="false" onAction="#fileMenuCloseClicked" text="Close" />
                   <MenuItem fx:id="fileMenuPrint" mnemonicParsing="false" onAction="#fileMenuPrintClicked" text="Print" />
                   <MenuItem fx:id="fileMenuExit" mnemonicParsing="false" onAction="#fileMenuExitClicked" text="Exit" />
@@ -92,7 +96,7 @@
           <Tab fx:id="linkTab" text="Link" />
           <Tab fx:id="propertyTab" text="Property">
                <content>
-                  <ScrollPane fx:id="propertyPane" prefHeight="200.0" prefWidth="200.0"/>
+                  <ScrollPane fx:id="propertyPane" prefHeight="200.0" prefWidth="200.0" />
                </content></Tab>
         </tabs>
       </TabPane>
