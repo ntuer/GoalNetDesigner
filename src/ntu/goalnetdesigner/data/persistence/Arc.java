@@ -1,7 +1,15 @@
 package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.UUID;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 
 /**
@@ -39,6 +47,8 @@ public class Arc implements Serializable, IDataServiceUnitSubscriber, ntu.goalne
 	private Gnet gnet;
 
 	public Arc() {
+		this.id = UUID.randomUUID().toString();
+		this.name = "Arc";
 	}
 
 	public String getId() {

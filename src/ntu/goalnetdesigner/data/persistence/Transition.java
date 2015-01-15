@@ -68,7 +68,9 @@ public class Transition implements Serializable, IDataServiceUnitSubscriber, ntu
 	private Tasklist tasklist;
 
 	public Transition() {
+		this.name = "Transition";
 		this.id = UUID.randomUUID().toString();
+		this.type = "simple";
 	}
 
 	public String getId() {

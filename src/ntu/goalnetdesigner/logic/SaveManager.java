@@ -6,7 +6,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.data.persistence.Gnet;
+import ntu.goalnetdesigner.data.persistence.State;
+import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.session.DataSession;
 
@@ -47,8 +50,15 @@ public class SaveManager {
 	}
 	
 	public void saveToDatabase(Gnet gnet){
-		DataService.gnet.update(DataSession.Cache.gnet);
-		
-		
+		DataService.gnet.update(gnet);
+		for(State s: DataSession.Cache.states){
+			DataService.state.insert(s);
+		}
+		for (Transition t : DataSession.Cache.transitions){
+			DataService.transition.insert(t);
+		}
+		for (Arc a : DataSession.Cache.arcs){
+			DataService.arc.insert(a);
+		}
 	}
 }

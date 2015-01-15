@@ -376,7 +376,8 @@ public class MainPageController {
 
     @FXML
     void fileMenuSaveClicked(ActionEvent event) {
-    	// save to database
+    	SaveManager sm = new SaveManager();
+    	sm.saveToDatabase(DataSession.Cache.gnet);
     }
 
     @FXML

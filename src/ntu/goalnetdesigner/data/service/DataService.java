@@ -36,6 +36,7 @@ public class DataService {
 	public static DataServiceUnit<Gnet> gnet = new DataServiceUnit<Gnet>(Gnet.class);
 	public static DataServiceUnit<Property> property = new DataServiceUnit<Property>(Property.class);
 	public static DataServiceUnit<State> state = new DataServiceUnit<State>(State.class);
+	public static DataServiceUnit<Transition> transition = new DataServiceUnit<Transition>(Transition.class);
 	public static DataServiceUnit<Task> task = new DataServiceUnit<Task>(Task.class);
 	public static DataServiceUnit<Tasklist> tasklist = new DataServiceUnit<Tasklist>(Tasklist.class);
 	public static DataServiceUnit<User> user = new DataServiceUnit<User>(User.class);
