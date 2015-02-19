@@ -19,6 +19,15 @@ public class RenderedTransition extends Renderable{
 		this.getBaseObject().setGnet(DataSession.Cache.gnet);
 		DataSession.Cache.transitions.add(this.getBaseObject());
 		// Graphical representation
+		getGraphicalRepresentation(x, y);
+	}
+	
+	public RenderedTransition(Transition t){
+		this.baseObject = t;
+		getGraphicalRepresentation(t.getX(), t.getY());
+	}
+	
+	public void getGraphicalRepresentation(double x, double y){
 		this.shape = new Rectangle();
 		((Rectangle)this.shape).setWidth(Resource.TRANSITION_WIDTH);
 		((Rectangle)this.shape).setHeight(Resource.TRANSITION_HEIGHT);
@@ -30,6 +39,7 @@ public class RenderedTransition extends Renderable{
 		this.display.setTranslateX(x - Resource.TRANSITION_WIDTH / 2);
 		this.display.setTranslateY(y - Resource.TRANSITION_HEIGHT / 2);
 		this.display.getChildren().addAll(shape, text);
+		this.baseObject.setRenderedObject(this);
 	}
 
 	public Rectangle getShape() {

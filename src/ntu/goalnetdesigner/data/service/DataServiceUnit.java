@@ -52,15 +52,14 @@ public class DataServiceUnit<T extends IDataServiceUnitSubscriber> {
 		em.getTransaction().commit();
 	}
 	
-	public void update(T t){
+	public void merge(T t){
 		try {
 			Method method = this.type.getMethod("getId", null);
 			String id = (String) method.invoke(t, null);
 			em.getTransaction().begin();
 			T a = em.find(this.type, id);
-			if (a != null){
-				a = t;
-			}
+			if (a == null)
+				em.persist(t);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			System.out.println("Error");

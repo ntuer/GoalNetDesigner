@@ -14,7 +14,7 @@ public class Renderable {
 	protected Text text;
 	protected Shape shape;
 	protected BidirectionalStackPane display;
-	protected IDrawable baseObject;
+	protected Drawable baseObject;
 	private List<RenderedArc> associatedRenderedArcs = new ArrayList<RenderedArc>();
 	
 	public List<RenderedArc> getAssociatedRenderedArcs() {

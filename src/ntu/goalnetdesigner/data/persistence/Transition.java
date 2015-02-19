@@ -24,7 +24,7 @@ import javax.persistence.NamedQuery;
     @NamedQuery(name="Transition.findById",
                 query="SELECT c FROM Transition c WHERE c.id = :id"),
 }) 
-public class Transition implements Serializable, IDataServiceUnitSubscriber, ntu.goalnetdesigner.render.IDrawable {
+public class Transition extends ntu.goalnetdesigner.render.Drawable implements Serializable, IDataServiceUnitSubscriber {
 	
 	public String toString(){
 		return this.getName();

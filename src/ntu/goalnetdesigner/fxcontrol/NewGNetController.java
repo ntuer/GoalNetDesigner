@@ -1,5 +1,7 @@
 package ntu.goalnetdesigner.fxcontrol;
 
+import java.util.UUID;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -29,10 +31,13 @@ public class NewGNetController {
     @FXML
     void okButtonClicked(ActionEvent event) {
     	Gnet t = new Gnet();
+    	// It must be placed here to save trouble
+    	// otherwise Gnet constructor will initialize lists to null 
+    	t.setId(UUID.randomUUID().toString());
     	t.setName(this.nameOfGoalNetField.getText());
     	t.setDescription(descriptionField.getText());
-    	DataSession.Cache.setGNet(t);
     	DataService.gnet.insert(t);
+    	DataSession.Cache.setGNet(t);
     	ConsoleLogger.log("New Goal Net Created: " + t.getName());
     	UIUtility.Navigation.closeContainingStage(okButton);
     }

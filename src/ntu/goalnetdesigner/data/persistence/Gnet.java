@@ -1,9 +1,12 @@
 package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.math.BigInteger;
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -71,6 +74,7 @@ public class Gnet implements Serializable, IDataServiceUnitSubscriber {
 	private List<UsergroupGnet> usergroupGnets;
 
 	public Gnet() {
+		
 	}
 
 	public String getId() {

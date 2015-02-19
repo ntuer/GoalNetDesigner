@@ -26,7 +26,7 @@ import javax.persistence.OneToMany;
     @NamedQuery(name="State.findById",
                 query="SELECT c FROM State c WHERE c.id = :id"),
 }) 
-public class State implements Serializable, IDataServiceUnitSubscriber, ntu.goalnetdesigner.render.IDrawable {
+public class State extends ntu.goalnetdesigner.render.Drawable implements Serializable, IDataServiceUnitSubscriber {
 	
 	public String toString(){
 		return this.getName();

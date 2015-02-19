@@ -50,15 +50,15 @@ public class SaveManager {
 	}
 	
 	public void saveToDatabase(Gnet gnet){
-		DataService.gnet.update(gnet);
 		for(State s: DataSession.Cache.states){
-			DataService.state.insert(s);
+			DataService.state.merge(s);
 		}
 		for (Transition t : DataSession.Cache.transitions){
-			DataService.transition.insert(t);
+			DataService.transition.merge(t);
 		}
 		for (Arc a : DataSession.Cache.arcs){
-			DataService.arc.insert(a);
+			DataService.arc.merge(a);
 		}
+		DataService.gnet.merge(gnet);
 	}
 }

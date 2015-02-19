@@ -23,7 +23,7 @@ import javax.persistence.NamedQuery;
     @NamedQuery(name="Arc.findById",
                 query="SELECT c FROM Arc c WHERE c.id = :id"),
 }) 
-public class Arc implements Serializable, IDataServiceUnitSubscriber, ntu.goalnetdesigner.render.IDrawable {
+public class Arc extends ntu.goalnetdesigner.render.Drawable implements Serializable, IDataServiceUnitSubscriber{
 	private static final long serialVersionUID = 1L;
 
 	@Id

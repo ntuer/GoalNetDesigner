@@ -40,25 +40,22 @@ public class MouseEventHandler {
     				UISession.isDragging != true){
     			UISession.objectsForArc.add(((BidirectionalStackPane)(e.getSource())).getParentRenderable());
     		} else {
-    			
+    			// update display of property display pane.
     			UISession.isDragging = false;
 	    		ConsoleLogger.log("Object clicked/Dragged and selected!");
-
 	    		if (UISession.currentSelection instanceof RenderedState){
 	    			try {
 						propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.STATE_PROPERTY_PANE_PATH));
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 	    		} else if (UISession.currentSelection instanceof RenderedTransition){
 	    			try {
 						propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.TRANSITION_PROPERTY_PANE_PATH));
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-	    		} 
+	    		}
 	    		UISession.currentPaneController.refresh();
     		}
     	}

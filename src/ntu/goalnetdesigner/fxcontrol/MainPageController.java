@@ -11,6 +11,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Dialogs;
+import javafx.scene.control.Dialogs.DialogOptions;
+import javafx.scene.control.Dialogs.DialogResponse;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
@@ -26,10 +28,11 @@ import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.logger.ConsoleLogger;
+import ntu.goalnetdesigner.logic.RenderManager;
 import ntu.goalnetdesigner.logic.SaveManager;
 import ntu.goalnetdesigner.render.Renderable;
 import ntu.goalnetdesigner.render.RenderedArc;
-import ntu.goalnetdesigner.render.RenderedIDrawableObjectFactory;
+import ntu.goalnetdesigner.render.RenderedObjectFactory;
 import ntu.goalnetdesigner.render.RenderedState;
 import ntu.goalnetdesigner.render.RenderedTransition;
 import ntu.goalnetdesigner.session.DataSession;
@@ -160,11 +163,11 @@ public class MainPageController {
     	ConsoleLogger.setOutputArea(this.eventLogField);
     }
     
+    // It refreshes current view for a given GNet stored in cache.
     private void refreshTreeViewsAndDrawingPane(){
     	// Set drawing handler
     	if(DataSession.Cache.gnet == null){
     		drawingPane.setOnMouseClicked(null);
-    		
     	}
     	else {
     		drawingPane.setOnMouseClicked(drawingNewObjectHandler);
@@ -173,16 +176,18 @@ public class MainPageController {
     	refreshArcTreeView();
         refreshStateTreeView();
         refreshTransitionTreeView();
-    	
         // set global properties visible
     	refreshFunctionTreeView();
         refreshTaskTreeView();
         setTreeViewChangeHandler();
         UISession.isTreeVieewRefreshing = false;
         ConsoleLogger.log("TreeViews and Drawing Pane refreshed");
+        RenderManager rm = new RenderManager(drawingPane, propertyPane);
+        rm.renderGNet(DataSession.Cache.gnet);
+        ConsoleLogger.log("Successfully rendered existing objects");
     }
     
-    
+    // Treeview selection change handler
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	public void setTreeViewChangeHandler(){
     	 arcTreeView.getSelectionModel().selectedItemProperty().addListener( new ChangeListener() {
@@ -240,7 +245,7 @@ public class MainPageController {
  	      });
     }
     
-    
+    // Treeview refresh handlers
 	public void refreshTaskTreeView() {
         UISession.isTreeVieewRefreshing = true;
 		taskTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.tasks));
@@ -276,90 +281,39 @@ public class MainPageController {
     	UISession.isTreeVieewRefreshing = false;
 	}
 
-    
+	// Drawing handler
+	// This happens after onclick event on individual Renderable object
     public EventHandler<MouseEvent> drawingNewObjectHandler = new EventHandler<MouseEvent>() {
     	public void handle(MouseEvent me) 
     	{
     		// Prevent additional object while clicking on existing object
     		if (UISession.isInRenderedObject){
-    			
     			UISession.isInRenderedObject = false;
-    			
     			// if this is a drawing arc state
     			if (DataSession.currentGNetObjectSelection == CurrentGNetObjectSelection.ARC &&
     					UISession.objectsForArc.size() == 2){
-    				RenderedArc a = drawArc();
+    				ConsoleLogger.log("Draw an arc");
+    		    	RenderManager rm = new RenderManager(drawingPane, propertyPane);
+    		    	Renderable s = UISession.objectsForArc.poll();
+    		    	Renderable e = UISession.objectsForArc.poll();
+    		    	RenderedArc a = rm.drawNewArcByStartAndEnd(s, e);
     				if (a!= null){
 	    				drawingPane.getChildren().addAll(a.getShape());
 	    				drawingPane.getChildren().addAll(a.getShape().getArrow());
     				}
     			}
-    			
     			return;
     		}
-    		try {
-    			ConsoleLogger.log("User Click on " + me.getX() + "," + me.getY());
-    			// generate an object in factory according to current selection
-    			Renderable object = RenderedIDrawableObjectFactory.getRenderedObject(
-    					me.getX(), me.getY(), propertyPane, drawingPane);
-    			// display it on screen
-    			drawingPane.getChildren().addAll(object.getDisplay());
-    		} catch (Exception e) {
-    			ConsoleLogger.log("Error when creating RenderableObject " 
-    					+ DataSession.currentGNetObjectSelection.toString());
-    		}
+    		// Drag state or transition
+			ConsoleLogger.log("User Click on " + me.getX() + "," + me.getY());
+			RenderManager rm = new RenderManager(drawingPane, propertyPane);
+			Renderable object = rm.drawNewStateOrTransition(me.getX(), me.getY());
+			if (object != null)
+				drawingPane.getChildren().addAll(object.getDisplay());
     	}
     };
     
-    private RenderedArc drawArc(){
-    	ConsoleLogger.log("ARC DRAW");
-    	Renderable s = UISession.objectsForArc.poll();
-    	Renderable e = UISession.objectsForArc.poll();
-    	RenderedArc a = null;
-    	if (s instanceof RenderedState){
-    		if (!(e instanceof RenderedTransition)){
-    			UISession.objectsForArc.clear();
-    			return a;
-    		}
-    		try {
-				a = RenderedIDrawableObjectFactory.getRenderedObject(
-						((RenderedState) s).getDisplay().getTranslateX(), ((RenderedState) s).getDisplay().getTranslateY(),
-						((RenderedTransition) e).getDisplay().getTranslateX(), ((RenderedTransition) e).getDisplay().getTranslateY(),
-						propertyPane, drawingPane);
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-    		a.getBaseObject().setDirection(true);
-    		a.getBaseObject().setInputID(((RenderedState) s).getBaseObject().getId());
-    		a.getBaseObject().setOutputID(((RenderedTransition) e).getBaseObject().getId());
-    		
-    	} else if (s instanceof RenderedTransition){
-    		if (!(e instanceof RenderedState)){
-    			UISession.objectsForArc.clear();
-    			return a;
-    		}
-    		try {
-				a = RenderedIDrawableObjectFactory.getRenderedObject(
-						((RenderedTransition) s).getDisplay().getTranslateX(), ((RenderedTransition) s).getDisplay().getTranslateY(),
-						((RenderedState) e).getDisplay().getTranslateX(), ((RenderedState) e).getDisplay().getTranslateY(),
-						propertyPane, drawingPane);
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-    		a.getBaseObject().setDirection(false);
-    		a.getBaseObject().setInputID(((RenderedTransition) s).getBaseObject().getId());
-    		a.getBaseObject().setOutputID(((RenderedState) e).getBaseObject().getId());
-    	} 
-    	
-    	s.getAssociatedRenderedArcs().add(a);
-    	e.getAssociatedRenderedArcs().add(a);
-    	a.getBaseObject().setGnet(DataSession.Cache.gnet);
-    	a.getBaseObject().setIsDirect(true);
-    	
-    	UISession.objectsForArc.clear();
-    	return a;
-    }
-    
+    // Menu click handlers
     @FXML
     void fileMenuNewClicked(ActionEvent event) throws Exception{
     	UIUtility.Navigation.popUp(Resource.NEW_GNET_PATH, UISession.primaryStage);
@@ -372,7 +326,7 @@ public class MainPageController {
     	UIUtility.Navigation.popUp(Resource.OPEN_GNET_PATH, UISession.primaryStage);
     	if (DataSession.Cache.gnet != null)
     		this.refreshTreeViewsAndDrawingPane();
-    	}
+    }
 
     @FXML
     void fileMenuSaveClicked(ActionEvent event) {
@@ -401,13 +355,19 @@ public class MainPageController {
     @FXML
     void fileMenuSaveAsLocalClicked(ActionEvent event) {
     	String input = Dialogs.showInputDialog(UISession.primaryStage, "Enter file name:", "Save Local", "Save Local");
-    	SaveManager sm = new SaveManager();
-    	sm.saveLocally(input, DataSession.Cache.gnet);
+    	if (input != null){
+	    	SaveManager sm = new SaveManager();
+	    	sm.saveLocally(input, DataSession.Cache.gnet);
+    	}
     }
     @FXML
     void fileMenuCloseClicked(ActionEvent event) {
-        DataSession.Cache.setGNet(null);
-        this.refreshTreeViewsAndDrawingPane();
+    	DialogResponse response = Dialogs.showConfirmDialog(UISession.primaryStage, "Do you want to close current dialog?", 
+    	        "Close current Goal Net", "Close", DialogOptions.OK_CANCEL);
+    	if (response == DialogResponse.OK){
+	        DataSession.Cache.setGNet(null);
+	        this.refreshTreeViewsAndDrawingPane();
+    	}
     }
 
     @FXML
@@ -466,6 +426,8 @@ public class MainPageController {
     	Navigation.popUp(Resource.FEEDBACK_PATH, UISession.primaryStage);
     }
 
+    
+    // Drawing state selection. Done.
     @FXML
     void simpleStateButtonClicked(ActionEvent event) {
     	DataSession.currentGNetObjectSelection = CurrentGNetObjectSelection.STATE;
@@ -485,10 +447,4 @@ public class MainPageController {
     void arcButtonClicked(ActionEvent event) {
     	DataSession.currentGNetObjectSelection = CurrentGNetObjectSelection.ARC;
     }
-
-    @FXML
-    void moveButtonClicked(ActionEvent event) {
-    	DataSession.currentGNetObjectSelection = CurrentGNetObjectSelection.MOVE;
-    }
-    
 }
