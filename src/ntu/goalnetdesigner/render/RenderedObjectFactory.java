@@ -4,10 +4,8 @@ import java.lang.reflect.Constructor;
 
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.StrokeType;
 import ntu.goalnetdesigner.session.DataSession;
-import ntu.goalnetdesigner.utility.CurrentGNetObjectSelection;
-import ntu.goalnetdesigner.utility.Resource;
+import ntu.goalnetdesigner.utility.CurrentDrawingMode;
 
 public class RenderedObjectFactory{
 	
@@ -18,18 +16,15 @@ public class RenderedObjectFactory{
 		Constructor c = clazz.getConstructor(new Class[]{double.class, double.class});
 		Renderable returnValue = (Renderable) c.newInstance(new Object[]{new Double(x), new Double(y)});
 		// handle composite state
-		if (DataSession.currentGNetObjectSelection == CurrentGNetObjectSelection.COMPOSITE_STATE){
+		if (DataSession.currentDrawingMode == CurrentDrawingMode.COMPOSITE_STATE){
 			((RenderedState) returnValue).getBaseObject().setComposite(true);
-			((RenderedState) returnValue).getShape().setFill(Resource.COMPOSITE_STATE_COLOR.deriveColor(1, 1, 1, 0.5));
-			((RenderedState) returnValue).getShape().setStroke(Resource.COMPOSITE_STATE_COLOR);
-			((RenderedState) returnValue).getShape().setStrokeWidth(2);
-			((RenderedState) returnValue).getShape().setStrokeType(StrokeType.OUTSIDE);
+			((RenderedState) returnValue).showAsComposite();
 		}
 		return returnValue;
 	}
 	
 	public static String getClassName(){
-		switch(DataSession.currentGNetObjectSelection){
+		switch(DataSession.currentDrawingMode){
 			case STATE:
 				return "State";
 			case COMPOSITE_STATE:

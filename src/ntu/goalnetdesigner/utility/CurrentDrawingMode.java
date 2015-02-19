@@ -1,5 +1,5 @@
 package ntu.goalnetdesigner.utility;
 
-public enum CurrentGNetObjectSelection {
+public enum CurrentDrawingMode {
 	STATE, COMPOSITE_STATE, TRANSITION, ARC, MOVE
 }

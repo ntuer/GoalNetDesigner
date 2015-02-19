@@ -115,7 +115,7 @@ public class RenderManager {
 			return r;
 		} catch (Exception e) {
 			ConsoleLogger.log("Error when creating RenderableObject " 
-					+ DataSession.currentGNetObjectSelection.toString());
+					+ DataSession.currentDrawingMode.toString());
 			return null;
 		}
 	}

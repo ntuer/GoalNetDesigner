@@ -11,11 +11,11 @@ import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.data.service.DataService;
-import ntu.goalnetdesigner.utility.CurrentGNetObjectSelection;
+import ntu.goalnetdesigner.utility.CurrentDrawingMode;
 
 public class DataSession {
-	public static CurrentGNetObjectSelection currentGNetObjectSelection = 
-			CurrentGNetObjectSelection.STATE;
+	public static CurrentDrawingMode currentDrawingMode = 
+			CurrentDrawingMode.STATE;
 	
 	public static class Cache {
 		public static Gnet gnet = null;

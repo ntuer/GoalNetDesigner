@@ -38,7 +38,7 @@ import ntu.goalnetdesigner.render.RenderedTransition;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.LoginSession;
 import ntu.goalnetdesigner.session.UISession;
-import ntu.goalnetdesigner.utility.CurrentGNetObjectSelection;
+import ntu.goalnetdesigner.utility.CurrentDrawingMode;
 import ntu.goalnetdesigner.utility.Resource;
 import ntu.goalnetdesigner.utility.UIUtility;
 import ntu.goalnetdesigner.utility.UIUtility.Navigation;
@@ -198,7 +198,7 @@ public class MainPageController {
     	            if (UISession.isTreeVieewRefreshing)
     	            	return;
     	            
-    	            UISession.currentSelection = ((TreeItem<Arc>) newValue).getValue();
+    	            UISession.setCurrentSelection(((TreeItem<Arc>) newValue).getValue());
     	            try {
 						propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.ARC_PROPERTY_PANE_PATH));
 					} catch (IOException e) {
@@ -215,7 +215,7 @@ public class MainPageController {
  	        	if (UISession.isTreeVieewRefreshing)
 	            	return;
  	        	
- 	            UISession.currentSelection = ((TreeItem<State>) newValue).getValue();
+ 	            UISession.setCurrentSelection(((TreeItem<State>) newValue).getValue());
  	            try {
 						propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.STATE_PROPERTY_PANE_PATH));
 					} catch (IOException e) {
@@ -233,7 +233,7 @@ public class MainPageController {
  	        	if (UISession.isTreeVieewRefreshing)
 	            	return;
  	        	
- 	        	UISession.currentSelection = ((TreeItem<Transition>) newValue).getValue();
+ 	        	UISession.setCurrentSelection(((TreeItem<Transition>) newValue).getValue());
  	            try {
 						propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.TRANSITION_PROPERTY_PANE_PATH));
 					} catch (IOException e) {
@@ -290,7 +290,7 @@ public class MainPageController {
     		if (UISession.isInRenderedObject){
     			UISession.isInRenderedObject = false;
     			// if this is a drawing arc state
-    			if (DataSession.currentGNetObjectSelection == CurrentGNetObjectSelection.ARC &&
+    			if (DataSession.currentDrawingMode == CurrentDrawingMode.ARC &&
     					UISession.objectsForArc.size() == 2){
     				ConsoleLogger.log("Draw an arc");
     		    	RenderManager rm = new RenderManager(drawingPane, propertyPane);
@@ -430,21 +430,21 @@ public class MainPageController {
     // Drawing state selection. Done.
     @FXML
     void simpleStateButtonClicked(ActionEvent event) {
-    	DataSession.currentGNetObjectSelection = CurrentGNetObjectSelection.STATE;
+    	DataSession.currentDrawingMode = CurrentDrawingMode.STATE;
     }
 
     @FXML
     void compositeStateButtonClicked(ActionEvent event) {
-    	DataSession.currentGNetObjectSelection = CurrentGNetObjectSelection.COMPOSITE_STATE;
+    	DataSession.currentDrawingMode = CurrentDrawingMode.COMPOSITE_STATE;
     }
 
     @FXML
     void transitionButtonClicked(ActionEvent event) {
-    	DataSession.currentGNetObjectSelection = CurrentGNetObjectSelection.TRANSITION;
+    	DataSession.currentDrawingMode = CurrentDrawingMode.TRANSITION;
     }
 
     @FXML
     void arcButtonClicked(ActionEvent event) {
-    	DataSession.currentGNetObjectSelection = CurrentGNetObjectSelection.ARC;
+    	DataSession.currentDrawingMode = CurrentDrawingMode.ARC;
     }
 }

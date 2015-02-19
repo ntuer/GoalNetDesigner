@@ -1,8 +1,5 @@
 package ntu.goalnetdesigner.render;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
@@ -30,10 +27,7 @@ public class RenderedState extends Renderable{
 	public void getGraphicalRepresentation(double x, double y){
 		this.shape = new Circle();
 		((Circle)this.shape).setRadius(Resource.STATE_RADIUS);
-		((Circle)this.shape).setFill(Resource.STATE_COLOR.deriveColor(1, 1, 1, 0.5));
-		((Circle)this.shape).setStroke(Resource.STATE_COLOR);
-		((Circle)this.shape).setStrokeWidth(2);
-		((Circle)this.shape).setStrokeType(StrokeType.OUTSIDE);
+		this.showAsSimple();
 		this.text = new Text(((State)this.baseObject).getName());
 		this.display.setTranslateX(x - Resource.STATE_RADIUS);
 		this.display.setTranslateY(y - Resource.STATE_RADIUS);
@@ -66,4 +60,17 @@ public class RenderedState extends Renderable{
 		this.display.setOnMouseReleased(meh.mouseReleasedHandler);
 	}
 	
+	public void showAsComposite(){
+		((Circle)this.shape).setFill(Resource.COMPOSITE_STATE_COLOR.deriveColor(1, 1, 1, 0.5));
+		((Circle)this.shape).setStroke(Resource.COMPOSITE_STATE_COLOR);
+		((Circle)this.shape).setStrokeWidth(2);
+		((Circle)this.shape).setStrokeType(StrokeType.OUTSIDE);
+	}
+	
+	public void showAsSimple(){
+		((Circle)this.shape).setFill(Resource.STATE_COLOR.deriveColor(1, 1, 1, 0.5));
+		((Circle)this.shape).setStroke(Resource.STATE_COLOR);
+		((Circle)this.shape).setStrokeWidth(2);
+		((Circle)this.shape).setStrokeType(StrokeType.OUTSIDE);
+	}
 }

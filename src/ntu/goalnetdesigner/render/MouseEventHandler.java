@@ -12,7 +12,7 @@ import ntu.goalnetdesigner.logger.ConsoleLogger;
 import ntu.goalnetdesigner.render.customcontrol.BidirectionalStackPane;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.UISession;
-import ntu.goalnetdesigner.utility.CurrentGNetObjectSelection;
+import ntu.goalnetdesigner.utility.CurrentDrawingMode;
 import ntu.goalnetdesigner.utility.Resource;
 
 public class MouseEventHandler {
@@ -32,11 +32,11 @@ public class MouseEventHandler {
 	public EventHandler<MouseEvent> mouseOnClickHandler = new EventHandler<MouseEvent>() {
     	public void handle(MouseEvent e)
     	{
-    		UISession.currentSelection = ((BidirectionalStackPane)(e.getSource())).getParentRenderable();
+    		UISession.setCurrentSelection(((BidirectionalStackPane)(e.getSource())).getParentRenderable());
     		UISession.isInRenderedObject = true;
     		
     		// If user action is to add arc
-    		if (DataSession.currentGNetObjectSelection == CurrentGNetObjectSelection.ARC &&
+    		if (DataSession.currentDrawingMode == CurrentDrawingMode.ARC &&
     				UISession.isDragging != true){
     			UISession.objectsForArc.add(((BidirectionalStackPane)(e.getSource())).getParentRenderable());
     		} else {

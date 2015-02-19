@@ -25,7 +25,7 @@
       <Label text="Description" GridPane.rowIndex="2" />
       <TextArea fx:id="description" prefHeight="55.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <TextField fx:id="name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <TextField fx:id="composite" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <TextField fx:id="composite" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <TextField editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" fx:id="x" />
       <Label text="Name" GridPane.rowIndex="1" />
       <Label text="Composite" GridPane.rowIndex="3" />

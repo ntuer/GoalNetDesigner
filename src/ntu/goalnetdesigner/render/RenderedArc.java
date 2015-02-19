@@ -5,7 +5,6 @@ import java.util.List;
 import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.Transition;
-import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.render.customcontrol.Arrow;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.utility.Resource;

@@ -3,13 +3,14 @@ package ntu.goalnetdesigner.fxcontrol;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import ntu.goalnetdesigner.data.persistence.Arc;
-import ntu.goalnetdesigner.data.persistence.Transition;
+import ntu.goalnetdesigner.logger.ConsoleLogger;
 import ntu.goalnetdesigner.render.RenderedArc;
-import ntu.goalnetdesigner.render.RenderedTransition;
 import ntu.goalnetdesigner.session.UISession;
 
 public class ArcPropertyPaneController implements IPaneController{
@@ -31,25 +32,50 @@ public class ArcPropertyPaneController implements IPaneController{
     @FXML
     private TextField direction;
 
+    private Arc selectedObject = null;
     
     public void initialize(URL arg0, ResourceBundle arg1) {
 		refresh();
 	}
 	
 	public void refresh(){
-		Arc a = null;
 		try {
-			a = ((RenderedArc) UISession.currentSelection).getBaseObject();
+			this.selectedObject = ((RenderedArc) UISession.currentSelection).getBaseObject();
 		} catch (Exception e){
-			a = (Arc) UISession.currentSelection;
+			this.selectedObject = (Arc) UISession.currentSelection;
 		}
-		if (a == null)
+		if (this.selectedObject == null)
 			return;
-		description.setText(a.getDescription());
-		id.setText(a.getId());
-		name.setText(a.getName());
-		direction.setText(a.getDirection() + "");
-		inputid.setText(a.getInputID() + "");
-		outputid.setText(a.getOutputID()+ "");
+		description.setText(this.selectedObject.getDescription());
+		id.setText(this.selectedObject.getId());
+		name.setText(this.selectedObject.getName());
+		direction.setText(this.selectedObject.getDirection() + "");
+		inputid.setText(this.selectedObject.getInputID() + "");
+		outputid.setText(this.selectedObject.getOutputID()+ "");
+		setBidirectionalUpdate();
 	}
+	
+	private void setBidirectionalUpdate(){
+		// Name field update back
+		name.focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0,
+					Boolean oldPropertyValue, Boolean newPropertyValue) {
+				if (!newPropertyValue) {
+					ArcPropertyPaneController.this.selectedObject.setName(name.getText());
+				}
+			}
+		});
+		// description field update back
+		description.focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0,
+					Boolean oldPropertyValue, Boolean newPropertyValue) {
+				if (!newPropertyValue) {
+					ArcPropertyPaneController.this.selectedObject.setDescription(description.getText());
+				} 
+			}
+		});
+	}
+	
 }

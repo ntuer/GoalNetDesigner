@@ -3,6 +3,8 @@ package ntu.goalnetdesigner.fxcontrol;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
@@ -42,25 +44,76 @@ public class TransitionPropertyPaneController implements IPaneController {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		refresh();
 	}
-
+	private Transition selectedObject = null;
 	@Override
 	public void refresh(){
-		Transition t = null;
 		try {
-			t = ((RenderedTransition) UISession.currentSelection).getBaseObject();
+			selectedObject = ((RenderedTransition) UISession.currentSelection).getBaseObject();
 		} catch (Exception e){
-			t = (Transition) UISession.currentSelection;
+			selectedObject = (Transition) UISession.currentSelection;
 		}
-		if (t == null)
+		if (selectedObject == null)
 			return;
-		x.setText("" + t.getX());
-		y.setText("" + t.getY());
-		description.setText(t.getDescription());
-		id.setText(t.getId());
-		name.setText(t.getName());
-		enabled.setText(t.getEnabled() + "");
-		achievement.setText(t.getAchievement() + "");
-		cost.setText(t.getCost() + "");
+		x.setText("" + selectedObject.getX());
+		y.setText("" + selectedObject.getY());
+		description.setText(selectedObject.getDescription());
+		id.setText(selectedObject.getId());
+		name.setText(selectedObject.getName());
+		enabled.setText(selectedObject.getEnabled() + "");
+		achievement.setText(selectedObject.getAchievement() + "");
+		cost.setText(selectedObject.getCost() + "");
+		setBidirectionalUpdate();
 	}
 	
+	private void setBidirectionalUpdate(){
+		// Name field update back
+		name.focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0,
+					Boolean oldPropertyValue, Boolean newPropertyValue) {
+				if (!newPropertyValue) {
+					TransitionPropertyPaneController.this.selectedObject.setName(name.getText());
+					((RenderedTransition) TransitionPropertyPaneController.this.selectedObject.getRenderedObject())
+						.getText().setText(name.getText());
+				}
+			}
+		});
+		// description field update back
+		description.focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0,
+					Boolean oldPropertyValue, Boolean newPropertyValue) {
+				if (!newPropertyValue) {
+					TransitionPropertyPaneController.this.selectedObject.setDescription(description.getText());
+				} 
+			}
+		});
+		enabled.focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0,
+					Boolean oldPropertyValue, Boolean newPropertyValue) {
+				if (!newPropertyValue) {
+					TransitionPropertyPaneController.this.selectedObject.setEnabled(Boolean.valueOf(enabled.getText()));
+				} 
+			}
+		});
+		achievement.focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0,
+					Boolean oldPropertyValue, Boolean newPropertyValue) {
+				if (!newPropertyValue) {
+					TransitionPropertyPaneController.this.selectedObject.setAchievement(Integer.parseInt(achievement.getText()));
+				}
+			}
+		});
+		cost.focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0,
+					Boolean oldPropertyValue, Boolean newPropertyValue) {
+				if (!newPropertyValue) {
+					TransitionPropertyPaneController.this.selectedObject.setCost(Integer.parseInt(cost.getText()));
+				} 
+			}
+		});
+	}
 }

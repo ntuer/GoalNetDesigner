@@ -48,4 +48,12 @@ public class Renderable {
 	public void setText(Text text) {
 		this.text = text;
 	}
+
+	public Shape getShape() {
+		return shape;
+	}
+
+	public void setShape(Shape shape) {
+		this.shape = shape;
+	}
 }
