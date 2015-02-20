@@ -35,9 +35,7 @@ public class LoginController implements Initializable{
 		String id = usernameField.getText();
 		String password = passwordField.getText();
 		LoginManager lm = new LoginManager();
-		if (lm.isValidUser(id, password)) {
-			LoginSession.isLoggedIn = true;
-			LoginSession.id = id;
+		if (lm.login(id, password)) {
 			UIUtility.Navigation.switchTo(Resource.MAINPAGE_PATH, UISession.primaryStage);
 		}
 		else

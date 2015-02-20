@@ -1,4 +1,4 @@
-package ntu.goalnetdesigner.fxcontrol;
+package ntu.goalnetdesigner.fxcontrol.propertypanecontrol;
 
 import java.net.URL;
 import java.util.ResourceBundle;

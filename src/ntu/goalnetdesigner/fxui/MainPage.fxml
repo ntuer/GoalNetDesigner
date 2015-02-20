@@ -9,7 +9,7 @@
 <GridPane minHeight="768.0" minWidth="1366.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntu.goalnetdesigner.fxcontrol.MainPageController">
    <children>
       
-      <MenuBar prefHeight="25.0" prefWidth="1024.0" GridPane.columnSpan="2">
+      <MenuBar maxHeight="35.0" GridPane.columnSpan="2">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
@@ -54,14 +54,16 @@
             </Menu>
         </menus>
       </MenuBar>
-      <ToolBar layoutY="25.0" prefHeight="40.0" prefWidth="1024.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+      <ToolBar layoutY="25.0" maxHeight="25.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
         <items>
-          <Button fx:id="simpleStateButton" mnemonicParsing="false" onAction="#simpleStateButtonClicked" text="S" />
-            <Button fx:id="compositeStateButton" mnemonicParsing="false" onAction="#compositeStateButtonClicked" text="C" />
+          <Button fx:id="simpleStateButton" mnemonicParsing="false" onAction="#simpleStateButtonClicked" text="State" />
+            <Button fx:id="compositeStateButton" mnemonicParsing="false" onAction="#compositeStateButtonClicked" text="Composite" />
             <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" />
-            <Button fx:id="transitionButton" mnemonicParsing="false" onAction="#transitionButtonClicked" text="T" />
-            <Button fx:id="arcbutton" mnemonicParsing="false" onAction="#arcButtonClicked" text="A" />
+            <Button fx:id="transitionButton" mnemonicParsing="false" onAction="#transitionButtonClicked" text="Transition" />
+            <Button fx:id="arcButton" mnemonicParsing="false" onAction="#arcButtonClicked" text="Arc" />
             <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" />
+            <Button fx:id="newFunctionButton" mnemonicParsing="false" onAction="#newFunctionButtonOnClick" text="Function" />
+            <Button fx:id="newTaskButton" mnemonicParsing="false" onAction="#newTaskButtonOnClick" text="Task" />
         </items>
       </ToolBar>
       <TabPane layoutX="726.0" layoutY="65.0" prefHeight="367.0" prefWidth="298.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="2">
@@ -123,17 +125,23 @@
           </Tab>
         </tabs>
       </TabPane>
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="6">
+         <children>
+            <Label text="Label" />
+         </children>
+      </HBox>
    </children>
    <columnConstraints>
      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="70.0" prefWidth="100.0" />
      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="30.0" prefWidth="100.0" />
    </columnConstraints>
    <rowConstraints>
-     <RowConstraints maxHeight="25.0" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+     <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="ALWAYS" />
      <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="ALWAYS" />
      <RowConstraints minHeight="10.0" percentHeight="25.0" prefHeight="30.0" vgrow="ALWAYS" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
       <RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" vgrow="ALWAYS" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="25.0" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
    </rowConstraints>
 </GridPane>

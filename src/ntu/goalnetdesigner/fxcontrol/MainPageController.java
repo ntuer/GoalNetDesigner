@@ -1,6 +1,5 @@
 package ntu.goalnetdesigner.fxcontrol;
 
-
 import java.io.File;
 import java.io.IOException;
 
@@ -9,18 +8,23 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Dialogs;
 import javafx.scene.control.Dialogs.DialogOptions;
 import javafx.scene.control.Dialogs.DialogResponse;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.data.persistence.Method;
@@ -28,13 +32,12 @@ import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.logger.ConsoleLogger;
+import ntu.goalnetdesigner.logic.FunctionManager;
 import ntu.goalnetdesigner.logic.RenderManager;
 import ntu.goalnetdesigner.logic.SaveManager;
+import ntu.goalnetdesigner.logic.TaskManager;
 import ntu.goalnetdesigner.render.Renderable;
 import ntu.goalnetdesigner.render.RenderedArc;
-import ntu.goalnetdesigner.render.RenderedObjectFactory;
-import ntu.goalnetdesigner.render.RenderedState;
-import ntu.goalnetdesigner.render.RenderedTransition;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.LoginSession;
 import ntu.goalnetdesigner.session.UISession;
@@ -42,7 +45,6 @@ import ntu.goalnetdesigner.utility.CurrentDrawingMode;
 import ntu.goalnetdesigner.utility.Resource;
 import ntu.goalnetdesigner.utility.UIUtility;
 import ntu.goalnetdesigner.utility.UIUtility.Navigation;
-
 
 
 public class MainPageController {    
@@ -180,7 +182,7 @@ public class MainPageController {
     	refreshFunctionTreeView();
         refreshTaskTreeView();
         setTreeViewChangeHandler();
-        UISession.isTreeVieewRefreshing = false;
+        UISession.isTreeViewRefreshing = false;
         ConsoleLogger.log("TreeViews and Drawing Pane refreshed");
         RenderManager rm = new RenderManager(drawingPane, propertyPane);
         rm.renderGNet(DataSession.Cache.gnet);
@@ -190,29 +192,26 @@ public class MainPageController {
     // Treeview selection change handler
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	public void setTreeViewChangeHandler(){
-    	 arcTreeView.getSelectionModel().selectedItemProperty().addListener( new ChangeListener() {
+    	arcTreeView.getSelectionModel().selectedItemProperty().addListener( new ChangeListener() {
 
-    	        @Override
-    	        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-
-    	            if (UISession.isTreeVieewRefreshing)
-    	            	return;
-    	            
-    	            UISession.setCurrentSelection(((TreeItem<Arc>) newValue).getValue());
-    	            try {
-						propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.ARC_PROPERTY_PANE_PATH));
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-    	            UISession.currentPaneController.refresh();
-    	        }
-
-    	      });
-    	 stateTreeView.getSelectionModel().selectedItemProperty().addListener( new ChangeListener() {
+			@Override
+			public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+				if (UISession.isTreeViewRefreshing)
+			    	return;
+			    UISession.setCurrentSelection(((TreeItem<Arc>) newValue).getValue());
+			    try {
+					propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.ARC_PROPERTY_PANE_PATH));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			    UISession.currentPaneController.refresh();
+			}
+    	 });
+    	stateTreeView.getSelectionModel().selectedItemProperty().addListener( new ChangeListener() {
 
  	        @Override
  	        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
- 	        	if (UISession.isTreeVieewRefreshing)
+ 	        	if (UISession.isTreeViewRefreshing)
 	            	return;
  	        	
  	            UISession.setCurrentSelection(((TreeItem<State>) newValue).getValue());
@@ -223,14 +222,13 @@ public class MainPageController {
 					}
  	            UISession.currentPaneController.refresh();
  	        }
-
- 	      });
-    	 transitionTreeView.getSelectionModel().selectedItemProperty().addListener( new ChangeListener() {
+    	});
+    	transitionTreeView.getSelectionModel().selectedItemProperty().addListener( new ChangeListener() {
 
  	        @Override
  	        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
  	            
- 	        	if (UISession.isTreeVieewRefreshing)
+ 	        	if (UISession.isTreeViewRefreshing)
 	            	return;
  	        	
  	        	UISession.setCurrentSelection(((TreeItem<Transition>) newValue).getValue());
@@ -241,44 +239,81 @@ public class MainPageController {
 					}
  	            UISession.currentPaneController.refresh();
  	        }
+ 	    });
+    	
+    	// non-renderable objects selection.
+    	// note: use direct assignment for currentSelection
+    	functionTreeView.getSelectionModel().selectedItemProperty().addListener( new ChangeListener() {
 
- 	      });
+ 	        @Override
+ 	        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+ 	            
+ 	        	if (UISession.isTreeViewRefreshing)
+	            	return;
+ 	        	
+ 	        	UISession.setCurrentSelection(((TreeItem<Method>) newValue).getValue());
+ 	            try {
+						propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.FUNCTION_PROPERTY_PANE_PATH));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+ 	            UISession.currentPaneController.refresh();
+ 	        }
+ 	    });
+    	
+    	taskTreeView.getSelectionModel().selectedItemProperty().addListener( new ChangeListener() {
+
+ 	        @Override
+ 	        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+ 	            
+ 	        	if (UISession.isTreeViewRefreshing)
+	            	return;
+ 	        	
+ 	        	UISession.setCurrentSelection(((TreeItem<Task>) newValue).getValue());
+ 	            try {
+						propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.TASK_PROPERTY_PANE_PATH));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+ 	            UISession.currentPaneController.refresh();
+ 	        }
+ 	    });
     }
     
     // Treeview refresh handlers
 	public void refreshTaskTreeView() {
-        UISession.isTreeVieewRefreshing = true;
+        UISession.isTreeViewRefreshing = true;
 		taskTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.tasks));
         taskTreeView.showRootProperty().set(false);
-        UISession.isTreeVieewRefreshing = false;
+        UISession.isTreeViewRefreshing = false;
 	}
 
 	public void refreshFunctionTreeView() {
-        UISession.isTreeVieewRefreshing = true;
+        UISession.isTreeViewRefreshing = true;
 		functionTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.functions));
         functionTreeView.showRootProperty().set(false);
-        UISession.isTreeVieewRefreshing = false;
+        UISession.isTreeViewRefreshing = false;
 	}
 
 	public void refreshTransitionTreeView() {
-        UISession.isTreeVieewRefreshing = true;
+        UISession.isTreeViewRefreshing = true;
 		transitionTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.transitions));
         transitionTreeView.showRootProperty().set(false);
-        UISession.isTreeVieewRefreshing = false;
+        UISession.isTreeViewRefreshing = false;
 	}
 
 	public void refreshStateTreeView() {
-        UISession.isTreeVieewRefreshing = true;
+        UISession.isTreeViewRefreshing = true;
 		stateTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.states));
         stateTreeView.showRootProperty().set(false);
-        UISession.isTreeVieewRefreshing = false;
+        UISession.isTreeViewRefreshing = false;
 	}
 
 	public void refreshArcTreeView() {
-        UISession.isTreeVieewRefreshing = true;
+        UISession.isTreeViewRefreshing = true;
 		arcTreeView.setRoot(UIUtility.TreeView.convertToTreeItem(DataSession.Cache.arcs));
     	arcTreeView.showRootProperty().set(false);
-    	UISession.isTreeVieewRefreshing = false;
+    	UISession.isTreeViewRefreshing = false;
 	}
 
 	// Drawing handler
@@ -312,6 +347,16 @@ public class MainPageController {
 				drawingPane.getChildren().addAll(object.getDisplay());
     	}
     };
+    
+    @FXML
+    void newFunctionButtonOnClick(ActionEvent event) {
+    	FunctionManager.newInstance();
+    }
+    
+    @FXML
+    void newTaskButtonOnClick(ActionEvent event) {
+    	TaskManager.newInstance();
+    }
     
     // Menu click handlers
     @FXML
@@ -402,12 +447,13 @@ public class MainPageController {
 
     @FXML
     void runMenuRunClicked(ActionEvent event) {
-
+    	
     }
 
     @FXML
     void sessionMenuCurrentUserClicked(ActionEvent event) {
-
+    	Dialogs.showInformationDialog(UISession.primaryStage, "Server Address: " + LoginSession.serverAddress, 
+    		    "Current User ID: " + LoginSession.user.getId(), "Current User Information");
     }
 
     @FXML
@@ -447,4 +493,5 @@ public class MainPageController {
     void arcButtonClicked(ActionEvent event) {
     	DataSession.currentDrawingMode = CurrentDrawingMode.ARC;
     }
+    
 }

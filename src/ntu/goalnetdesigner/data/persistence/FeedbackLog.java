@@ -26,6 +26,9 @@ public class FeedbackLog implements Serializable, IDataServiceUnitSubscriber {
 	private Timestamp timestamp;
 
 	private String version;
+	
+	private String answer;
+
 
 	//bi-directional many-to-one association to Question
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -80,4 +83,11 @@ public class FeedbackLog implements Serializable, IDataServiceUnitSubscriber {
 		this.user = user;
 	}
 
+	public String getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}
 }

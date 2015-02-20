@@ -5,7 +5,7 @@ import java.util.Queue;
 
 import javafx.stage.Stage;
 import ntu.goalnetdesigner.data.persistence.Transition;
-import ntu.goalnetdesigner.fxcontrol.IPaneController;
+import ntu.goalnetdesigner.fxcontrol.propertypanecontrol.IPaneController;
 import ntu.goalnetdesigner.render.Drawable;
 import ntu.goalnetdesigner.render.Renderable;
 import ntu.goalnetdesigner.render.RenderedTransition;
@@ -20,38 +20,63 @@ public class UISession {
 	
 	// Arc drawing temp storage
 	public static Queue<Renderable> objectsForArc = new LinkedList<Renderable>();
-		
+	
 	// treeview refresh lock
-	public static boolean isTreeVieewRefreshing = false;
+	public static boolean isTreeViewRefreshing = false;
 	
 	// current selection status
 	public static Object currentSelection = null;  // has to be object because it can be Renderable or Drawable
 	public static IPaneController currentPaneController = null;
 
 	public static void setCurrentSelection(Renderable obj){
-		Renderable selectedObject = getRenderableFromCurrentSelection();
-		if (selectedObject != null)
-			selectedObject.getShape().setStrokeWidth(2);
-		obj.getShape().setStrokeWidth(5);
-		currentSelection = obj;
+		try{
+			// restore shape of unselected object
+			Renderable selectedObject = getRenderableFromCurrentSelection();
+			if (selectedObject != null)
+				selectedObject.getShape().setStrokeWidth(1);
+		} catch (Exception e){
+			
+		} finally {
+			obj.getShape().setStrokeWidth(5);
+			currentSelection = obj;
+		}
 	}
 	
+	public static void setCurrentSelection(Drawable obj){
+		try{
+			Renderable selectedObject = getRenderableFromCurrentSelection();
+			if (selectedObject != null)
+				selectedObject.getShape().setStrokeWidth(1);
+		} catch (Exception e){
+			
+		} finally {
+			obj.getRenderedObject().getShape().setStrokeWidth(5);
+			currentSelection = obj;
+		}
+	}
+	
+	// Fallback option for Functions and Tasks.
+	public static void setCurrentSelection(Object obj){
+		try{
+			Renderable selectedObject = getRenderableFromCurrentSelection();
+			if (selectedObject != null)
+				selectedObject.getShape().setStrokeWidth(1);
+		} catch (Exception e){
+			
+		} finally {
+			currentSelection = obj;
+		}
+	}
+
 	private static Renderable getRenderableFromCurrentSelection(){
 		Renderable selectedObject = null;
+		// try-catch to find renderedObject
 		try {
 			selectedObject = ((Drawable) UISession.currentSelection).getRenderedObject();
 		} catch (Exception e) {
 			selectedObject = ((Renderable) UISession.currentSelection);
 		}
 		return selectedObject;
-	}
-	
-	public static void setCurrentSelection(Drawable obj){
-		Renderable selectedObject = getRenderableFromCurrentSelection();
-		if (selectedObject != null)
-			selectedObject.getShape().setStrokeWidth(2);
-		obj.getRenderedObject().getShape().setStrokeWidth(5);
-		currentSelection = obj;
 	}
 	
 }

@@ -15,14 +15,14 @@ import ntu.goalnetdesigner.session.UISession;
 import ntu.goalnetdesigner.utility.CurrentDrawingMode;
 import ntu.goalnetdesigner.utility.Resource;
 
-public class MouseEventHandler {
+public class RenderableMouseEventHandler {
 	private ScrollPane propertyPane;
 	private AnchorPane drawingPane;
 	private double orgSceneX, orgSceneY;
 	private double orgTranslateX, orgTranslateY;
 	private double newTranslateX, newTranslateY;
 	
-	public MouseEventHandler(ScrollPane propertyDisplayPane,
+	public RenderableMouseEventHandler(ScrollPane propertyDisplayPane,
 			AnchorPane drawingPane) {
 		super();
 		this.propertyPane = propertyDisplayPane;

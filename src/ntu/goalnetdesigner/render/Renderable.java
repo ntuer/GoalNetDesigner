@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 
 public class Renderable {
 
-	protected MouseEventHandler meh;
+	protected RenderableMouseEventHandler meh;
 	protected Text text;
 	protected Shape shape;
 	protected BidirectionalStackPane display;
@@ -33,11 +33,11 @@ public class Renderable {
 		this.display = stackPane;
 	}
 
-	public MouseEventHandler getMeh() {
+	public RenderableMouseEventHandler getMeh() {
 		return meh;
 	}
 
-	public void setMeh(MouseEventHandler meh) {
+	public void setMeh(RenderableMouseEventHandler meh) {
 		this.meh = meh;
 	}
 

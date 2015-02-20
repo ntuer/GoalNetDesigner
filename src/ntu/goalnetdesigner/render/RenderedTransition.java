@@ -33,7 +33,7 @@ public class RenderedTransition extends Renderable{
 		((Rectangle)this.shape).setHeight(Resource.TRANSITION_HEIGHT);
 		((Rectangle)this.shape).setFill(Resource.TRANSITION_COLOR.deriveColor(1, 1, 1, 0.5));
 		((Rectangle)this.shape).setStroke(Resource.TRANSITION_COLOR);
-		((Rectangle)this.shape).setStrokeWidth(2);
+		((Rectangle)this.shape).setStrokeWidth(1);
 		((Rectangle)this.shape).setStrokeType(StrokeType.OUTSIDE);
 		this.text = new Text("Transition");
 		this.display.setTranslateX(x - Resource.TRANSITION_WIDTH / 2);
@@ -59,7 +59,7 @@ public class RenderedTransition extends Renderable{
 	}
 	
 	@Override
-	public void setMeh(MouseEventHandler meh){
+	public void setMeh(RenderableMouseEventHandler meh){
 		this.meh = meh;
 		this.display.setOnMouseClicked(meh.mouseOnClickHandler);
 		this.display.setOnMousePressed(meh.mousePressedHandler);

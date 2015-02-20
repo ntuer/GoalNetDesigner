@@ -52,7 +52,7 @@ public class RenderedState extends Renderable{
 	}
 	
 	@Override
-	public void setMeh(MouseEventHandler meh){
+	public void setMeh(RenderableMouseEventHandler meh){
 		this.meh = meh;
 		this.display.setOnMouseClicked(meh.mouseOnClickHandler);
 		this.display.setOnMousePressed(meh.mousePressedHandler);
@@ -63,14 +63,14 @@ public class RenderedState extends Renderable{
 	public void showAsComposite(){
 		((Circle)this.shape).setFill(Resource.COMPOSITE_STATE_COLOR.deriveColor(1, 1, 1, 0.5));
 		((Circle)this.shape).setStroke(Resource.COMPOSITE_STATE_COLOR);
-		((Circle)this.shape).setStrokeWidth(2);
+		((Circle)this.shape).setStrokeWidth(1);
 		((Circle)this.shape).setStrokeType(StrokeType.OUTSIDE);
 	}
 	
 	public void showAsSimple(){
 		((Circle)this.shape).setFill(Resource.STATE_COLOR.deriveColor(1, 1, 1, 0.5));
 		((Circle)this.shape).setStroke(Resource.STATE_COLOR);
-		((Circle)this.shape).setStrokeWidth(2);
+		((Circle)this.shape).setStrokeWidth(1);
 		((Circle)this.shape).setStrokeType(StrokeType.OUTSIDE);
 	}
 }

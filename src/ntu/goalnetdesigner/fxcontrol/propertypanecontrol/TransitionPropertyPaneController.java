@@ -1,17 +1,21 @@
-package ntu.goalnetdesigner.fxcontrol;
+package ntu.goalnetdesigner.fxcontrol.propertypanecontrol;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import ntu.goalnetdesigner.data.persistence.Transition;
+import ntu.goalnetdesigner.logic.TasklistManager;
 import ntu.goalnetdesigner.render.RenderedTransition;
 import ntu.goalnetdesigner.session.UISession;
+import ntu.goalnetdesigner.utility.Resource;
+import ntu.goalnetdesigner.utility.UIUtility;
 
 public class TransitionPropertyPaneController implements IPaneController {
 	@FXML
@@ -34,9 +38,6 @@ public class TransitionPropertyPaneController implements IPaneController {
 
 	@FXML
 	private TextField id;
-
-	@FXML
-	private ComboBox<?> tasklist;
 
 	@FXML
 	private TextField enabled;
@@ -116,4 +117,13 @@ public class TransitionPropertyPaneController implements IPaneController {
 			}
 		});
 	}
+
+    @FXML
+    void manageTasksButtonOnClick(ActionEvent event) throws Exception{
+    	// create new Tasklist if does not exist
+    	if (this.selectedObject.getTasklist() == null){
+    		this.selectedObject.setTasklist(TasklistManager.newInstance());
+    	}
+    	UIUtility.Navigation.popUp(Resource.MANAGE_TRANSITION_TASK_PATH, UISession.primaryStage);
+    }
 }

@@ -92,7 +92,7 @@ public class RenderedArc extends Renderable{
 	}
 	
 	@Override
-	public void setMeh(MouseEventHandler meh){
+	public void setMeh(RenderableMouseEventHandler meh){
 		this.meh = meh;
 	}
 	

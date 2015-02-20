@@ -9,7 +9,7 @@ import ntu.goalnetdesigner.data.persistence.Gnet;
 import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.logger.ConsoleLogger;
-import ntu.goalnetdesigner.render.MouseEventHandler;
+import ntu.goalnetdesigner.render.RenderableMouseEventHandler;
 import ntu.goalnetdesigner.render.Renderable;
 import ntu.goalnetdesigner.render.RenderedArc;
 import ntu.goalnetdesigner.render.RenderedObjectFactory;
@@ -121,7 +121,7 @@ public class RenderManager {
 	}
 
 	private void setMouseEventHandler(Renderable r){
-		MouseEventHandler meh = new MouseEventHandler(propertyPane, drawingPane);
+		RenderableMouseEventHandler meh = new RenderableMouseEventHandler(propertyPane, drawingPane);
 		r.setMeh(meh);
 	}
 

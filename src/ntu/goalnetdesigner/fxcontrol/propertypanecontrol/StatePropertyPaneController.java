@@ -1,19 +1,23 @@
-package ntu.goalnetdesigner.fxcontrol;
+package ntu.goalnetdesigner.fxcontrol.propertypanecontrol;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.data.persistence.State;
+import ntu.goalnetdesigner.logic.TasklistManager;
 import ntu.goalnetdesigner.render.RenderedArc;
 import ntu.goalnetdesigner.render.RenderedState;
 import ntu.goalnetdesigner.render.RenderedTransition;
 import ntu.goalnetdesigner.session.UISession;
+import ntu.goalnetdesigner.utility.Resource;
+import ntu.goalnetdesigner.utility.UIUtility;
 
 public class StatePropertyPaneController implements IPaneController{
 	@FXML
@@ -90,9 +94,13 @@ public class StatePropertyPaneController implements IPaneController{
 					} else {
 						((RenderedState) StatePropertyPaneController.this.selectedObject.getRenderedObject()).showAsSimple();
 					}
-						
 				} 
 			}
 		});
 	}
+	
+	@FXML
+    void manageFunctionsButtonOnClick(ActionEvent event) throws Exception {
+    	UIUtility.Navigation.popUp(Resource.MANAGE_STATE_FUNCTION_PATH, UISession.primaryStage);
+    }
 }
