@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.logic.TasklistManager;
 import ntu.goalnetdesigner.render.RenderedTransition;
@@ -48,11 +49,7 @@ public class TransitionPropertyPaneController implements IPaneController {
 	private Transition selectedObject = null;
 	@Override
 	public void refresh(){
-		try {
-			selectedObject = ((RenderedTransition) UISession.currentSelection).getBaseObject();
-		} catch (Exception e){
-			selectedObject = (Transition) UISession.currentSelection;
-		}
+		this.selectedObject = (Transition) UISession.getDrawableFromCurrentSelection();
 		if (selectedObject == null)
 			return;
 		x.setText("" + selectedObject.getX());

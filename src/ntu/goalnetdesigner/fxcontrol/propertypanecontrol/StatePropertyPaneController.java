@@ -43,12 +43,7 @@ public class StatePropertyPaneController implements IPaneController{
 	}
 	State selectedObject = null;
 	public void refresh(){
-		
-		try {
-			selectedObject = ((RenderedState) UISession.currentSelection).getBaseObject();
-		} catch (Exception e){
-			selectedObject = (State) UISession.currentSelection;
-		}
+		this.selectedObject = (State) UISession.getDrawableFromCurrentSelection();
 		if (selectedObject == null)
 			return;
 		x.setText("" + selectedObject.getX());

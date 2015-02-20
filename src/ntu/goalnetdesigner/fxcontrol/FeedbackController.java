@@ -33,7 +33,7 @@ public class FeedbackController {
     public void initialize() {
     	grid.setHgap(10);
     	grid.setVgap(10);
-    	grid.setPadding(new Insets(0, 10, 0, 10));
+    	grid.setPadding(new Insets(10, 10, 10, 10));
     	questions = DataService.question.findAll();
     	
     	int i = 0;

@@ -15,6 +15,15 @@ public class Renderable {
 	protected Shape shape;
 	protected BidirectionalStackPane display;
 	protected Drawable baseObject;
+	
+	public Drawable getBaseObject() {
+		return baseObject;
+	}
+
+	public void setBaseObject(Drawable baseObject) {
+		this.baseObject = baseObject;
+	}
+
 	private List<RenderedArc> associatedRenderedArcs = new ArrayList<RenderedArc>();
 	
 	public List<RenderedArc> getAssociatedRenderedArcs() {

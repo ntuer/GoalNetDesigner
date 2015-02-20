@@ -8,7 +8,9 @@ import java.io.ObjectOutputStream;
 
 import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.data.persistence.Gnet;
+import ntu.goalnetdesigner.data.persistence.Method;
 import ntu.goalnetdesigner.data.persistence.State;
+import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.session.DataSession;
@@ -58,6 +60,12 @@ public class SaveManager {
 		}
 		for (Arc a : DataSession.Cache.arcs){
 			DataService.arc.merge(a);
+		}
+		for (Method m : DataSession.Cache.functions){
+			DataService.method.merge(m);
+		}
+		for (Task t : DataSession.Cache.tasks){
+			DataService.task.merge(t);
 		}
 		DataService.gnet.merge(gnet);
 	}

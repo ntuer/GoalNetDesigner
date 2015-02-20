@@ -4,11 +4,11 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import javafx.stage.Stage;
-import ntu.goalnetdesigner.data.persistence.Transition;
+import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.fxcontrol.propertypanecontrol.IPaneController;
 import ntu.goalnetdesigner.render.Drawable;
 import ntu.goalnetdesigner.render.Renderable;
-import ntu.goalnetdesigner.render.RenderedTransition;
+import ntu.goalnetdesigner.render.RenderedArc;
 
 public class UISession {
 	// Main window reference
@@ -68,7 +68,7 @@ public class UISession {
 		}
 	}
 
-	private static Renderable getRenderableFromCurrentSelection(){
+	public static Renderable getRenderableFromCurrentSelection(){
 		Renderable selectedObject = null;
 		// try-catch to find renderedObject
 		try {
@@ -79,4 +79,13 @@ public class UISession {
 		return selectedObject;
 	}
 	
+	public static Drawable getDrawableFromCurrentSelection(){
+		Drawable d = null;
+		try {
+			d = ((Renderable) UISession.currentSelection).getBaseObject();
+		} catch (Exception e){
+			d = (Drawable) UISession.currentSelection;
+		}
+		return d;
+	}
 }

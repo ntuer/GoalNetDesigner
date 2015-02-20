@@ -31,6 +31,10 @@ public class StateFunction implements Serializable {
 	@JoinColumn(name="StateID")
 	private State state;
 
+	public String toString(){
+		return this.getMethod().getName();
+	}
+	
 	public StateFunction() {
 	}
 
