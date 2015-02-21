@@ -27,7 +27,10 @@ public class RenderedState extends Renderable{
 	public void getGraphicalRepresentation(double x, double y){
 		this.shape = new Circle();
 		((Circle)this.shape).setRadius(Resource.STATE_RADIUS);
-		this.showAsSimple();
+		if (((State)this.getBaseObject()).getComposite())
+			this.showAsComposite();
+		else
+			this.showAsSimple();
 		this.text = new Text(((State)this.baseObject).getName());
 		this.display.setTranslateX(x - Resource.STATE_RADIUS);
 		this.display.setTranslateY(y - Resource.STATE_RADIUS);

@@ -29,14 +29,15 @@ public class Tasklist implements Serializable, IDataServiceUnitSubscriber {
 	private String name;
 
 	//bi-directional many-to-one association to TasklistTask
-	@OneToMany(mappedBy="tasklist", cascade={CascadeType.ALL}, orphanRemoval=true)
+	@OneToMany(mappedBy="tasklist", orphanRemoval=true)
 	private List<TasklistTask> tasklistTasks;
 
 	//bi-directional many-to-one association to Transition
-	@OneToMany(mappedBy="tasklist", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="tasklist")
 	private List<Transition> transitions;
 
 	public Tasklist() {
+		
 	}
 
 	public String getId() {
@@ -106,5 +107,4 @@ public class Tasklist implements Serializable, IDataServiceUnitSubscriber {
 
 		return transition;
 	}
-
 }

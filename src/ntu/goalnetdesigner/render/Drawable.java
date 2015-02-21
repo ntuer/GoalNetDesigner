@@ -1,6 +1,7 @@
 package ntu.goalnetdesigner.render;
 
-public abstract class Drawable {
+
+public abstract class Drawable{
 	protected Renderable renderedObject = null;
 
 	public Renderable getRenderedObject() {

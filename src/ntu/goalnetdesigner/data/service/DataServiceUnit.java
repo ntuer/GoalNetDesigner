@@ -49,7 +49,7 @@ public class DataServiceUnit<T extends IDataServiceUnitSubscriber> {
 		em.getTransaction().commit();
 	}
 	
-	public void merge(T t){
+	public void update(T t){
 		try {
 			Method method = this.type.getMethod("getId", null);
 			String id = (String) method.invoke(t, null);
@@ -77,5 +77,19 @@ public class DataServiceUnit<T extends IDataServiceUnitSubscriber> {
 			System.out.println("Error");
 		}
 	}
-
+	
+	public void begin(){
+		em.getTransaction().begin();
+	}
+	
+	public void commit(){
+		em.getTransaction().commit();
+	}
+	
+	public void persist(T t){
+		em.persist(t);
+	}
+	public void remove(T t){
+		em.remove(t);
+	}
 }

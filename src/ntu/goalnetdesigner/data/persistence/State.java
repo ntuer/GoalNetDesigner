@@ -2,6 +2,7 @@ package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,6 +16,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+
+import ntu.goalnetdesigner.session.DataSession;
 
 
 /**
@@ -56,15 +59,15 @@ public class State extends ntu.goalnetdesigner.render.Drawable implements Serial
 	private int y;
 
 	//bi-directional many-to-one association to Gnet
-	@OneToMany(mappedBy="state1", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="state1")
 	private List<Gnet> gnets1;
 
 	//bi-directional many-to-one association to Gnet
-	@OneToMany(mappedBy="state2", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="state2")
 	private List<Gnet> gnets2;
 
 	//bi-directional many-to-one association to Gnet
-	@OneToMany(mappedBy="state3", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="state3")
 	private List<Gnet> gnets3;
 
 	//bi-directional many-to-one association to Gnet
@@ -78,7 +81,7 @@ public class State extends ntu.goalnetdesigner.render.Drawable implements Serial
 	private State state1;
 
 	//bi-directional many-to-one association to State
-	@OneToMany(mappedBy="state1", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="state1")
 	private List<State> states1;
 
 	//bi-directional many-to-one association to State
@@ -87,7 +90,7 @@ public class State extends ntu.goalnetdesigner.render.Drawable implements Serial
 	private State state2;
 
 	//bi-directional many-to-one association to State
-	@OneToMany(mappedBy="state2", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="state2")
 	private List<State> states2;
 
 	//bi-directional many-to-one association to State
@@ -96,11 +99,11 @@ public class State extends ntu.goalnetdesigner.render.Drawable implements Serial
 	private State state3;
 
 	//bi-directional many-to-one association to State
-	@OneToMany(mappedBy="state3", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="state3")
 	private List<State> states3;
 
 	//bi-directional many-to-one association to StateFunction
-	@OneToMany(mappedBy="state", cascade={CascadeType.ALL}, orphanRemoval=true)
+	@OneToMany(mappedBy="state", orphanRemoval=true)
 	@OrderBy("Sequence ASC")
 	private List<StateFunction> stateFunctions;
 
@@ -113,6 +116,7 @@ public class State extends ntu.goalnetdesigner.render.Drawable implements Serial
 		this.x = (int)x;
 		this.y = (int)y;
 		this.composite = isComposite;
+		this.stateFunctions = new ArrayList<StateFunction>();
 	}
 
 	public String getId() {

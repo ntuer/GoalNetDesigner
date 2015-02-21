@@ -105,6 +105,7 @@ public class RenderManager {
     	
     	UISession.objectsForArc.clear();
     	setMouseEventHandler(a);
+    	DataSession.Diff.newObjects.add(a.getBaseObject());
     	return a;
 	}
 	
@@ -112,10 +113,10 @@ public class RenderManager {
 		try {
 			Renderable r =  RenderedObjectFactory.getNewRenderedObject(x, y, propertyPane, drawingPane);
 			setMouseEventHandler(r);
+			DataSession.Diff.newObjects.add(r.getBaseObject());
 			return r;
 		} catch (Exception e) {
-			ConsoleLogger.log("Error when creating RenderableObject " 
-					+ DataSession.currentDrawingMode.toString());
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -124,6 +125,5 @@ public class RenderManager {
 		RenderableMouseEventHandler meh = new RenderableMouseEventHandler(propertyPane, drawingPane);
 		r.setMeh(meh);
 	}
-
 }
 

@@ -1,6 +1,7 @@
 package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 
 
@@ -31,6 +32,10 @@ public class TaskFunction implements Serializable {
 	@JoinColumn(name="TaskID")
 	private Task task;
 
+	public String toString(){
+		return this.getTask().getName() + "->" + this.getMethod().getName();
+	}
+	
 	public TaskFunction() {
 	}
 

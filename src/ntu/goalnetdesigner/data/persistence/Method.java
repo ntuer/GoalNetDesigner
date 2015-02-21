@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import ntu.goalnetdesigner.session.DataSession;
+
 import java.util.List;
 
 
@@ -44,11 +46,11 @@ public class Method implements Serializable, IDataServiceUnitSubscriber {
 	private String RTType;
 
 	//bi-directional many-to-one association to StateFunction
-	@OneToMany(mappedBy="method", cascade={CascadeType.ALL}, orphanRemoval=true)
+	@OneToMany(mappedBy="method", orphanRemoval=true)
 	private List<StateFunction> stateFunctions;
 
 	//bi-directional many-to-one association to TaskFunction
-	@OneToMany(mappedBy="method", cascade={CascadeType.ALL}, orphanRemoval=true)
+	@OneToMany(mappedBy="method", orphanRemoval=true)
 	private List<TaskFunction> taskFunctions;
 
 	public Method() {

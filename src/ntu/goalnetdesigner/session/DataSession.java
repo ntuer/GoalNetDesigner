@@ -6,6 +6,7 @@ import java.util.List;
 import ntu.goalnetdesigner.data.persistence.ActionLog;
 import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.data.persistence.Gnet;
+import ntu.goalnetdesigner.data.persistence.IDataServiceUnitSubscriber;
 import ntu.goalnetdesigner.data.persistence.Method;
 import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.Task;
@@ -27,7 +28,6 @@ public class DataSession {
 		public static List<State> states = null;
 		public static List<Method> functions = null;
 		public static List<Transition> transitions = null;
-		public static List<Drawable> deletedObjects = new ArrayList<Drawable>();
 		
 		public static List<ActionLog> actionLogs = new ArrayList<ActionLog>();
 		
@@ -60,4 +60,12 @@ public class DataSession {
 		}
 	}
 	
+	public static class Diff {
+		public static List<Object> newObjects = new ArrayList<Object>();
+		public static List<Object> deletedObjects = new ArrayList<Object>();
+		public static void clear() {
+			newObjects.clear();
+			deletedObjects.clear();
+		}
+	}
 }

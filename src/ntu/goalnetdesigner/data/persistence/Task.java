@@ -46,14 +46,15 @@ public class Task implements Serializable, IDataServiceUnitSubscriber {
 	private String name;
 
 	//bi-directional many-to-one association to TaskFunction
-	@OneToMany(mappedBy="task", cascade={CascadeType.ALL}, orphanRemoval=true)
+	@OneToMany(mappedBy="task", orphanRemoval=true)
 	private List<TaskFunction> taskFunctions;
 
 	//bi-directional many-to-one association to TasklistTask
-	@OneToMany(mappedBy="task", cascade={CascadeType.ALL}, orphanRemoval=true)
+	@OneToMany(mappedBy="task", orphanRemoval=true)
 	private List<TasklistTask> tasklistTasks;
 
 	public Task() {
+		
 	}
 
 	public String getId() {

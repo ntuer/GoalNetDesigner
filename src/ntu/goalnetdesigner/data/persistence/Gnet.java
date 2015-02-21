@@ -39,11 +39,11 @@ public class Gnet implements Serializable, IDataServiceUnitSubscriber {
 	private BigInteger transitionCount;
 
 	//bi-directional many-to-one association to ActionLog
-	@OneToMany(mappedBy="gnet", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="gnet")
 	private List<ActionLog> actionLogs;
 
 	//bi-directional many-to-one association to Arc
-	@OneToMany(mappedBy="gnet", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="gnet")
 	private List<Arc> arcs;
 
 	//bi-directional many-to-one association to State
@@ -62,15 +62,15 @@ public class Gnet implements Serializable, IDataServiceUnitSubscriber {
 	private State state3;
 
 	//bi-directional many-to-one association to State
-	@OneToMany(mappedBy="gnet", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="gnet")
 	private List<State> states;
 
 	//bi-directional many-to-one association to Transition
-	@OneToMany(mappedBy="gnet", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="gnet")
 	private List<Transition> transitions;
 
 	//bi-directional many-to-one association to UsergroupGnet
-	@OneToMany(mappedBy="gnet", cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="gnet")
 	private List<UsergroupGnet> usergroupGnets;
 
 	public Gnet() {

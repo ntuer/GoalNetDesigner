@@ -33,7 +33,7 @@ public class StateFunction implements Serializable {
 	private State state;
 
 	public String toString(){
-		return this.getMethod().getName();
+		return this.getState().getName() + "->" + this.getMethod().getName();
 	}
 	
 	public StateFunction() {
