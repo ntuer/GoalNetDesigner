@@ -1,7 +1,9 @@
 package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.List;
 
 
@@ -27,11 +29,11 @@ public class Tasklist implements Serializable, IDataServiceUnitSubscriber {
 	private String name;
 
 	//bi-directional many-to-one association to TasklistTask
-	@OneToMany(mappedBy="tasklist")
+	@OneToMany(mappedBy="tasklist", cascade={CascadeType.ALL}, orphanRemoval=true)
 	private List<TasklistTask> tasklistTasks;
 
 	//bi-directional many-to-one association to Transition
-	@OneToMany(mappedBy="tasklist")
+	@OneToMany(mappedBy="tasklist", cascade={CascadeType.ALL})
 	private List<Transition> transitions;
 
 	public Tasklist() {

@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -55,15 +56,15 @@ public class State extends ntu.goalnetdesigner.render.Drawable implements Serial
 	private int y;
 
 	//bi-directional many-to-one association to Gnet
-	@OneToMany(mappedBy="state1")
+	@OneToMany(mappedBy="state1", cascade={CascadeType.ALL})
 	private List<Gnet> gnets1;
 
 	//bi-directional many-to-one association to Gnet
-	@OneToMany(mappedBy="state2")
+	@OneToMany(mappedBy="state2", cascade={CascadeType.ALL})
 	private List<Gnet> gnets2;
 
 	//bi-directional many-to-one association to Gnet
-	@OneToMany(mappedBy="state3")
+	@OneToMany(mappedBy="state3", cascade={CascadeType.ALL})
 	private List<Gnet> gnets3;
 
 	//bi-directional many-to-one association to Gnet
@@ -77,7 +78,7 @@ public class State extends ntu.goalnetdesigner.render.Drawable implements Serial
 	private State state1;
 
 	//bi-directional many-to-one association to State
-	@OneToMany(mappedBy="state1")
+	@OneToMany(mappedBy="state1", cascade={CascadeType.ALL})
 	private List<State> states1;
 
 	//bi-directional many-to-one association to State
@@ -86,7 +87,7 @@ public class State extends ntu.goalnetdesigner.render.Drawable implements Serial
 	private State state2;
 
 	//bi-directional many-to-one association to State
-	@OneToMany(mappedBy="state2")
+	@OneToMany(mappedBy="state2", cascade={CascadeType.ALL})
 	private List<State> states2;
 
 	//bi-directional many-to-one association to State
@@ -95,11 +96,11 @@ public class State extends ntu.goalnetdesigner.render.Drawable implements Serial
 	private State state3;
 
 	//bi-directional many-to-one association to State
-	@OneToMany(mappedBy="state3")
+	@OneToMany(mappedBy="state3", cascade={CascadeType.ALL})
 	private List<State> states3;
 
 	//bi-directional many-to-one association to StateFunction
-	@OneToMany(mappedBy="state")
+	@OneToMany(mappedBy="state", cascade={CascadeType.ALL}, orphanRemoval=true)
 	@OrderBy("Sequence ASC")
 	private List<StateFunction> stateFunctions;
 

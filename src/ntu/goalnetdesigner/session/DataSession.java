@@ -51,9 +51,6 @@ public class DataSession {
 			Cache.functions = DataService.method.findAll();
 			Cache.tasks = DataService.task.findAll();
 			Cache.tasklists = DataService.tasklist.findAll();
-			if (Cache.tasklists == null){
-				Cache.tasklists = new ArrayList<Tasklist>();
-			}
 		}
 		
 		public static void loadTasksAndMethods(Object Null){

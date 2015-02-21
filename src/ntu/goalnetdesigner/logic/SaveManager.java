@@ -52,21 +52,7 @@ public class SaveManager {
 	}
 	
 	public void saveToDatabase(Gnet gnet){
-		for(State s: DataSession.Cache.states){
-			DataService.state.merge(s);
-		}
-		for (Transition t : DataSession.Cache.transitions){
-			DataService.transition.merge(t);
-		}
-		for (Arc a : DataSession.Cache.arcs){
-			DataService.arc.merge(a);
-		}
-		for (Method m : DataSession.Cache.functions){
-			DataService.method.merge(m);
-		}
-		for (Task t : DataSession.Cache.tasks){
-			DataService.task.merge(t);
-		}
+		// Others will be done through cascade
 		DataService.gnet.merge(gnet);
 	}
 }

@@ -1,4 +1,6 @@
 package ntu.goalnetdesigner.fxcontrol;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -99,7 +101,8 @@ public class ManageStateFunctionController {
     	for (int i = 0; i < this.stateFunctionList.size(); ++i){
     		this.stateFunctionList.get(i).setSequence(i + 1);
     	}
-    	this.selectedState.setStateFunctions(stateFunctionList);
+    	StateFunction[] a = new StateFunction[stateFunctionList.size()];
+    	this.selectedState.setStateFunctions(new ArrayList<StateFunction>(Arrays.asList((stateFunctionList.toArray(a)))));
     	UIUtility.Navigation.closeContainingStage((Button)event.getSource());
     }
 }

@@ -44,11 +44,11 @@ public class Method implements Serializable, IDataServiceUnitSubscriber {
 	private String RTType;
 
 	//bi-directional many-to-one association to StateFunction
-	@OneToMany(mappedBy="method")
+	@OneToMany(mappedBy="method", cascade={CascadeType.ALL}, orphanRemoval=true)
 	private List<StateFunction> stateFunctions;
 
 	//bi-directional many-to-one association to TaskFunction
-	@OneToMany(mappedBy="method")
+	@OneToMany(mappedBy="method", cascade={CascadeType.ALL}, orphanRemoval=true)
 	private List<TaskFunction> taskFunctions;
 
 	public Method() {

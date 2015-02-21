@@ -40,10 +40,7 @@ public class DataServiceUnit<T extends IDataServiceUnitSubscriber> {
 		TypedQuery<T> query =
 				em.createNamedQuery(this.type.getSimpleName() + ".findAll", this.type);
 		List<T> result = query.getResultList();
-		if (result.size() != 0)
-			return query.getResultList();
-		else
-			return null;
+		return result;
 	}
 	
 	public void insert(T t){
@@ -62,7 +59,7 @@ public class DataServiceUnit<T extends IDataServiceUnitSubscriber> {
 				em.persist(t);
 			em.getTransaction().commit();
 		} catch (Exception e) {
-			System.out.println("Error");
+			e.printStackTrace();
 		}
 	}
 	
