@@ -53,53 +53,7 @@ public class SaveManager {
 	}
 	
 	public void saveToDatabase(Gnet gnet){
-		DataService.arc.begin();
-		DataService.state.begin();
-		DataService.transition.begin();
-		DataService.method.begin();
-		DataService.task.begin();
-		DataService.tasklist.begin();
-		for (Object obj: DataSession.Diff.newObjects){
-			if (obj instanceof Arc){
-				DataService.arc.persist((Arc) obj);
-			} else if (obj instanceof State){
-				DataService.state.persist((State) obj);
-			} else if (obj instanceof Transition){
-				DataService.transition.persist((Transition) obj);
-			} else if (obj instanceof Method){
-				DataService.method.persist((Method) obj);
-			} else if (obj instanceof Task){
-				DataService.task.persist((Task) obj);
-			} else if (obj instanceof Tasklist){
-				DataService.tasklist.persist((Tasklist) obj);
-			}
-		}
-		
-		for (Object obj: DataSession.Diff.deletedObjects){
-			if (obj instanceof Arc){
-				DataService.arc.remove((Arc) obj);
-			} else if (obj instanceof State){
-				DataService.state.remove((State) obj);
-			} else if (obj instanceof Transition){
-				DataService.transition.remove((Transition) obj);
-			} else if (obj instanceof Method){
-				DataService.method.remove((Method) obj);
-			} else if (obj instanceof Task){
-				DataService.task.remove((Task) obj);
-			} else if (obj instanceof Tasklist){
-				DataService.tasklist.remove((Tasklist) obj);
-			}
-		}
-		DataService.arc.commit();
-		DataService.state.commit();
-		DataService.transition.commit();
-		DataService.method.commit();
-		DataService.task.commit();
-		DataService.tasklist.commit();
-		DataService.gnet.update(gnet);
-		
-		// Now everything is managed
-		// clear local cache
-		DataSession.Diff.clear();
+		DataService.commit();
+		DataService.begin();
 	}
 }

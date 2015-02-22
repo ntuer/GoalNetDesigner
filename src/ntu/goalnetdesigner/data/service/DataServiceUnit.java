@@ -11,14 +11,12 @@ import javax.persistence.TypedQuery;
 import ntu.goalnetdesigner.data.persistence.IDataServiceUnitSubscriber;
 
 public class DataServiceUnit<T extends IDataServiceUnitSubscriber> {
-	protected EntityManagerFactory emf;
 	protected EntityManager em;
 	private final Class<T> type;
 	
 	public DataServiceUnit(Class<T> type){
 		this.type = type;
-		emf = DataService.getEntityManagerFactory();
-		em = emf.createEntityManager();
+		em = DataService.getEntityManager();
 	}
 	
 	public Class<T> getType(){
@@ -76,14 +74,6 @@ public class DataServiceUnit<T extends IDataServiceUnitSubscriber> {
 		} catch (Exception e) {
 			System.out.println("Error");
 		}
-	}
-	
-	public void begin(){
-		em.getTransaction().begin();
-	}
-	
-	public void commit(){
-		em.getTransaction().commit();
 	}
 	
 	public void persist(T t){

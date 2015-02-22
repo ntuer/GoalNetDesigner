@@ -44,6 +44,7 @@ public class DataSession {
 				Cache.states = gnet.getStates();
 				Cache.transitions = gnet.getTransitions();
 				loadTasksAndMethods();
+				DataService.begin();
 			}
 		}
 		
@@ -60,12 +61,4 @@ public class DataSession {
 		}
 	}
 	
-	public static class Diff {
-		public static List<Object> newObjects = new ArrayList<Object>();
-		public static List<Object> deletedObjects = new ArrayList<Object>();
-		public static void clear() {
-			newObjects.clear();
-			deletedObjects.clear();
-		}
-	}
 }

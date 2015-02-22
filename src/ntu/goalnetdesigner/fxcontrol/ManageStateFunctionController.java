@@ -19,6 +19,7 @@ import javafx.util.Callback;
 import ntu.goalnetdesigner.data.persistence.Method;
 import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.StateFunction;
+import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.UISession;
 import ntu.goalnetdesigner.utility.UIUtility;
@@ -26,10 +27,10 @@ import ntu.goalnetdesigner.utility.UIUtility;
 public class ManageStateFunctionController {
 
     @FXML
-    private ListView<StateFunction> functionList;
+    private ListView<StateFunction> functionListView;
 
     private State selectedState;
-    private ObservableList<StateFunction> stateFunctionList;
+    private List<StateFunction> stateFunctionList;
     
     // Helper fields for adding new function
 	private Method selectedFunction;
@@ -38,8 +39,8 @@ public class ManageStateFunctionController {
     @FXML
     public void initialize(){
     	this.selectedState = (State) UISession.getDrawableFromCurrentSelection();
-    	this.stateFunctionList = FXCollections.observableArrayList(this.selectedState.getStateFunctions());
-    	functionList.setItems(this.stateFunctionList);
+    	this.stateFunctionList = this.selectedState.getStateFunctions();
+    	functionListView.setItems(FXCollections.observableArrayList(this.stateFunctionList));
     }
     
     @FXML
@@ -66,44 +67,50 @@ public class ManageStateFunctionController {
     		sf.setSequence(this.stateFunctionList.size());
     		this.selectedState.addStateFunction(sf);
     		this.selectedFunction.addStateFunction(sf);
-    		this.stateFunctionList.add(sf);
+    		DataService.stateFunction.persist(sf);
+    		refreshSequence();
+    		functionListView.setItems(FXCollections.observableArrayList(this.stateFunctionList));
     	}
     }
 
     @FXML
     void moveUpOnClick(ActionEvent event) {
-    	StateFunction sf = this.functionList.getSelectionModel().getSelectedItem();
-    	int index = this.functionList.getSelectionModel().getSelectedIndex();
+    	int index = this.functionListView.getSelectionModel().getSelectedIndex();
+    	StateFunction sf = this.stateFunctionList.get(index);
     	this.stateFunctionList.remove(index);
     	index = index - 1 < 0 ? 0 : index - 1;
     	this.stateFunctionList.add(index, sf);
-    	this.functionList.getSelectionModel().select(index);
+    	refreshSequence();
+    	functionListView.setItems(FXCollections.observableArrayList(this.stateFunctionList));
+    	this.functionListView.getSelectionModel().select(index);
     }
 
     @FXML
     void moveDownOnClick(ActionEvent event) {
-    	StateFunction sf = this.functionList.getSelectionModel().getSelectedItem();
-    	int index = this.functionList.getSelectionModel().getSelectedIndex();
+    	int index = this.functionListView.getSelectionModel().getSelectedIndex();
+    	StateFunction sf = this.stateFunctionList.get(index);
     	this.stateFunctionList.remove(index);
     	index = index + 1 > this.stateFunctionList.size() ? this.stateFunctionList.size() : index + 1;
     	this.stateFunctionList.add(index, sf);
-    	this.functionList.getSelectionModel().select(index);
+    	refreshSequence();
+    	functionListView.setItems(FXCollections.observableArrayList(this.stateFunctionList));
+    	this.functionListView.getSelectionModel().select(index);
     }
 
     @FXML
     void deleteOnClick(ActionEvent event) {
-    	StateFunction sf = this.functionList.getSelectionModel().getSelectedItem();
-    	int index = this.functionList.getSelectionModel().getSelectedIndex();
+    	int index = this.functionListView.getSelectionModel().getSelectedIndex();
+    	StateFunction sf = this.stateFunctionList.get(index);
     	this.stateFunctionList.remove(index);
+    	DataService.stateFunction.remove(sf);
+    	refreshSequence();
+    	DataService.flush();
+    	functionListView.setItems(FXCollections.observableArrayList(this.stateFunctionList));
     }
 
-    @FXML
-    void saveButtonOnClick(ActionEvent event) {
+    void refreshSequence() {
     	for (int i = 0; i < this.stateFunctionList.size(); ++i){
     		this.stateFunctionList.get(i).setSequence(i + 1);
     	}
-    	StateFunction[] a = new StateFunction[stateFunctionList.size()];
-    	this.selectedState.setStateFunctions(new ArrayList<StateFunction>(Arrays.asList((stateFunctionList.toArray(a)))));
-    	UIUtility.Navigation.closeContainingStage((Button)event.getSource());
     }
 }

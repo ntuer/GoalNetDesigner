@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import ntu.goalnetdesigner.data.persistence.Method;
+import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.StateFunction;
 import ntu.goalnetdesigner.data.persistence.TaskFunction;
+import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.session.DataSession;
 
 public class FunctionManager {
@@ -18,7 +20,7 @@ public class FunctionManager {
 		m.setStateFunctions(new ArrayList<StateFunction>());
 		m.setTaskFunctions(new ArrayList<TaskFunction>());
 		DataSession.Cache.functions.add(m);
-		DataSession.Diff.newObjects.add(m);
+		DataService.method.persist(m);
 		return m;
 	}
 }

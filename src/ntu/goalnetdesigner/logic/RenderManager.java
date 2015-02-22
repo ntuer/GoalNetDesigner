@@ -8,6 +8,7 @@ import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.data.persistence.Gnet;
 import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.Transition;
+import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.logger.ConsoleLogger;
 import ntu.goalnetdesigner.render.RenderableMouseEventHandler;
 import ntu.goalnetdesigner.render.Renderable;
@@ -105,7 +106,7 @@ public class RenderManager {
     	
     	UISession.objectsForArc.clear();
     	setMouseEventHandler(a);
-    	DataSession.Diff.newObjects.add(a.getBaseObject());
+    	DataService.arc.persist(a.getBaseObject());
     	return a;
 	}
 	
@@ -113,7 +114,10 @@ public class RenderManager {
 		try {
 			Renderable r =  RenderedObjectFactory.getNewRenderedObject(x, y, propertyPane, drawingPane);
 			setMouseEventHandler(r);
-			DataSession.Diff.newObjects.add(r.getBaseObject());
+			if (r instanceof RenderedTransition)
+				DataService.transition.persist((Transition) r.getBaseObject());
+			else
+				DataService.state.persist((State) r.getBaseObject());
 			return r;
 		} catch (Exception e) {
 			e.printStackTrace();

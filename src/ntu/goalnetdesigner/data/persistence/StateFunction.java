@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="state_function")
 @NamedQuery(name="StateFunction.findAll", query="SELECT s FROM StateFunction s")
-public class StateFunction implements Serializable {
+public class StateFunction implements Serializable, IAssociationDataServiceUnitSubscriber {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId

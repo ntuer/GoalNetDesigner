@@ -6,6 +6,7 @@ import java.util.UUID;
 import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.data.persistence.TaskFunction;
 import ntu.goalnetdesigner.data.persistence.TasklistTask;
+import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.session.DataSession;
 
 public class TaskManager {
@@ -16,7 +17,7 @@ public class TaskManager {
 		t.setTaskFunctions(new ArrayList<TaskFunction>());
 		t.setTasklistTasks(new ArrayList<TasklistTask>());
 		DataSession.Cache.tasks.add(t);
-		DataSession.Diff.newObjects.add(t);
+		DataService.task.persist(t);
 		return t;
 	}
 }

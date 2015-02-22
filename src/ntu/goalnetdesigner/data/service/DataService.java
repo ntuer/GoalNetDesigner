@@ -3,14 +3,31 @@ package ntu.goalnetdesigner.data.service;
 import java.util.HashMap;
 import java.util.Map;
 
-import ntu.goalnetdesigner.data.persistence.*;
-import ntu.goalnetdesigner.session.LoginSession;
-
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import ntu.goalnetdesigner.data.persistence.ActionLog;
+import ntu.goalnetdesigner.data.persistence.Arc;
+import ntu.goalnetdesigner.data.persistence.FeedbackLog;
+import ntu.goalnetdesigner.data.persistence.Gnet;
+import ntu.goalnetdesigner.data.persistence.Method;
+import ntu.goalnetdesigner.data.persistence.Property;
+import ntu.goalnetdesigner.data.persistence.Question;
+import ntu.goalnetdesigner.data.persistence.State;
+import ntu.goalnetdesigner.data.persistence.StateFunction;
+import ntu.goalnetdesigner.data.persistence.Task;
+import ntu.goalnetdesigner.data.persistence.TaskFunction;
+import ntu.goalnetdesigner.data.persistence.Tasklist;
+import ntu.goalnetdesigner.data.persistence.TasklistTask;
+import ntu.goalnetdesigner.data.persistence.Transition;
+import ntu.goalnetdesigner.data.persistence.User;
+import ntu.goalnetdesigner.data.persistence.Usergroup;
+import ntu.goalnetdesigner.session.LoginSession;
+
 public class DataService {
 	private static EntityManagerFactory emf = null;
+	private static EntityManager em = null;
 	
 	@SuppressWarnings("unchecked")
 	public static EntityManagerFactory getEntityManagerFactory(){
@@ -27,7 +44,29 @@ public class DataService {
 		return emf;
 	}
 	
-	// TODO: change to singleton for safety
+	public static EntityManager getEntityManager(){
+		if (em == null){
+			em = getEntityManagerFactory().createEntityManager();
+		}
+		return em;
+	}
+	
+	public static void begin(){
+		em.getTransaction().begin();
+	}
+	
+	public static void commit(){
+		em.getTransaction().commit();
+	}
+	
+	public static void flush(){
+		em.flush();
+	}
+	
+	public static void rollback(){
+		em.getTransaction().rollback();
+	}
+	
 	public static DataServiceUnit<ActionLog> actionLog = new DataServiceUnit<ActionLog>(ActionLog.class);
 	public static DataServiceUnit<FeedbackLog> feedbackLog = new DataServiceUnit<FeedbackLog>(FeedbackLog.class);
 	public static DataServiceUnit<Question> question = new DataServiceUnit<Question>(Question.class);
@@ -41,4 +80,8 @@ public class DataService {
 	public static DataServiceUnit<Tasklist> tasklist = new DataServiceUnit<Tasklist>(Tasklist.class);
 	public static DataServiceUnit<User> user = new DataServiceUnit<User>(User.class);
 	public static DataServiceUnit<Usergroup> usergroup = new DataServiceUnit<Usergroup>(Usergroup.class);
+	
+	public static AssociationDataServiceUnit<StateFunction> stateFunction = new AssociationDataServiceUnit<StateFunction>(StateFunction.class);
+	public static AssociationDataServiceUnit<TaskFunction> taskFunction = new AssociationDataServiceUnit<TaskFunction>(TaskFunction.class);
+	public static AssociationDataServiceUnit<TasklistTask> tasklistTask = new AssociationDataServiceUnit<TasklistTask>(TasklistTask.class);
 }

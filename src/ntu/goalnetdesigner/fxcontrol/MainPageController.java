@@ -31,6 +31,7 @@ import ntu.goalnetdesigner.data.persistence.Method;
 import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.data.persistence.Transition;
+import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.logger.ConsoleLogger;
 import ntu.goalnetdesigner.logic.FunctionManager;
 import ntu.goalnetdesigner.logic.RenderManager;
@@ -422,7 +423,8 @@ public class MainPageController {
 
     @FXML
     void fileMenuExitClicked(ActionEvent event) {
-    	UISession.primaryStage.close();
+    	DataService.rollback();
+    	//UISession.primaryStage.close();
     }
 
     @FXML

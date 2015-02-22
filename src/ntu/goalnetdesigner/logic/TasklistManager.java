@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import ntu.goalnetdesigner.data.persistence.Tasklist;
 import ntu.goalnetdesigner.data.persistence.TasklistTask;
+import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.session.DataSession;
 
 public class TasklistManager {
@@ -14,7 +15,7 @@ public class TasklistManager {
 		t.setName("New tasklist");
 		t.setTasklistTasks(new ArrayList<TasklistTask>());
 		DataSession.Cache.tasklists.add(t);
-		DataSession.Diff.newObjects.add(t);
+		DataService.tasklist.persist(t);
 		return t;
 	}
 }

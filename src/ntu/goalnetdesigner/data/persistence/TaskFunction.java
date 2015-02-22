@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="task_function")
 @NamedQuery(name="TaskFunction.findAll", query="SELECT t FROM TaskFunction t")
-public class TaskFunction implements Serializable {
+public class TaskFunction implements Serializable, IAssociationDataServiceUnitSubscriber {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId

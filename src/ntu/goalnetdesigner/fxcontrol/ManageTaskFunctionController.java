@@ -1,6 +1,7 @@
 package ntu.goalnetdesigner.fxcontrol;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,17 +21,18 @@ import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.StateFunction;
 import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.data.persistence.TaskFunction;
+import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.UISession;
 import ntu.goalnetdesigner.utility.UIUtility;
 
 public class ManageTaskFunctionController {
 
-    @FXML
-    private ListView<TaskFunction> functionList;
+	@FXML
+    private ListView<TaskFunction> functionListView;
 
     private Task selectedTask;
-    private ObservableList<TaskFunction> taskFunctionList;
+    private List<TaskFunction> taskFunctionList;
     
     // Helper fields for adding new function
 	private Method selectedFunction;
@@ -39,8 +41,8 @@ public class ManageTaskFunctionController {
     @FXML
     public void initialize(){
     	this.selectedTask = (Task) UISession.currentSelection;
-    	this.taskFunctionList = FXCollections.observableArrayList(this.selectedTask.getTaskFunctions());
-    	functionList.setItems(this.taskFunctionList);
+    	this.taskFunctionList = this.selectedTask.getTaskFunctions();
+    	functionListView.setItems(FXCollections.observableArrayList(this.taskFunctionList));
     }
     
     @FXML
@@ -59,52 +61,58 @@ public class ManageTaskFunctionController {
 			}
     	};
     	DialogResponse resp = Dialogs.showCustomDialog(UISession.primaryStage, 
-    			grid, "Please select function to associate with this task", "Select function", DialogOptions.OK_CANCEL, callback);
+    			grid, "Please select function", "Select function", DialogOptions.OK_CANCEL, callback);
     	
     	if (resp == DialogResponse.OK){
-    		TaskFunction sf = new TaskFunction();
+    		TaskFunction tf = new TaskFunction();
     		// find max sequence, and append to end
-    		sf.setSequence(this.taskFunctionList.size());
-    		this.selectedTask.addTaskFunction(sf);
-    		this.selectedFunction.addTaskFunction(sf);
-    		this.taskFunctionList.add(sf);
+    		tf.setSequence(this.taskFunctionList.size());
+    		this.selectedTask.addTaskFunction(tf);
+    		this.selectedFunction.addTaskFunction(tf);
+    		DataService.taskFunction.persist(tf);
+    		refreshSequence();
+    		functionListView.setItems(FXCollections.observableArrayList(this.taskFunctionList));
     	}
     }
 
     @FXML
     void moveUpOnClick(ActionEvent event) {
-    	TaskFunction sf = this.functionList.getSelectionModel().getSelectedItem();
-    	int index = this.functionList.getSelectionModel().getSelectedIndex();
+    	int index = this.functionListView.getSelectionModel().getSelectedIndex();
+    	TaskFunction tf = this.taskFunctionList.get(index);
     	this.taskFunctionList.remove(index);
     	index = index - 1 < 0 ? 0 : index - 1;
-    	this.taskFunctionList.add(index, sf);
-    	this.functionList.getSelectionModel().select(index);
+    	this.taskFunctionList.add(index, tf);
+    	refreshSequence();
+    	functionListView.setItems(FXCollections.observableArrayList(this.taskFunctionList));
+    	this.functionListView.getSelectionModel().select(index);
     }
 
     @FXML
     void moveDownOnClick(ActionEvent event) {
-    	TaskFunction sf = this.functionList.getSelectionModel().getSelectedItem();
-    	int index = this.functionList.getSelectionModel().getSelectedIndex();
+    	int index = this.functionListView.getSelectionModel().getSelectedIndex();
+    	TaskFunction tf = this.taskFunctionList.get(index);
     	this.taskFunctionList.remove(index);
     	index = index + 1 > this.taskFunctionList.size() ? this.taskFunctionList.size() : index + 1;
-    	this.taskFunctionList.add(index, sf);
-    	this.functionList.getSelectionModel().select(index);
+    	this.taskFunctionList.add(index, tf);
+    	refreshSequence();
+    	functionListView.setItems(FXCollections.observableArrayList(this.taskFunctionList));
+    	this.functionListView.getSelectionModel().select(index);
     }
 
     @FXML
     void deleteOnClick(ActionEvent event) {
-    	TaskFunction tf = this.functionList.getSelectionModel().getSelectedItem();
-    	int index = this.functionList.getSelectionModel().getSelectedIndex();
+    	int index = this.functionListView.getSelectionModel().getSelectedIndex();
+    	TaskFunction sf = this.taskFunctionList.get(index);
     	this.taskFunctionList.remove(index);
+    	DataService.taskFunction.remove(sf);
+    	refreshSequence();
+    	DataService.flush();
+    	functionListView.setItems(FXCollections.observableArrayList(this.taskFunctionList));
     }
 
-    @FXML
-    void saveButtonOnClick(ActionEvent event) {
+    void refreshSequence() {
     	for (int i = 0; i < this.taskFunctionList.size(); ++i){
     		this.taskFunctionList.get(i).setSequence(i + 1);
     	}
-    	TaskFunction[] a = new TaskFunction[taskFunctionList.size()];
-    	this.selectedTask.setTaskFunctions(new ArrayList<TaskFunction>(Arrays.asList((taskFunctionList.toArray(a)))));
-    	UIUtility.Navigation.closeContainingStage((Button)event.getSource());
     }
 }
