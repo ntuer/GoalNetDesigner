@@ -40,6 +40,10 @@ public class RenderManager {
 	
 	
 	public void renderGNet(Gnet gnet){
+		if (gnet == null){
+			drawingPane.getChildren().clear();
+			return;
+		}
 		List<Arc> arcs = gnet.getArcs();
 		List<State> states = gnet.getStates();
 		List<Transition> transitions = gnet.getTransitions();

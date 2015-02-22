@@ -1,14 +1,10 @@
 package ntu.goalnetdesigner.fxcontrol;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialogs;
 import javafx.scene.control.Dialogs.DialogOptions;
@@ -22,7 +18,6 @@ import ntu.goalnetdesigner.data.persistence.StateFunction;
 import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.UISession;
-import ntu.goalnetdesigner.utility.UIUtility;
 
 public class ManageStateFunctionController {
 
@@ -67,8 +62,8 @@ public class ManageStateFunctionController {
     		sf.setSequence(this.stateFunctionList.size());
     		this.selectedState.addStateFunction(sf);
     		this.selectedFunction.addStateFunction(sf);
-    		DataService.stateFunction.persist(sf);
     		refreshSequence();
+    		DataService.stateFunction.persist(sf);
     		functionListView.setItems(FXCollections.observableArrayList(this.stateFunctionList));
     	}
     }
@@ -102,9 +97,8 @@ public class ManageStateFunctionController {
     	int index = this.functionListView.getSelectionModel().getSelectedIndex();
     	StateFunction sf = this.stateFunctionList.get(index);
     	this.stateFunctionList.remove(index);
-    	DataService.stateFunction.remove(sf);
     	refreshSequence();
-    	DataService.flush();
+    	DataService.stateFunction.remove(sf);
     	functionListView.setItems(FXCollections.observableArrayList(this.stateFunctionList));
     }
 

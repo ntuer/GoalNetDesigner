@@ -57,7 +57,7 @@ public class FeedbackController {
 				fb.setId(UUID.randomUUID().toString());
 				fb.setQuestion(questions.get(i));
 				fb.setVersion(Resource.System.SYSTEM_VERSION);
-				DataService.feedbackLog.insert(fb);
+				DataService.feedbackLog.atomicInsert(fb);
 			}
 			Dialogs.showInformationDialog(UISession.primaryStage, "Thank you for your feedback!", 
 				    "Feedback Submitted", "Feedback");

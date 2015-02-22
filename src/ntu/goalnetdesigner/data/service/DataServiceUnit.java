@@ -41,27 +41,13 @@ public class DataServiceUnit<T extends IDataServiceUnitSubscriber> {
 		return result;
 	}
 	
-	public void insert(T t){
+	public void atomicInsert(T t){
 		em.getTransaction().begin();
 		em.persist(t);
 		em.getTransaction().commit();
 	}
 	
-	public void update(T t){
-		try {
-			Method method = this.type.getMethod("getId", null);
-			String id = (String) method.invoke(t, null);
-			em.getTransaction().begin();
-			T a = em.find(this.type, id);
-			if (a == null)
-				em.persist(t);
-			em.getTransaction().commit();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void delete(T t){
+	public void atomicDelete(T t){
 		try {
 			Method method = this.type.getMethod("getId", null);
 			String id = (String) method.invoke(t, null);
@@ -72,14 +58,16 @@ public class DataServiceUnit<T extends IDataServiceUnitSubscriber> {
 			}
 			em.getTransaction().commit();
 		} catch (Exception e) {
-			System.out.println("Error");
+			e.printStackTrace();
 		}
 	}
 	
 	public void persist(T t){
 		em.persist(t);
+		em.flush();
 	}
 	public void remove(T t){
 		em.remove(t);
+		em.flush();
 	}
 }

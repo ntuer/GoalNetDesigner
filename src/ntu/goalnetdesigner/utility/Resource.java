@@ -49,15 +49,17 @@ public class Resource {
 	
 	public static final String ABOUT_PATH = "/ntu/goalnetdesigner/fxui/About.fxml";
 	public static final String FEEDBACK_PATH = "/ntu/goalnetdesigner/fxui/Feedback.fxml";
-	public static final String LOGIN_PATH = "/ntu/goalnetdesigner/fxui/Login.fxml";
 	public static final String MAINPAGE_PATH = "/ntu/goalnetdesigner/fxui/MainPage.fxml";
 	public static final String NEW_GNET_PATH = "/ntu/goalnetdesigner/fxui/NewGNet.fxml";
 	public static final String OPEN_GNET_PATH = "/ntu/goalnetdesigner/fxui/OpenGNet.fxml";
-	public static final String REGISTER_PATH = "/ntu/goalnetdesigner/fxui/Register.fxml";
-	public static final String RESET_PASSWORD_PATH = "/ntu/goalnetdesigner/fxui/ResetPassword.fxml";
+
 	public static final String MANAGE_STATE_FUNCTION_PATH = "/ntu/goalnetdesigner/fxui/ManageStateFunction.fxml";
 	public static final String MANAGE_TASK_FUNCTION_PATH = "/ntu/goalnetdesigner/fxui/ManageTaskFunction.fxml";
 	public static final String MANAGE_TRANSITION_TASK_PATH = "/ntu/goalnetdesigner/fxui/ManageTransitionTask.fxml";
+	
+	public static final String LOGIN_PATH = "/ntu/goalnetdesigner/fxui/login/Login.fxml";	
+	public static final String REGISTER_PATH = "/ntu/goalnetdesigner/fxui/login/Register.fxml";
+	public static final String RESET_PASSWORD_PATH = "/ntu/goalnetdesigner/fxui/login/ResetPassword.fxml";
 	
 	public static final String ARC_PROPERTY_PANE_PATH ="/ntu/goalnetdesigner/fxui/propertypane/ArcPropertyPane.fxml";
 	public static final String STATE_PROPERTY_PANE_PATH ="/ntu/goalnetdesigner/fxui/propertypane/StatePropertyPane.fxml";

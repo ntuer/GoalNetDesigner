@@ -13,6 +13,7 @@ import ntu.goalnetdesigner.render.RenderedArc;
 public class UISession {
 	// Main window reference
 	public static Stage primaryStage = null;
+	public static Stage secondaryStage = null;
 	
 	// Object dragging and onclick lock
 	public static boolean isInRenderedObject = false;

@@ -1,4 +1,4 @@
-package ntu.goalnetdesigner.fxcontrol;
+package ntu.goalnetdesigner.fxcontrol.login;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -28,7 +28,11 @@ public class LoginController implements Initializable{
     
     @FXML
     private TextField usernameField;
-    
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		serverAddressField.setText("localhost/gnetdb_new");
+	}
 	@FXML
 	protected void handleSubmitButtonAction(ActionEvent event) throws Exception{
 		LoginSession.serverAddress = serverAddressField.getText();
@@ -42,8 +46,13 @@ public class LoginController implements Initializable{
 			actiontarget.setText("Invalid Login");
 	}
 
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		serverAddressField.setText("localhost/gnetdb_new");
-	}
+    @FXML
+    void registerClicked(ActionEvent event) throws Exception {
+    	UIUtility.Navigation.switchTo(Resource.REGISTER_PATH, UISession.primaryStage);
+    }
+
+    @FXML
+    void resetPasswordClicked(ActionEvent event) throws Exception {
+    	UIUtility.Navigation.switchTo(Resource.RESET_PASSWORD_PATH, UISession.primaryStage);
+    }
 }

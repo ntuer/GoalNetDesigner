@@ -16,7 +16,7 @@ public class RenderableKeyEventHandler {
 		public void handle( final KeyEvent keyEvent ){
 			if ( keyEvent.getCode().equals( KeyCode.DELETE ) ){
 				if (renderedObject instanceof RenderedState){
-					DataService.state.delete(((RenderedState) renderedObject).getBaseObject());
+					DataService.state.atomicDelete(((RenderedState) renderedObject).getBaseObject());
 				}
 			}
 		}

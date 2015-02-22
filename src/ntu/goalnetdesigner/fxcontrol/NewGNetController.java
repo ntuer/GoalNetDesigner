@@ -36,7 +36,7 @@ public class NewGNetController {
     	t.setId(UUID.randomUUID().toString());
     	t.setName(this.nameOfGoalNetField.getText());
     	t.setDescription(descriptionField.getText());
-    	DataService.gnet.insert(t);
+    	DataService.gnet.atomicInsert(t);
     	DataSession.Cache.setGNet(t);
     	ConsoleLogger.log("New Goal Net Created: " + t.getName());
     	UIUtility.Navigation.closeContainingStage(okButton);

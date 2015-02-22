@@ -7,141 +7,151 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <GridPane minHeight="768.0" minWidth="1366.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntu.goalnetdesigner.fxcontrol.MainPageController">
-   <children>
-      
-      <MenuBar maxHeight="35.0" GridPane.columnSpan="2">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-                  <MenuItem fx:id="fileMenuNew" mnemonicParsing="false" onAction="#fileMenuNewClicked" text="New" />
-              <MenuItem fx:id="fileMenuOpen" mnemonicParsing="false" onAction="#fileMenuOpenClicked" text="Open" />
-                  <MenuItem fx:id="fileMenuSave" mnemonicParsing="false" onAction="#fileMenuSaveClicked" text="Save" />
-                  <MenuItem fx:id="fileMenuNSaveAs" mnemonicParsing="false" onAction="#fileMenuNSaveAsClicked" text="Save As" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="fileMenuOpenLocal" mnemonicParsing="false" onAction="#fileMenuOpenLocalClicked" text="Open Local" />
-                  <MenuItem fx:id="fileMenuSaveAsLocal" mnemonicParsing="false" onAction="#fileMenuSaveAsLocalClicked" text="Save As Local" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="fileMenuClose" mnemonicParsing="false" onAction="#fileMenuCloseClicked" text="Close" />
-                  <MenuItem fx:id="fileMenuPrint" mnemonicParsing="false" onAction="#fileMenuPrintClicked" text="Print" />
-                  <MenuItem fx:id="fileMenuExit" mnemonicParsing="false" onAction="#fileMenuExitClicked" text="Exit" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem fx:id="editMenuUndo" mnemonicParsing="false" onAction="#editMenuUndoClicked" text="Undo" />
-                  <MenuItem fx:id="editMenuDelete" mnemonicParsing="false" onAction="#editMenuDeleteClicked" text="Delete" />
-                  <MenuItem fx:id="editMenuProperty" mnemonicParsing="false" onAction="#editMenuPropertyClicked" text="Property" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Run">
-            <items>
-                  <MenuItem fx:id="runMenuVerify" mnemonicParsing="false" onAction="#runMenuVerifyClicked" text="Verity" />
-              <MenuItem fx:id="runMenuRun" mnemonicParsing="false" onAction="#runMenuRunClicked" text="Run" />
-                  <CheckMenuItem fx:id="runMenuDisplayWarning" mnemonicParsing="false" text="Display Warnings" />
-            </items>
-          </Menu>
-            <Menu mnemonicParsing="false" text="Session">
-               <items>
-                  <MenuItem fx:id="sessionMenuCurrentUser" mnemonicParsing="false" onAction="#sessionMenuCurrentUserClicked" text="View Current User" />
-                  <MenuItem fx:id="sessionMenuLogOut" mnemonicParsing="false" onAction="#sessionMenuLogOutClicked" text="Log Out" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Help">
-               <items>
-                  <MenuItem fx:id="helpMenuAbout" mnemonicParsing="false" onAction="#helpMenuAboutClicked" text="About" />
-                  <MenuItem fx:id="helpMenuFeedback" mnemonicParsing="false" onAction="#helpMenuFeedbackClicked" text="Feedback" />
-               </items>
-            </Menu>
-        </menus>
-      </MenuBar>
-      <ToolBar layoutY="25.0" maxHeight="25.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
-        <items>
-          <Button fx:id="simpleStateButton" mnemonicParsing="false" onAction="#simpleStateButtonClicked" text="State" />
-            <Button fx:id="compositeStateButton" mnemonicParsing="false" onAction="#compositeStateButtonClicked" text="Composite" />
-            <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" />
-            <Button fx:id="transitionButton" mnemonicParsing="false" onAction="#transitionButtonClicked" text="Transition" />
-            <Button fx:id="arcButton" mnemonicParsing="false" onAction="#arcButtonClicked" text="Arc" />
-            <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" />
-            <Button fx:id="newFunctionButton" mnemonicParsing="false" onAction="#newFunctionButtonOnClick" text="Function" />
-            <Button fx:id="newTaskButton" mnemonicParsing="false" onAction="#newTaskButtonOnClick" text="Task" />
-        </items>
-      </ToolBar>
-      <TabPane layoutX="726.0" layoutY="65.0" prefHeight="367.0" prefWidth="298.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="2">
-        <tabs>
-            <Tab fx:id="arcTab" onSelectionChanged="#refreshArcTreeView" text="Arc">
-               <content>
-                  <TreeView fx:id="arcTreeView" prefHeight="336.0" prefWidth="296.0" />
-               </content>
-            </Tab>
-          <Tab fx:id="functionTab" onSelectionChanged="#refreshFunctionTreeView" text="Function">
-               <content>
-                  <TreeView fx:id="functionTreeView" prefHeight="200.0" prefWidth="200.0" />
-               </content></Tab>
-            <Tab fx:id="stateTab" onSelectionChanged="#refreshStateTreeView" text="State">
-               <content>
-                  <TreeView fx:id="stateTreeView" prefHeight="200.0" prefWidth="200.0" />
-               </content>
-            </Tab>
-          <Tab fx:id="taskTab" onSelectionChanged="#refreshTaskTreeView" text="Task">
-               <content>
-                  <TreeView fx:id="taskTreeView" prefHeight="200.0" prefWidth="200.0" />
-               </content></Tab>
-            <Tab fx:id="transitionTab" onSelectionChanged="#refreshTransitionTreeView" text="Transition">
-               <content>
-                  <TreeView fx:id="transitionTreeView" prefHeight="200.0" prefWidth="200.0" />
-               </content>
-            </Tab>
-        </tabs>
-      </TabPane>
-      <TabPane layoutX="726.0" layoutY="434.0" prefHeight="339.0" prefWidth="298.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.rowSpan="2">
-        <tabs>
-          <Tab fx:id="linkTab" text="Link" />
-          <Tab fx:id="propertyTab" text="Property">
-               <content>
-                  <ScrollPane fx:id="propertyPane" prefHeight="200.0" prefWidth="200.0" />
-               </content></Tab>
-        </tabs>
-      </TabPane>
-      <TitledPane animated="false" layoutY="65.0" prefHeight="523.0" prefWidth="726.0" text="Drawing" GridPane.rowIndex="2" GridPane.rowSpan="3">
-         <content>
-            <ScrollPane prefHeight="200.0" prefWidth="200.0">
-              <content>
-                <AnchorPane fx:id="drawingPane" minHeight="0.0" minWidth="0.0" prefHeight="5000.0" prefWidth="5000.0" />
-              </content>
-            </ScrollPane>
-         </content>
-      </TitledPane>
-      <TabPane layoutY="588.0" prefHeight="184.0" prefWidth="726.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="5">
-        <tabs>
-          <Tab fx:id="outputTab" text="Output">
-               <content>
-                  <TextArea fx:id="outputField" prefHeight="156.0" prefWidth="726.0" />
-               </content>
-          </Tab>
-          <Tab fx:id="eventLogTab" text="Event Log">
-               <content>
-                  <TextArea fx:id="eventLogField" prefHeight="156.0" prefWidth="726.0" />
-               </content>
-          </Tab>
-        </tabs>
-      </TabPane>
-      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="6">
-         <children>
-            <Label text="Label" />
-         </children>
-      </HBox>
-   </children>
-   <columnConstraints>
-     <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="70.0" prefWidth="100.0" />
-     <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="30.0" prefWidth="100.0" />
-   </columnConstraints>
-   <rowConstraints>
-     <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="ALWAYS" />
-     <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="ALWAYS" />
-     <RowConstraints minHeight="10.0" percentHeight="25.0" prefHeight="30.0" vgrow="ALWAYS" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-      <RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" vgrow="ALWAYS" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-      <RowConstraints maxHeight="25.0" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-   </rowConstraints>
+	<children>
+
+		<MenuBar maxHeight="35.0" GridPane.columnSpan="2">
+			<menus>
+				<Menu mnemonicParsing="false" text="File">
+					<items>
+						<MenuItem fx:id="fileMenuNew" mnemonicParsing="false" onAction="#fileMenuNewClicked" text="New" />
+						<MenuItem fx:id="fileMenuOpen" mnemonicParsing="false" onAction="#fileMenuOpenClicked" text="Open" />
+						<MenuItem fx:id="fileMenuSave" mnemonicParsing="false" onAction="#fileMenuSaveClicked" text="Save Changes" />
+						<SeparatorMenuItem mnemonicParsing="false" />
+						<MenuItem fx:id="fileMenuOpenLocal" mnemonicParsing="false" onAction="#fileMenuOpenLocalClicked" text="Open Local" />
+						<MenuItem fx:id="fileMenuSaveAsLocal" mnemonicParsing="false" onAction="#fileMenuSaveAsLocalClicked" text="Save As Local" />
+						<SeparatorMenuItem mnemonicParsing="false" />
+						<MenuItem fx:id="fileMenuClose" mnemonicParsing="false" onAction="#fileMenuCloseClicked" text="Close" />
+						<MenuItem fx:id="fileMenuPrint" mnemonicParsing="false" onAction="#fileMenuPrintClicked" text="Print" />
+						<MenuItem fx:id="fileMenuExit" mnemonicParsing="false" onAction="#fileMenuExitClicked" text="Exit" />
+					</items>
+				</Menu>
+				<Menu mnemonicParsing="false" text="Edit">
+					<items>
+						<MenuItem fx:id="editMenuUndo" mnemonicParsing="false" onAction="#editMenuUndoClicked" text="Undo" />
+						<MenuItem fx:id="editMenuDelete" mnemonicParsing="false" onAction="#editMenuDeleteClicked" text="Delete" />
+						<SeparatorMenuItem mnemonicParsing="false" />
+						<MenuItem fx:id="editMenuGoalNetProperty" mnemonicParsing="false" onAction="#editMenuGoalNetPropertyClicked" text="Goal Net Property" />
+					</items>
+				</Menu>
+				<Menu mnemonicParsing="false" text="Run">
+					<items>
+						<MenuItem fx:id="runMenuVerify" mnemonicParsing="false" onAction="#runMenuVerifyClicked" text="Verity" />
+						<MenuItem fx:id="runMenuRun" mnemonicParsing="false" onAction="#runMenuRunClicked" text="Run" />
+						<SeparatorMenuItem mnemonicParsing="false" />
+						<CheckMenuItem fx:id="runMenuDisplayWarning" mnemonicParsing="false" text="Display Warnings" />
+					</items>
+				</Menu>
+				<Menu mnemonicParsing="false" text="Team">
+					<items>
+						<MenuItem mnemonicParsing="false" onAction="#teamMenuUserGroupClicked" text="User Group" />
+						<MenuItem mnemonicParsing="false" onAction="#teamMenuGNetVisibilityClicked" text="GNet Visibility" />
+					</items>
+				</Menu>
+				<Menu mnemonicParsing="false" text="User">
+					<items>
+						<MenuItem fx:id="userMenuCurrentUser" mnemonicParsing="false" onAction="#userMenuCurrentUserClicked" text="View Current User" />
+						<MenuItem fx:id="userMenuLogOut" mnemonicParsing="false" onAction="#userMenuLogOutClicked" text="Log Out" />
+					</items>
+				</Menu>
+				<Menu mnemonicParsing="false" text="Help">
+					<items>
+						<MenuItem fx:id="helpMenuAbout" mnemonicParsing="false" onAction="#helpMenuAboutClicked" text="About" />
+						<MenuItem fx:id="helpMenuFeedback" mnemonicParsing="false" onAction="#helpMenuFeedbackClicked" text="Feedback" />
+					</items>
+				</Menu>
+			</menus>
+		</MenuBar>
+		<ToolBar layoutY="25.0" maxHeight="25.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+			<items>
+				<Button fx:id="simpleStateButton" mnemonicParsing="false" onAction="#simpleStateButtonClicked" text="State" />
+				<Button fx:id="compositeStateButton" mnemonicParsing="false" onAction="#compositeStateButtonClicked" text="Composite" />
+				<Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" />
+				<Button fx:id="transitionButton" mnemonicParsing="false" onAction="#transitionButtonClicked" text="Transition" />
+				<Button fx:id="arcButton" mnemonicParsing="false" onAction="#arcButtonClicked" text="Arc" />
+				<Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" />
+				<Button fx:id="newFunctionButton" mnemonicParsing="false" onAction="#newFunctionButtonOnClick" text="Function" />
+				<Button fx:id="newTaskButton" mnemonicParsing="false" onAction="#newTaskButtonOnClick" text="Task" />
+			</items>
+		</ToolBar>
+		<TabPane layoutX="726.0" layoutY="65.0" prefHeight="367.0" prefWidth="298.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="2">
+			<tabs>
+				<Tab fx:id="arcTab" onSelectionChanged="#refreshArcTreeView" text="Arc">
+					<content>
+						<TreeView fx:id="arcTreeView" prefHeight="336.0" prefWidth="296.0" />
+					</content>
+				</Tab>
+				<Tab fx:id="functionTab" onSelectionChanged="#refreshFunctionTreeView" text="Function">
+					<content>
+						<TreeView fx:id="functionTreeView" prefHeight="200.0" prefWidth="200.0" />
+					</content>
+				</Tab>
+				<Tab fx:id="stateTab" onSelectionChanged="#refreshStateTreeView" text="State">
+					<content>
+						<TreeView fx:id="stateTreeView" prefHeight="200.0" prefWidth="200.0" />
+					</content>
+				</Tab>
+				<Tab fx:id="taskTab" onSelectionChanged="#refreshTaskTreeView" text="Task">
+					<content>
+						<TreeView fx:id="taskTreeView" prefHeight="200.0" prefWidth="200.0" />
+					</content>
+				</Tab>
+				<Tab fx:id="transitionTab" onSelectionChanged="#refreshTransitionTreeView" text="Transition">
+					<content>
+						<TreeView fx:id="transitionTreeView" prefHeight="200.0" prefWidth="200.0" />
+					</content>
+				</Tab>
+			</tabs>
+		</TabPane>
+		<TabPane layoutX="726.0" layoutY="434.0" prefHeight="339.0" prefWidth="298.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.rowSpan="2">
+			<tabs>
+				<Tab fx:id="teamTab" text="Team" />
+				<Tab fx:id="propertyTab" text="Property">
+					<content>
+						<ScrollPane fx:id="propertyPane" prefHeight="200.0" prefWidth="200.0" />
+					</content>
+				</Tab>
+			</tabs>
+		</TabPane>
+		<TitledPane animated="false" layoutY="65.0" prefHeight="523.0" prefWidth="726.0" text="Drawing" GridPane.rowIndex="2" GridPane.rowSpan="3">
+			<content>
+				<ScrollPane prefHeight="200.0" prefWidth="200.0">
+					<content>
+						<AnchorPane fx:id="drawingPane" minHeight="0.0" minWidth="0.0" prefHeight="5000.0" prefWidth="5000.0" />
+					</content>
+				</ScrollPane>
+			</content>
+		</TitledPane>
+		<TabPane layoutY="588.0" prefHeight="184.0" prefWidth="726.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="5">
+			<tabs>
+				<Tab fx:id="outputTab" text="Output">
+					<content>
+						<TextArea fx:id="outputField" prefHeight="156.0" prefWidth="726.0" />
+					</content>
+				</Tab>
+				<Tab fx:id="eventLogTab" text="Event Log">
+					<content>
+						<TextArea fx:id="eventLogField" prefHeight="156.0" prefWidth="726.0" />
+					</content>
+				</Tab>
+			</tabs>
+		</TabPane>
+		<HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="6">
+			<children>
+				<Label text="Label" />
+			</children>
+		</HBox>
+	</children>
+	<columnConstraints>
+		<ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="70.0" prefWidth="100.0" />
+		<ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="30.0" prefWidth="100.0" />
+	</columnConstraints>
+	<rowConstraints>
+		<RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="ALWAYS" />
+		<RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="ALWAYS" />
+		<RowConstraints minHeight="10.0" percentHeight="25.0" prefHeight="30.0" vgrow="ALWAYS" />
+		<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+		<RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" vgrow="ALWAYS" />
+		<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+		<RowConstraints maxHeight="25.0" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+	</rowConstraints>
 </GridPane>

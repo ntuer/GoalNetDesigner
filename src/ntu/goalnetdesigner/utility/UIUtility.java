@@ -3,11 +3,14 @@ package ntu.goalnetdesigner.utility;
 import java.util.List;
 
 import ntu.goalnetdesigner.data.persistence.Method;
+import ntu.goalnetdesigner.session.UISession;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TreeItem;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class UIUtility {
 	
@@ -41,6 +44,15 @@ public class UIUtility {
 		
 		public static Stage popUp(String fxmlPath, Stage ownerStage) throws Exception{
 			Stage st = new Stage();
+			
+			// Maintain reference to pop up stage
+			UISession.secondaryStage = st;
+			st.setOnHiding(new EventHandler<WindowEvent>() {
+				public void handle(WindowEvent event) {
+					UISession.secondaryStage = null;
+				}
+			});
+			
 			st.initModality(Modality.APPLICATION_MODAL);
 			st.initOwner(ownerStage.getScene().getWindow());
 	        Scene scene = Resource.getInstance().getSceneByFxml(fxmlPath);

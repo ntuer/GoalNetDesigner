@@ -59,16 +59,13 @@ public class MainPageController {
     private ScrollPane propertyPane;
 	
 	@FXML
-    private MenuItem editMenuProperty;
+    private MenuItem editMenuGoalNetProperty;
 
     @FXML
     private MenuItem runMenuVerify;
 
     @FXML
     private MenuItem fileMenuOpen;
-
-    @FXML
-    private MenuItem fileMenuNSaveAs;
 
     @FXML
     private TextArea eventLogField;
@@ -119,7 +116,7 @@ public class MainPageController {
     private MenuItem fileMenuExit;
 
     @FXML
-    private MenuItem sessionMenuCurrentUser;
+    private MenuItem userMenuCurrentUser;
 
     @FXML
     private MenuItem editMenuUndo;
@@ -143,7 +140,7 @@ public class MainPageController {
     private MenuItem fileMenuSave;
 
     @FXML
-    private Tab linkTab;
+    private Tab teamTab;
 
     @FXML
     private Tab outputTab;
@@ -152,7 +149,7 @@ public class MainPageController {
     private MenuItem runMenuRun;
 
     @FXML
-    private MenuItem sessionMenuLogOut;
+    private MenuItem userMenuLogOut;
 
     @FXML
     private AnchorPane drawingPane;
@@ -381,11 +378,6 @@ public class MainPageController {
     }
 
     @FXML
-    void fileMenuNSaveAsClicked(ActionEvent event) {
-    	// save as to database
-    }
-
-    @FXML
     void fileMenuOpenLocalClicked(ActionEvent event) {
     	FileChooser fileChooser = new FileChooser();
     	fileChooser.setTitle("Open Resource File");
@@ -408,9 +400,14 @@ public class MainPageController {
     }
     @FXML
     void fileMenuCloseClicked(ActionEvent event) {
-    	DialogResponse response = Dialogs.showConfirmDialog(UISession.primaryStage, "Do you want to close current dialog?", 
-    	        "Close current Goal Net", "Close", DialogOptions.OK_CANCEL);
-    	if (response == DialogResponse.OK){
+    	DialogResponse response = Dialogs.showConfirmDialog(UISession.primaryStage, 
+    		    "Click Yes to save, No to discard.", "Do you want to save your latest changes since last save?", "Exit");
+    	if (response == DialogResponse.YES){
+    		DataService.commit();
+    	} else if (response == DialogResponse.NO){
+    		DataService.rollback();
+    	}
+    	if (response != DialogResponse.CANCEL){
 	        DataSession.Cache.setGNet(null);
 	        this.refreshTreeViewsAndDrawingPane();
     	}
@@ -418,13 +415,19 @@ public class MainPageController {
 
     @FXML
     void fileMenuPrintClicked(ActionEvent event) {
-    	// print
+    	
     }
 
     @FXML
     void fileMenuExitClicked(ActionEvent event) {
-    	DataService.rollback();
-    	//UISession.primaryStage.close();
+    	DialogResponse response = Dialogs.showConfirmDialog(UISession.primaryStage, 
+    		    "Click Yes to save, No to discard", "Do you want to save your latest changes since last save?", "Exit");
+    	if (response == DialogResponse.YES){
+    		DataService.commit();
+    	} else if (response == DialogResponse.NO){
+    		DataService.rollback();
+    	}
+		UISession.primaryStage.close();
     }
 
     @FXML
@@ -438,7 +441,7 @@ public class MainPageController {
     }
 
     @FXML
-    void editMenuPropertyClicked(ActionEvent event) {
+    void editMenuGoalNetPropertyClicked(ActionEvent event) {
 
     }
 
@@ -451,15 +454,34 @@ public class MainPageController {
     void runMenuRunClicked(ActionEvent event) {
     	
     }
+    
+    @FXML
+    void teamMenuUserGroupClicked(ActionEvent event) {
+
+    }
 
     @FXML
-    void sessionMenuCurrentUserClicked(ActionEvent event) {
+    void teamMenuGNetVisibilityClicked(ActionEvent event) {
+    	
+    }
+    
+    @FXML
+    void userMenuCurrentUserClicked(ActionEvent event) {
     	Dialogs.showInformationDialog(UISession.primaryStage, "Server Address: " + LoginSession.serverAddress, 
     		    "Current User ID: " + LoginSession.user.getId(), "Current User Information");
     }
 
     @FXML
-    void sessionMenuLogOutClicked(ActionEvent event) throws Exception{
+    void userMenuLogOutClicked(ActionEvent event) throws Exception{
+    	if (DataSession.Cache.gnet != null){
+    		DialogResponse response = Dialogs.showConfirmDialog(UISession.primaryStage, 
+        		    "Click Yes to save, No to discard", "Do you want to save your latest changes since last save?", "Log out");
+        	if (response == DialogResponse.YES){
+        		DataService.commit();
+        	} else if (response == DialogResponse.NO){
+        		DataService.rollback();
+        	}
+    	}
     	Navigation.switchTo(Resource.LOGIN_PATH, UISession.primaryStage);
     	LoginSession.isLoggedIn = false;
     }

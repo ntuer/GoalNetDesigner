@@ -1,14 +1,11 @@
 package ntu.goalnetdesigner.fxcontrol;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialogs;
 import javafx.scene.control.Dialogs.DialogOptions;
@@ -16,17 +13,15 @@ import javafx.scene.control.Dialogs.DialogResponse;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.stage.WindowEvent;
 import javafx.util.Callback;
-import ntu.goalnetdesigner.data.persistence.Method;
 import ntu.goalnetdesigner.data.persistence.Task;
-import ntu.goalnetdesigner.data.persistence.TaskFunction;
 import ntu.goalnetdesigner.data.persistence.Tasklist;
 import ntu.goalnetdesigner.data.persistence.TasklistTask;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.UISession;
-import ntu.goalnetdesigner.utility.UIUtility;
 
 public class ManageTransitionTaskController {
     @FXML
@@ -48,6 +43,14 @@ public class ManageTransitionTaskController {
     	this.tasklistTaskList = this.selectedTasklist.getTasklistTasks();
     	taskView.setItems(FXCollections.observableArrayList(this.tasklistTaskList));
     	taskListNameField.setText(this.selectedTasklist.getName());
+    	
+    	// on-close save name
+    	UISession.secondaryStage.setOnHiding(new EventHandler<WindowEvent>() {
+			public void handle(WindowEvent event) {
+				selectedTasklist.setName(taskListNameField.getText());
+				UISession.secondaryStage = null;
+			}
+		});
     }
     
     @FXML
@@ -74,8 +77,8 @@ public class ManageTransitionTaskController {
     		tt.setSequence(this.tasklistTaskList.size());
     		this.selectedTasklist.addTasklistTask(tt);
     		this.selectedTask.addTasklistTask(tt);
-    		DataService.tasklistTask.persist(tt);
     		refreshSequence();
+    		DataService.tasklistTask.persist(tt);
     		taskView.setItems(FXCollections.observableArrayList(this.tasklistTaskList));
     	}
     }
@@ -109,9 +112,8 @@ public class ManageTransitionTaskController {
     	int index = this.taskView.getSelectionModel().getSelectedIndex();
     	TasklistTask sf = this.tasklistTaskList.get(index);
     	this.tasklistTaskList.remove(index);
-    	DataService.tasklistTask.remove(sf);
     	refreshSequence();
-    	DataService.flush();
+    	DataService.tasklistTask.remove(sf);
     	taskView.setItems(FXCollections.observableArrayList(this.tasklistTaskList));
     }
 

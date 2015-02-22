@@ -39,8 +39,10 @@ public class AssociationDataServiceUnit<T extends IAssociationDataServiceUnitSub
 	
 	public void persist(T t){
 		em.persist(t);
+		em.flush();
 	}
 	public void remove(T t){
 		em.remove(t);
+		em.flush();
 	}
 }
