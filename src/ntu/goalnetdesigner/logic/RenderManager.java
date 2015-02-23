@@ -9,10 +9,10 @@ import ntu.goalnetdesigner.data.persistence.Gnet;
 import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.data.service.DataService;
-import ntu.goalnetdesigner.logger.ConsoleLogger;
-import ntu.goalnetdesigner.render.RenderableMouseEventHandler;
 import ntu.goalnetdesigner.render.Renderable;
+import ntu.goalnetdesigner.render.RenderableMouseEventHandler;
 import ntu.goalnetdesigner.render.RenderedArc;
+import ntu.goalnetdesigner.render.RenderedComposition;
 import ntu.goalnetdesigner.render.RenderedObjectFactory;
 import ntu.goalnetdesigner.render.RenderedState;
 import ntu.goalnetdesigner.render.RenderedTransition;
@@ -56,6 +56,12 @@ public class RenderManager {
 		for (Arc a: arcs){
 			drawExistingArc(a, states, transitions);
 		}
+		for (State s: states){
+			if (s.getComposite()){
+				drawComposition(s, s.getCompositeStartState());
+				drawComposition(s.getCompositeEndState(), s);
+			}
+		}
 	}
 	
 	public void drawExistingState(State s){
@@ -68,6 +74,15 @@ public class RenderManager {
 		RenderedTransition rt = new RenderedTransition(t);
 		drawingPane.getChildren().addAll(rt.getDisplay());
 		setMouseEventHandler(rt);
+	}
+	
+	public RenderedComposition drawComposition(State start, State end){
+		RenderedComposition rc = new RenderedComposition(start, end);
+		start.getRenderedObject().getAssociatedRenderedEdges().add(rc);
+		end.getRenderedObject().getAssociatedRenderedEdges().add(rc);
+		drawingPane.getChildren().addAll(rc.getShape());
+		drawingPane.getChildren().addAll(rc.getShape().getArrow());
+		return rc;
 	}
 	
 	public void drawExistingArc(Arc a, List<State> states, List<Transition> transitions){
@@ -103,8 +118,8 @@ public class RenderManager {
     		a.getBaseObject().setOutputID(((RenderedState) e).getBaseObject().getId());
     	} 
     	
-    	s.getAssociatedRenderedArcs().add(a);
-    	e.getAssociatedRenderedArcs().add(a);
+    	s.getAssociatedRenderedEdges().add(a);
+    	e.getAssociatedRenderedEdges().add(a);
     	a.getBaseObject().setGnet(DataSession.Cache.gnet);
     	a.getBaseObject().setIsDirect(true);
     	

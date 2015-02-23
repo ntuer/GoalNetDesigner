@@ -5,8 +5,10 @@ import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import ntu.goalnetdesigner.data.persistence.Arc;
@@ -15,6 +17,7 @@ import ntu.goalnetdesigner.logic.TasklistManager;
 import ntu.goalnetdesigner.render.RenderedArc;
 import ntu.goalnetdesigner.render.RenderedState;
 import ntu.goalnetdesigner.render.RenderedTransition;
+import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.UISession;
 import ntu.goalnetdesigner.utility.Resource;
 import ntu.goalnetdesigner.utility.UIUtility;
@@ -38,6 +41,12 @@ public class StatePropertyPaneController implements IPaneController{
     @FXML
     private TextField id;
     
+    @FXML
+    private ComboBox<State> startStateComboBox;
+    
+    @FXML
+    private ComboBox<State> endStateComboBox;
+    
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		refresh();
 	}
@@ -52,8 +61,35 @@ public class StatePropertyPaneController implements IPaneController{
 		id.setText(selectedObject.getId());
 		name.setText(selectedObject.getName());
 		composite.setText(selectedObject.getComposite() + "");
+		
+		startStateComboBox.setItems(FXCollections.observableArrayList(DataSession.Cache.states));
+		if (this.selectedObject.getCompositeStartState() != null){
+			int i = 0;
+			for (i = 0; i < startStateComboBox.getItems().size(); ++i) {
+				if (startStateComboBox.getItems().get(i).getId() == this.selectedObject.getCompositeStartState().getId())
+					break;
+			}
+			startStateComboBox.getSelectionModel().select(i);
+		}
+		
+		endStateComboBox.setItems(FXCollections.observableArrayList(DataSession.Cache.states));
+		if (this.selectedObject.getCompositeEndState() != null){
+			int i = 0;
+			for (i = 0; i < endStateComboBox.getItems().size(); ++i) {
+				if (endStateComboBox.getItems().get(i).getId() == this.selectedObject.getCompositeEndState().getId())
+					break;
+			}
+			endStateComboBox.getSelectionModel().select(i);
+		}
+		setCompositeStateComboBoxUsable(selectedObject.getComposite());
 		setBidirectionalUpdate();
 	}
+	
+	private void setCompositeStateComboBoxUsable(boolean usable){
+		this.startStateComboBox.setDisable(!usable);
+		this.endStateComboBox.setDisable(!usable);
+	}
+	
 	private void setBidirectionalUpdate(){
 		// Name field update back
 		name.focusedProperty().addListener(new ChangeListener<Boolean>() {
@@ -89,9 +125,29 @@ public class StatePropertyPaneController implements IPaneController{
 					} else {
 						((RenderedState) StatePropertyPaneController.this.selectedObject.getRenderedObject()).showAsSimple();
 					}
+					setCompositeStateComboBoxUsable(newValue);
 				} 
 			}
 		});
+		startStateComboBox.getSelectionModel().selectedItemProperty()
+				.addListener(new ChangeListener<State>() {
+					@Override
+					public void changed(
+							ObservableValue<? extends State> selected,
+							State oldValue, State newValue) {
+							StatePropertyPaneController.this.selectedObject.setCompositeStartState(newValue);
+					}
+				});
+
+		endStateComboBox.getSelectionModel().selectedItemProperty()
+				.addListener(new ChangeListener<State>() {
+					@Override
+					public void changed(
+							ObservableValue<? extends State> selected,
+							State oldValue, State newValue) {
+							StatePropertyPaneController.this.selectedObject.setCompositeEndState(newValue);
+					}
+				});
 	}
 	
 	@FXML

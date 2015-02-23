@@ -24,10 +24,10 @@ public class Renderable {
 		this.baseObject = baseObject;
 	}
 
-	private List<RenderedArc> associatedRenderedArcs = new ArrayList<RenderedArc>();
+	private List<RenderedEdge> associatedRenderedEdges = new ArrayList<RenderedEdge>();
 	
-	public List<RenderedArc> getAssociatedRenderedArcs() {
-		return associatedRenderedArcs;
+	public List<RenderedEdge> getAssociatedRenderedEdges() {
+		return associatedRenderedEdges;
 	}
 	
 	public Renderable(){

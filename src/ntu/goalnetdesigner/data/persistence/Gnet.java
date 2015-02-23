@@ -47,19 +47,19 @@ public class Gnet implements Serializable, IDataServiceUnitSubscriber {
 	private List<Arc> arcs;
 
 	//bi-directional many-to-one association to State
-	@ManyToOne(fetch=FetchType.LAZY)
+	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="RootID")
-	private State state1;
+	private State rootState;
 
 	//bi-directional many-to-one association to State
-	@ManyToOne(fetch=FetchType.LAZY)
+	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="EndStateID")
-	private State state2;
+	private State endState;
 
 	//bi-directional many-to-one association to State
-	@ManyToOne(fetch=FetchType.LAZY)
+	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="StartStateID")
-	private State state3;
+	private State startState;
 
 	//bi-directional many-to-one association to State
 	@OneToMany(mappedBy="gnet")
@@ -177,28 +177,28 @@ public class Gnet implements Serializable, IDataServiceUnitSubscriber {
 		return arc;
 	}
 
-	public State getState1() {
-		return this.state1;
+	public State getRootState() {
+		return this.rootState;
 	}
 
-	public void setState1(State state1) {
-		this.state1 = state1;
+	public void setRootState(State state1) {
+		this.rootState = state1;
 	}
 
-	public State getState2() {
-		return this.state2;
+	public State getEndState() {
+		return this.endState;
 	}
 
-	public void setState2(State state2) {
-		this.state2 = state2;
+	public void setEndState(State state2) {
+		this.endState = state2;
 	}
 
-	public State getState3() {
-		return this.state3;
+	public State getStartState() {
+		return this.startState;
 	}
 
-	public void setState3(State state3) {
-		this.state3 = state3;
+	public void setStartState(State state3) {
+		this.startState = state3;
 	}
 
 	public List<State> getStates() {

@@ -87,21 +87,29 @@ public class RenderableMouseEventHandler {
             ((StackPane)(e.getSource())).setTranslateY(newTranslateY);
             
             // set underlying object
-            
             // Set Arcs
             Renderable p = ((BidirectionalStackPane)(e.getSource())).getParentRenderable();
-            for (RenderedArc a : p.getAssociatedRenderedArcs()){
-            	// state -> transition
-            	if (a.getBaseObject().getDirection() == true){
-            		if(p instanceof RenderedTransition)
-            			a.update(newTranslateX, newTranslateY, false);
-            		else
-            			a.update(newTranslateX, newTranslateY, true);
-            	} else {
-            		if(p instanceof RenderedTransition)
-            			a.update(newTranslateX, newTranslateY, true);
-            		else
-            			a.update(newTranslateX, newTranslateY, false);
+            for (RenderedEdge ed : p.getAssociatedRenderedEdges()){
+            	if (ed instanceof RenderedArc){
+            		RenderedArc a = (RenderedArc) ed;
+	            	// state -> transition
+	            	if (a.getBaseObject().getDirection() == true){
+	            		if(p instanceof RenderedTransition)
+	            			a.update(newTranslateX, newTranslateY, false);
+	            		else
+	            			a.update(newTranslateX, newTranslateY, true);
+	            	} else {
+	            		if(p instanceof RenderedTransition)
+	            			a.update(newTranslateX, newTranslateY, true);
+	            		else
+	            			a.update(newTranslateX, newTranslateY, false);
+	            	}
+            	} else if (ed instanceof RenderedComposition){
+            		RenderedComposition c = (RenderedComposition) ed;
+            		if (c.getBaseObjectStart() == p.getBaseObject())
+            			c.update(newTranslateX, newTranslateY, true);
+            		else if (c.getBaseObjectEnd() == p.getBaseObject())
+            			c.update(newTranslateX, newTranslateY, false);
             	}
             }
     	}

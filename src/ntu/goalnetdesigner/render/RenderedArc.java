@@ -9,7 +9,7 @@ import ntu.goalnetdesigner.render.customcontrol.Arrow;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.utility.Resource;
 
-public class RenderedArc extends Renderable{
+public class RenderedArc extends RenderedEdge{
 	
 	// This is used to generate a new Arc visually and modally
 	public RenderedArc (double sx, double sy, double ex, double ey){
@@ -53,14 +53,14 @@ public class RenderedArc extends Renderable{
 			getGraphicalRepresentation(t.getDisplay().getTranslateX(), t.getDisplay().getTranslateY(), 
 									   s.getDisplay().getTranslateX(), s.getDisplay().getTranslateY());
 		}
-		s.getAssociatedRenderedArcs().add(this);
-		t.getAssociatedRenderedArcs().add(this);
+		s.getAssociatedRenderedEdges().add(this);
+		t.getAssociatedRenderedEdges().add(this);
 		this.baseObject.setRenderedObject(this);
 	}
 	
 	public void getGraphicalRepresentation(double sx, double sy, double ex, double ey){
 		this.shape = new Arrow(sx, sy, ex, ey);
-		this.shape.setFill(Resource.ARC_COLOR);
+		this.shape.setStroke(Resource.ARC_COLOR);
 		this.baseObject.setRenderedObject(this);
 	}
 	
