@@ -11,12 +11,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.data.persistence.State;
-import ntu.goalnetdesigner.logic.TasklistManager;
-import ntu.goalnetdesigner.render.RenderedArc;
+import ntu.goalnetdesigner.logic.RenderManager;
 import ntu.goalnetdesigner.render.RenderedState;
-import ntu.goalnetdesigner.render.RenderedTransition;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.UISession;
 import ntu.goalnetdesigner.utility.Resource;
@@ -65,6 +62,14 @@ public class StatePropertyPaneController implements IPaneController{
 		startStateComboBox.setItems(FXCollections.observableArrayList(DataSession.Cache.states));
 		if (this.selectedObject.getCompositeStartState() != null){
 			int i = 0;
+			// remove itself
+			for (State s: startStateComboBox.getItems()){
+				if (s.getId() == this.selectedObject.getId()){
+					startStateComboBox.getItems().remove(s);
+					break;
+				}
+			}
+			// set selection
 			for (i = 0; i < startStateComboBox.getItems().size(); ++i) {
 				if (startStateComboBox.getItems().get(i).getId() == this.selectedObject.getCompositeStartState().getId())
 					break;
@@ -75,6 +80,13 @@ public class StatePropertyPaneController implements IPaneController{
 		endStateComboBox.setItems(FXCollections.observableArrayList(DataSession.Cache.states));
 		if (this.selectedObject.getCompositeEndState() != null){
 			int i = 0;
+			// remove itself
+			for (State s: endStateComboBox.getItems()){
+				if (s.getId() == this.selectedObject.getId()){
+					endStateComboBox.getItems().remove(s);
+					break;
+				}
+			}
 			for (i = 0; i < endStateComboBox.getItems().size(); ++i) {
 				if (endStateComboBox.getItems().get(i).getId() == this.selectedObject.getCompositeEndState().getId())
 					break;
@@ -135,7 +147,13 @@ public class StatePropertyPaneController implements IPaneController{
 					public void changed(
 							ObservableValue<? extends State> selected,
 							State oldValue, State newValue) {
-							StatePropertyPaneController.this.selectedObject.setCompositeStartState(newValue);
+						if (oldValue != null){
+							UIUtility.Draw.renderManager.removeComposition(selectedObject, oldValue);
+						}
+						StatePropertyPaneController.this.selectedObject.setCompositeStartState(newValue);
+						if (newValue != null){
+							UIUtility.Draw.renderManager.drawComposition(selectedObject, newValue);
+						}
 					}
 				});
 
@@ -145,7 +163,13 @@ public class StatePropertyPaneController implements IPaneController{
 					public void changed(
 							ObservableValue<? extends State> selected,
 							State oldValue, State newValue) {
-							StatePropertyPaneController.this.selectedObject.setCompositeEndState(newValue);
+						if (oldValue != null){
+							UIUtility.Draw.renderManager.removeComposition(oldValue, selectedObject);
+						}
+						StatePropertyPaneController.this.selectedObject.setCompositeEndState(newValue);
+						if (newValue != null){
+							UIUtility.Draw.renderManager.drawComposition(newValue, selectedObject);
+						}
 					}
 				});
 	}

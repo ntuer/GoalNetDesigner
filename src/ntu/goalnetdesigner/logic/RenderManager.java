@@ -13,6 +13,7 @@ import ntu.goalnetdesigner.render.Renderable;
 import ntu.goalnetdesigner.render.RenderableMouseEventHandler;
 import ntu.goalnetdesigner.render.RenderedArc;
 import ntu.goalnetdesigner.render.RenderedComposition;
+import ntu.goalnetdesigner.render.RenderedEdge;
 import ntu.goalnetdesigner.render.RenderedObjectFactory;
 import ntu.goalnetdesigner.render.RenderedState;
 import ntu.goalnetdesigner.render.RenderedTransition;
@@ -83,6 +84,23 @@ public class RenderManager {
 		drawingPane.getChildren().addAll(rc.getShape());
 		drawingPane.getChildren().addAll(rc.getShape().getArrow());
 		return rc;
+	}
+	
+	public void removeComposition(State start, State end){
+		List<RenderedEdge> reList = start.getRenderedObject().getAssociatedRenderedEdges();
+		for (RenderedEdge re: reList){
+			if (re instanceof RenderedComposition){
+				RenderedComposition rc = (RenderedComposition) re;
+				if (rc.getBaseObjectEnd() == end){
+					reList.remove(rc);
+					start.getRenderedObject().getAssociatedRenderedEdges().remove(rc);
+					end.getRenderedObject().getAssociatedRenderedEdges().remove(rc);
+					drawingPane.getChildren().remove(rc.getShape());
+					drawingPane.getChildren().remove(rc.getShape().getArrow());
+					break;
+				}
+			}
+		}
 	}
 	
 	public void drawExistingArc(Arc a, List<State> states, List<Transition> transitions){

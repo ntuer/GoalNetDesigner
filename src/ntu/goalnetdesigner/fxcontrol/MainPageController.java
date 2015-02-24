@@ -8,23 +8,17 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Dialogs;
-import javafx.scene.control.Dialogs.DialogOptions;
 import javafx.scene.control.Dialogs.DialogResponse;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.data.persistence.Method;
@@ -161,6 +155,7 @@ public class MainPageController {
     public void initialize() {
     	// Set Logger
     	ConsoleLogger.setOutputArea(this.eventLogField);
+    	UIUtility.Draw.renderManager = new RenderManager(this.drawingPane, this.propertyPane);
     }
     
     // It refreshes current view for a given GNet stored in cache.
@@ -182,8 +177,7 @@ public class MainPageController {
         setTreeViewChangeHandler();
         UISession.isTreeViewRefreshing = false;
         ConsoleLogger.log("TreeViews and Drawing Pane refreshed");
-        RenderManager rm = new RenderManager(drawingPane, propertyPane);
-        rm.renderGNet(DataSession.Cache.gnet);
+        UIUtility.Draw.renderManager.renderGNet(DataSession.Cache.gnet);
         ConsoleLogger.log("Successfully rendered existing objects");
     }
     
@@ -326,10 +320,9 @@ public class MainPageController {
     			if (DataSession.currentDrawingMode == CurrentDrawingMode.ARC &&
     					UISession.objectsForArc.size() == 2){
     				ConsoleLogger.log("Draw an arc");
-    		    	RenderManager rm = new RenderManager(drawingPane, propertyPane);
     		    	Renderable s = UISession.objectsForArc.poll();
     		    	Renderable e = UISession.objectsForArc.poll();
-    		    	RenderedArc a = rm.drawNewArcByStartAndEnd(s, e);
+    		    	RenderedArc a = UIUtility.Draw.renderManager.drawNewArcByStartAndEnd(s, e);
     				if (a!= null){
 	    				drawingPane.getChildren().addAll(a.getShape());
 	    				drawingPane.getChildren().addAll(a.getShape().getArrow());
@@ -339,8 +332,7 @@ public class MainPageController {
     		}
     		// Drag state or transition
 			ConsoleLogger.log("User Click on " + me.getX() + "," + me.getY());
-			RenderManager rm = new RenderManager(drawingPane, propertyPane);
-			Renderable object = rm.drawNewStateOrTransition(me.getX(), me.getY());
+			Renderable object = UIUtility.Draw.renderManager.drawNewStateOrTransition(me.getX(), me.getY());
 			if (object != null)
 				drawingPane.getChildren().addAll(object.getDisplay());
     	}

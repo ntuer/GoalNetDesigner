@@ -35,7 +35,7 @@ public class RenderedTransition extends Renderable{
 		((Rectangle)this.shape).setStroke(Resource.TRANSITION_COLOR);
 		((Rectangle)this.shape).setStrokeWidth(1);
 		((Rectangle)this.shape).setStrokeType(StrokeType.OUTSIDE);
-		this.text = new Text("Transition");
+		this.text = new Text(((Transition)this.baseObject).getName());
 		this.display.setTranslateX(x - Resource.TRANSITION_WIDTH / 2);
 		this.display.setTranslateY(y - Resource.TRANSITION_HEIGHT / 2);
 		this.display.getChildren().addAll(shape, text);

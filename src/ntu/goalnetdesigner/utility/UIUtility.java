@@ -2,8 +2,6 @@ package ntu.goalnetdesigner.utility;
 
 import java.util.List;
 
-import ntu.goalnetdesigner.data.persistence.Method;
-import ntu.goalnetdesigner.session.UISession;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -11,6 +9,8 @@ import javafx.scene.control.TreeItem;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import ntu.goalnetdesigner.logic.RenderManager;
+import ntu.goalnetdesigner.session.UISession;
 
 public class UIUtility {
 	
@@ -79,4 +79,9 @@ public class UIUtility {
 //	        return page;
 //	    }
 	}
+	
+	public static class Draw{
+		public static RenderManager renderManager = null;
+	}
+	
 }
