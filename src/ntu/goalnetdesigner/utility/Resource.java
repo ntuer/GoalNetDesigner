@@ -52,6 +52,7 @@ public class Resource {
 	public static final String MAINPAGE_PATH = "/ntu/goalnetdesigner/fxui/MainPage.fxml";
 	public static final String NEW_GNET_PATH = "/ntu/goalnetdesigner/fxui/NewGNet.fxml";
 	public static final String OPEN_GNET_PATH = "/ntu/goalnetdesigner/fxui/OpenGNet.fxml";
+	public static final String EDIT_GNET_PROPERTY_PATH = "/ntu/goalnetdesigner/fxui/EditGNetProperty.fxml";
 
 	public static final String MANAGE_STATE_FUNCTION_PATH = "/ntu/goalnetdesigner/fxui/ManageStateFunction.fxml";
 	public static final String MANAGE_TASK_FUNCTION_PATH = "/ntu/goalnetdesigner/fxui/ManageTaskFunction.fxml";

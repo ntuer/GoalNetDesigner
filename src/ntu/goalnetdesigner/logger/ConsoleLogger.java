@@ -17,7 +17,6 @@ public class ConsoleLogger {
 	}
 	
 	public static void log(Object message){
-		
 		outputArea.appendText(new Date() + " " + message + "\n");
 	}
 }

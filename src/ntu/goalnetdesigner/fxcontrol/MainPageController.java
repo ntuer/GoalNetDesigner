@@ -11,12 +11,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Dialogs;
 import javafx.scene.control.Dialogs.DialogResponse;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
@@ -27,10 +31,12 @@ import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.logger.ConsoleLogger;
+import ntu.goalnetdesigner.logger.StatusBarLogger;
 import ntu.goalnetdesigner.logic.FunctionManager;
 import ntu.goalnetdesigner.logic.RenderManager;
 import ntu.goalnetdesigner.logic.SaveManager;
 import ntu.goalnetdesigner.logic.TaskManager;
+import ntu.goalnetdesigner.render.Drawable;
 import ntu.goalnetdesigner.render.Renderable;
 import ntu.goalnetdesigner.render.RenderedArc;
 import ntu.goalnetdesigner.session.DataSession;
@@ -40,7 +46,6 @@ import ntu.goalnetdesigner.utility.CurrentDrawingMode;
 import ntu.goalnetdesigner.utility.Resource;
 import ntu.goalnetdesigner.utility.UIUtility;
 import ntu.goalnetdesigner.utility.UIUtility.Navigation;
-
 
 public class MainPageController {    
 	@FXML
@@ -102,6 +107,9 @@ public class MainPageController {
 
     @FXML
     private MenuItem editMenuDelete;
+    
+    @FXML
+    private MenuItem editMenuClearObjectForArcs;
 
     @FXML
     private MenuItem helpMenuAbout;
@@ -152,13 +160,32 @@ public class MainPageController {
     private TreeView<Method> functionTreeView;
 
     @FXML
+    private Label statusLabel;
+    
+    @FXML
     public void initialize() {
     	// Set Logger
     	ConsoleLogger.setOutputArea(this.eventLogField);
+    	StatusBarLogger.setStatusLabel(statusLabel);
     	UIUtility.Draw.renderManager = new RenderManager(this.drawingPane, this.propertyPane);
+    	SetShortcutKeys();
     }
     
-    // It refreshes current view for a given GNet stored in cache.
+    private void SetShortcutKeys() {
+    	this.fileMenuNew.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN));
+    	this.fileMenuOpen.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
+    	this.fileMenuSave.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
+    	this.fileMenuOpenLocal.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN));
+    	this.fileMenuSaveAsLocal.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN));
+    	this.fileMenuExit.setAccelerator(new KeyCodeCombination(KeyCode.Q, KeyCombination.CONTROL_DOWN));
+    	this.editMenuDelete.setAccelerator(new KeyCodeCombination(KeyCode.DELETE));
+    	this.editMenuClearObjectForArcs.setAccelerator(new KeyCodeCombination(KeyCode.ESCAPE));
+    	this.editMenuUndo.setAccelerator(new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN));
+    	this.runMenuRun.setAccelerator(new KeyCodeCombination(KeyCode.F10, KeyCombination.CONTROL_DOWN));
+    	this.runMenuVerify.setAccelerator(new KeyCodeCombination(KeyCode.F9, KeyCombination.CONTROL_DOWN));
+	}
+
+	// It refreshes current view for a given GNet stored in cache.
     private void refreshTreeViewsAndDrawingPane(){
     	// Set drawing handler
     	if(DataSession.Cache.gnet == null){
@@ -317,15 +344,19 @@ public class MainPageController {
     		if (UISession.isInRenderedObject){
     			UISession.isInRenderedObject = false;
     			// if this is a drawing arc state
-    			if (DataSession.currentDrawingMode == CurrentDrawingMode.ARC &&
-    					UISession.objectsForArc.size() == 2){
-    				ConsoleLogger.log("Draw an arc");
-    		    	Renderable s = UISession.objectsForArc.poll();
-    		    	Renderable e = UISession.objectsForArc.poll();
-    		    	RenderedArc a = UIUtility.Draw.renderManager.drawNewArcByStartAndEnd(s, e);
-    				if (a!= null){
-	    				drawingPane.getChildren().addAll(a.getShape());
-	    				drawingPane.getChildren().addAll(a.getShape().getArrow());
+    			if (DataSession.currentDrawingMode == CurrentDrawingMode.ARC){
+    				if (UISession.objectsForArc.size() == 2) {
+	    				ConsoleLogger.log("Draw an arc");
+	    		    	Renderable s = UISession.objectsForArc.poll();
+	    		    	Renderable e = UISession.objectsForArc.poll();
+	    		    	RenderedArc a = UIUtility.Draw.renderManager.drawNewArcByStartAndEnd(s, e);
+	    				if (a!= null){
+		    				drawingPane.getChildren().addAll(a.getShape());
+		    				drawingPane.getChildren().addAll(a.getShape().getArrow());
+	    				}
+	    				StatusBarLogger.clear();
+    				} else if (UISession.objectsForArc.size() == 1){
+    					StatusBarLogger.log("(ESC to cancel) Current selection of start of arc: " + UISession.getDrawableFromCurrentSelection());
     				}
     			}
     			return;
@@ -429,14 +460,33 @@ public class MainPageController {
 
     @FXML
     void editMenuDeleteClicked(ActionEvent event) {
-
+    	// TODO
+    	// Delete rendered object
+    	// Delete base object
+    	if (UISession.currentSelection != null){
+    		if (UISession.currentSelection instanceof Drawable){
+    			
+    		} else if (UISession.currentSelection instanceof Renderable){
+    			
+    		}
+    			
+    	}
+    	// clear property pane
+    	UISession.currentPaneController = null;
+    	propertyPane.setContent(null);
     }
 
     @FXML
-    void editMenuGoalNetPropertyClicked(ActionEvent event) {
-
+    void editMenuClearObjectForArcsClicked(ActionEvent event) {
+    	UISession.objectsForArc.clear();
+    	StatusBarLogger.clear();
     }
-
+    
+    @FXML
+    void editMenuGoalNetPropertyClicked(ActionEvent event) throws Exception {
+    	Navigation.popUp(Resource.EDIT_GNET_PROPERTY_PATH, UISession.primaryStage);
+    }
+    
     @FXML
     void runMenuVerifyClicked(ActionEvent event) {
 
@@ -492,21 +542,28 @@ public class MainPageController {
     // Drawing state selection. Done.
     @FXML
     void simpleStateButtonClicked(ActionEvent event) {
+    	StatusBarLogger.log("Click to draw simple state");
     	DataSession.currentDrawingMode = CurrentDrawingMode.STATE;
+    	UISession.objectsForArc.clear();
     }
 
     @FXML
     void compositeStateButtonClicked(ActionEvent event) {
+    	StatusBarLogger.log("Click to draw composite state");
     	DataSession.currentDrawingMode = CurrentDrawingMode.COMPOSITE_STATE;
+    	UISession.objectsForArc.clear();
     }
 
     @FXML
     void transitionButtonClicked(ActionEvent event) {
+    	StatusBarLogger.log("Click to draw transition");
     	DataSession.currentDrawingMode = CurrentDrawingMode.TRANSITION;
+    	UISession.objectsForArc.clear();
     }
 
     @FXML
     void arcButtonClicked(ActionEvent event) {
+    	StatusBarLogger.log("Click to draw arc");
     	DataSession.currentDrawingMode = CurrentDrawingMode.ARC;
     }
     
