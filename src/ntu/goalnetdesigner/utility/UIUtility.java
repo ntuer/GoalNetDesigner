@@ -6,14 +6,15 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TreeItem;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ntu.goalnetdesigner.logic.RenderManager;
+import ntu.goalnetdesigner.render.Renderable;
 import ntu.goalnetdesigner.session.UISession;
 
 public class UIUtility {
-	
 	
 	public static class TreeView{
 		public static <I> TreeItem<I> convertToTreeItem(List<I> model){
@@ -82,6 +83,28 @@ public class UIUtility {
 	
 	public static class Draw{
 		public static RenderManager renderManager = null;
+		
+		public static void setBoldBorder(Renderable r){
+			r.getShape().setStrokeWidth(5);
+		}
+		
+		public static void restoreBorder(Renderable r){
+			r.getShape().setStrokeWidth(1);
+		}
+	}
+	public static class GroupSelection{
+		public static boolean isRenderableInSelectionRectangle(Renderable r, Rectangle rect){
+			double x = rect.getTranslateX();
+			double y = rect.getTranslateY();
+			double xMax = x + rect.getWidth();
+			double yMax = y + rect.getHeight();
+			double rx = r.getDisplay().getTranslateX();
+			double ry = r.getDisplay().getTranslateY();
+			
+			if (rx > x && rx <xMax && ry > y && ry < yMax)
+				return true;
+			return false;
+		}
 	}
 	
 }

@@ -15,7 +15,7 @@ public class RenderedTransition extends Renderable{
 		super();
 		
 		// base object
-		this.baseObject = new Transition();
+		this.baseObject = new Transition(x, y);
 		this.getBaseObject().setGnet(DataSession.Cache.gnet);
 		DataSession.Cache.transitions.add(this.getBaseObject());
 		// Graphical representation

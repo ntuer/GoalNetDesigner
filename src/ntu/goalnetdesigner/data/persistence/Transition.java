@@ -67,10 +67,16 @@ public class Transition extends ntu.goalnetdesigner.render.Drawable implements S
 	@JoinColumn(name="TaskListID")
 	private Tasklist tasklist;
 
-	public Transition() {
+	public Transition(){
+		
+	}
+	
+	public Transition(double x, double y) {
 		this.name = "Transition";
 		this.id = UUID.randomUUID().toString();
 		this.type = "simple";
+		this.x = (int) x;
+		this.y = (int) y;
 	}
 
 	public String getId() {

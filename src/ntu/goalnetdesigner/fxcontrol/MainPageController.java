@@ -18,6 +18,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.KeyCode;
@@ -42,6 +45,7 @@ import ntu.goalnetdesigner.logic.ValidationManager;
 import ntu.goalnetdesigner.render.Drawable;
 import ntu.goalnetdesigner.render.Renderable;
 import ntu.goalnetdesigner.render.RenderedArc;
+import ntu.goalnetdesigner.render.customcontrol.RubberBandSelection;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.LoginSession;
 import ntu.goalnetdesigner.session.UISession;
@@ -198,6 +202,11 @@ public class MainPageController {
     @FXML
     private TabPane lowerLeftPane;
     
+    @FXML
+    private ToggleGroup drawingStateToggleGroup;
+    
+    // One group selection model
+    private RubberBandSelection groupObjectSelector;
     
     @FXML
     public void initialize() {
@@ -207,7 +216,57 @@ public class MainPageController {
     	UIUtility.Draw.renderManager = new RenderManager(this.drawingPane, this.propertyPane);
     	setShortcutKeys();
     	setViewMenuHandlers();
+    	setCurrentDrawingModeSelectionHandlers();
+    	groupObjectSelector = new RubberBandSelection(drawingPane);
     }
+    
+	private void setCurrentDrawingModeSelectionHandlers() {
+		drawingStateToggleGroup.selectedToggleProperty().addListener(
+				new ChangeListener<Toggle>() {
+					public void changed(ObservableValue<? extends Toggle> ov,
+							Toggle oldValue, Toggle newValue) {
+						groupObjectSelector
+								.enableGroupSelectionEventHandler(false);
+						// selection mode
+						if (newValue == null) {
+							DataSession.currentDrawingMode = null;
+							StatusBarLogger.log("Click to select");
+						}
+						// drawing mode
+						else {
+							ToggleButton selected = (ToggleButton) newValue
+									.getToggleGroup().getSelectedToggle();
+							if (selected.getId().equals("simpleStateButton"))
+								DataSession.currentDrawingMode = CurrentDrawingMode.STATE;
+							else if (selected.getId().equals(
+									"compositeStateButton"))
+								DataSession.currentDrawingMode = CurrentDrawingMode.COMPOSITE_STATE;
+							else if (selected.getId()
+									.equals("transitionButton"))
+								DataSession.currentDrawingMode = CurrentDrawingMode.TRANSITION;
+							else if (selected.getId().equals("arcButton"))
+								DataSession.currentDrawingMode = CurrentDrawingMode.ARC;
+							else if (selected.getId().equals(
+									"groupSelectionButton")) {
+								DataSession.currentDrawingMode = null;
+								groupObjectSelector
+										.enableGroupSelectionEventHandler(true);
+							}
+							try {
+								StatusBarLogger.log("Click to draw "
+										+ DataSession.currentDrawingMode
+												.toString());
+							} catch (NullPointerException npe) {
+								StatusBarLogger
+										.log("Drag to select multiple objects");
+							}
+							// clear cache of some other states
+							UISession.currentGroupSelection.clear();
+							UISession.objectsForArc.clear();
+						}
+					}
+				});
+	}
     
     private void setViewMenuHandlers(){
     	this.viewMenuArc.selectedProperty().addListener(new ChangeListener() {
@@ -297,16 +356,22 @@ public class MainPageController {
     	this.runMenuRun.setAccelerator(new KeyCodeCombination(KeyCode.F10, KeyCombination.CONTROL_DOWN));
     	this.runMenuVerify.setAccelerator(new KeyCodeCombination(KeyCode.F9, KeyCombination.CONTROL_DOWN));
 	}
-
-	// It refreshes current view for a given GNet stored in cache.
-    private void refreshTreeViewsAndDrawingPane(){
-    	// Set drawing handler
+    
+    private void setDrawingHandler(){
     	if(DataSession.Cache.gnet == null){
     		drawingPane.setOnMouseClicked(null);
     	}
     	else {
-    		drawingPane.setOnMouseClicked(drawingNewObjectHandler);
+    		drawingPane.setOnMouseClicked(clickToDrawHandler);
+			StatusBarLogger.log("Click to select");
     	}
+		groupObjectSelector.enableGroupSelectionEventHandler(false);
+		DataSession.currentDrawingMode = null;
+    }
+
+	// It refreshes current view for a given GNet stored in cache.
+    private void refreshTreeViewsAndDrawingPane(){
+    	setDrawingHandler();
     	// set gnet related properties
     	refreshArcTreeView();
         refreshStateTreeView();
@@ -450,7 +515,7 @@ public class MainPageController {
 
 	// Drawing handler
 	// This happens after onclick event on individual Renderable object
-    public EventHandler<MouseEvent> drawingNewObjectHandler = new EventHandler<MouseEvent>() {
+    public EventHandler<MouseEvent> clickToDrawHandler = new EventHandler<MouseEvent>() {
     	public void handle(MouseEvent me) 
     	{
     		// Prevent additional object while clicking on existing object
@@ -474,6 +539,9 @@ public class MainPageController {
     			}
     			return;
     		}
+    		// If there is no selection, don't draw anything
+    		if (DataSession.currentDrawingMode == null)
+    			return;
     		// Drag state or transition
 			ConsoleLogger.log("User Click on " + me.getX() + "," + me.getY());
 			Renderable object = UIUtility.Draw.renderManager.drawNewStateOrTransition(me.getX(), me.getY());
@@ -573,20 +641,10 @@ public class MainPageController {
 
     @FXML
     void editMenuDeleteClicked(ActionEvent event) {
-    	// TODO
-    	// Delete rendered object
-    	// Delete base object
-    	if (UISession.currentSelection != null){
-    		if (UISession.currentSelection instanceof Drawable){
-    			
-    		} else if (UISession.currentSelection instanceof Renderable){
-    			
-    		}
-    			
-    	}
     	// clear property pane
     	UISession.currentPaneController = null;
     	propertyPane.setContent(null);
+    	UIUtility.Draw.renderManager.delete(UISession.currentSelection);
     }
 
     @FXML
@@ -660,34 +718,4 @@ public class MainPageController {
     void helpMenuFeedbackClicked(ActionEvent event) throws Exception{
     	Navigation.popUp(Resource.FEEDBACK_PATH, UISession.primaryStage);
     }
-
-    
-    // Drawing state selection. Done.
-    @FXML
-    void simpleStateButtonClicked(ActionEvent event) {
-    	StatusBarLogger.log("Click to draw simple state");
-    	DataSession.currentDrawingMode = CurrentDrawingMode.STATE;
-    	UISession.objectsForArc.clear();
-    }
-
-    @FXML
-    void compositeStateButtonClicked(ActionEvent event) {
-    	StatusBarLogger.log("Click to draw composite state");
-    	DataSession.currentDrawingMode = CurrentDrawingMode.COMPOSITE_STATE;
-    	UISession.objectsForArc.clear();
-    }
-
-    @FXML
-    void transitionButtonClicked(ActionEvent event) {
-    	StatusBarLogger.log("Click to draw transition");
-    	DataSession.currentDrawingMode = CurrentDrawingMode.TRANSITION;
-    	UISession.objectsForArc.clear();
-    }
-
-    @FXML
-    void arcButtonClicked(ActionEvent event) {
-    	StatusBarLogger.log("Click to draw arc");
-    	DataSession.currentDrawingMode = CurrentDrawingMode.ARC;
-    }
-    
 }

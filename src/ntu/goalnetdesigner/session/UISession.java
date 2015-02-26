@@ -1,14 +1,16 @@
 package ntu.goalnetdesigner.session;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Set;
 
 import javafx.stage.Stage;
-import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.fxcontrol.propertypanecontrol.IPaneController;
 import ntu.goalnetdesigner.render.Drawable;
 import ntu.goalnetdesigner.render.Renderable;
-import ntu.goalnetdesigner.render.RenderedArc;
+import ntu.goalnetdesigner.utility.UIUtility;
 
 public class UISession {
 	// Main window reference
@@ -28,30 +30,35 @@ public class UISession {
 	// current selection status
 	public static Object currentSelection = null;  // has to be object because it can be Renderable or Drawable
 	public static IPaneController currentPaneController = null;
+	
+	// group selection status
+	public static SelectionModel currentGroupSelection = new SelectionModel();
 
+	// Direct click on drawing area
 	public static void setCurrentSelection(Renderable obj){
 		try{
 			// restore shape of unselected object
 			Renderable selectedObject = getRenderableFromCurrentSelection();
 			if (selectedObject != null)
-				selectedObject.getShape().setStrokeWidth(1);
+				UIUtility.Draw.restoreBorder(selectedObject);
 		} catch (Exception e){
 			
 		} finally {
-			obj.getShape().setStrokeWidth(5);
+			UIUtility.Draw.setBoldBorder(obj);
 			currentSelection = obj;
 		}
 	}
 	
+	// Click on tab pane
 	public static void setCurrentSelection(Drawable obj){
 		try{
 			Renderable selectedObject = getRenderableFromCurrentSelection();
 			if (selectedObject != null)
-				selectedObject.getShape().setStrokeWidth(1);
+				UIUtility.Draw.restoreBorder(selectedObject);
 		} catch (Exception e){
 			
 		} finally {
-			obj.getRenderedObject().getShape().setStrokeWidth(5);
+			UIUtility.Draw.setBoldBorder(obj.getRenderedObject());
 			currentSelection = obj;
 		}
 	}
@@ -61,7 +68,7 @@ public class UISession {
 		try{
 			Renderable selectedObject = getRenderableFromCurrentSelection();
 			if (selectedObject != null)
-				selectedObject.getShape().setStrokeWidth(1);
+				UIUtility.Draw.restoreBorder(selectedObject);
 		} catch (Exception e){
 			
 		} finally {
@@ -89,4 +96,40 @@ public class UISession {
 		}
 		return d;
 	}
+	
+	
+	public static class SelectionModel {
+
+		Set<Renderable> selection = new HashSet<>();
+
+		public void add(Renderable node) {
+			UIUtility.Draw.setBoldBorder(node);
+			selection.add(node);
+		}
+
+		public void remove(Renderable node) {
+			UIUtility.Draw.restoreBorder(node);
+			selection.remove(node);
+		}
+
+		public void clear() {
+			while (!selection.isEmpty()) {
+				remove(selection.iterator().next());
+			}
+		}
+
+		public boolean contains(Renderable node) {
+			return selection.contains(node);
+		}
+
+		public void log() {
+			System.out.println("Items in model: "
+					+ Arrays.asList(selection.toArray()));
+		}
+		
+		public int size(){
+			return selection.size();
+		}
+	}
+	
 }

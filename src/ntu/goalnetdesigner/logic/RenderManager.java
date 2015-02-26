@@ -9,6 +9,7 @@ import ntu.goalnetdesigner.data.persistence.Gnet;
 import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.data.service.DataService;
+import ntu.goalnetdesigner.render.Drawable;
 import ntu.goalnetdesigner.render.Renderable;
 import ntu.goalnetdesigner.render.RenderableMouseEventHandler;
 import ntu.goalnetdesigner.render.RenderedArc;
@@ -165,6 +166,25 @@ public class RenderManager {
 	private void setMouseEventHandler(Renderable r){
 		RenderableMouseEventHandler meh = new RenderableMouseEventHandler(propertyPane, drawingPane);
 		r.setMeh(meh);
+	}
+
+	// Delete: need to find out which object is selected.
+	// Due to various types of objects selected, multiple methods are needed.
+	
+	public void delete(Drawable currentSelection) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void delete(Renderable currentSelection) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	// fallback option for Task and Function
+	public void delete(Object currentSelection) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

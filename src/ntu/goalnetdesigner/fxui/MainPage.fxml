@@ -29,7 +29,7 @@
 					<items>
 						<MenuItem fx:id="editMenuUndo" mnemonicParsing="false" onAction="#editMenuUndoClicked" text="Undo" />
 						<MenuItem fx:id="editMenuDelete" mnemonicParsing="false" onAction="#editMenuDeleteClicked" text="Delete" />
-                  <MenuItem fx:id="editMenuClearObjectForArcs" mnemonicParsing="false" onAction="#editMenuClearObjectForArcsClicked" text="Unspecified Action" />
+                  <MenuItem fx:id="editMenuClearObjectForArcs" mnemonicParsing="false" onAction="#editMenuClearObjectForArcsClicked" text="Clear Objects for Arc" />
 						<SeparatorMenuItem mnemonicParsing="false" />
 						<MenuItem fx:id="editMenuGoalNetProperty" mnemonicParsing="false" onAction="#editMenuGoalNetPropertyClicked" text="Goal Net Property" />
 					</items>
@@ -79,11 +79,15 @@
 		</MenuBar>
 		<ToolBar layoutY="25.0" maxHeight="25.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
 			<items>
-				<Button fx:id="simpleStateButton" mnemonicParsing="false" onAction="#simpleStateButtonClicked" text="State" />
-				<Button fx:id="compositeStateButton" mnemonicParsing="false" onAction="#compositeStateButtonClicked" text="Composite" />
-				<Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" />
-				<Button fx:id="transitionButton" mnemonicParsing="false" onAction="#transitionButtonClicked" text="Transition" />
-				<Button fx:id="arcButton" mnemonicParsing="false" onAction="#arcButtonClicked" text="Arc" />
+				<ToggleButton fx:id="simpleStateButton" mnemonicParsing="false" text="State">
+               		<toggleGroup>
+                		<ToggleGroup fx:id="drawingStateToggleGroup" />
+               		</toggleGroup>
+            	</ToggleButton>
+           		<ToggleButton fx:id="compositeStateButton" mnemonicParsing="false" text="Composite" toggleGroup="$drawingStateToggleGroup" />
+           		<ToggleButton fx:id="transitionButton" mnemonicParsing="false" text="Transition" toggleGroup="$drawingStateToggleGroup" />
+           		<ToggleButton fx:id="arcButton" mnemonicParsing="false" text="Arc" toggleGroup="$drawingStateToggleGroup" />
+           		<ToggleButton fx:id="groupSelectionButton" mnemonicParsing="false" text="Group Selection" toggleGroup="$drawingStateToggleGroup" />
 				<Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" />
 				<Button fx:id="newFunctionButton" mnemonicParsing="false" onAction="#newFunctionButtonOnClick" text="Function" />
 				<Button fx:id="newTaskButton" mnemonicParsing="false" onAction="#newTaskButtonOnClick" text="Task" />

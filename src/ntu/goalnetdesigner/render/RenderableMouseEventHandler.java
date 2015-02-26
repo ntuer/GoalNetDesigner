@@ -33,7 +33,7 @@ public class RenderableMouseEventHandler {
     	public void handle(MouseEvent e)
     	{
     		UISession.setCurrentSelection(((BidirectionalStackPane)(e.getSource())).getParentRenderable());
-    		UISession.isInRenderedObject = true;
+    		UISession.isInRenderedObject = true; // flag to cancel drawing pane event
     		
     		// If user action is to add arc
     		if (DataSession.currentDrawingMode == CurrentDrawingMode.ARC &&
@@ -76,7 +76,7 @@ public class RenderableMouseEventHandler {
     	public void handle(MouseEvent e)
     	{
     		UISession.isInRenderedObject = true;
-    		UISession.isDragging = true;
+    		UISession.isDragging = true; // flag to cancel arc drawing event
     		double offsetX = e.getSceneX() - orgSceneX;
             double offsetY = e.getSceneY() - orgSceneY;
             newTranslateX = orgTranslateX + offsetX;
