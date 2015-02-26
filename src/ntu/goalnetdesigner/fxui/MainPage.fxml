@@ -34,12 +34,27 @@
 						<MenuItem fx:id="editMenuGoalNetProperty" mnemonicParsing="false" onAction="#editMenuGoalNetPropertyClicked" text="Goal Net Property" />
 					</items>
 				</Menu>
+				<Menu mnemonicParsing="false" text="View">
+					<items>
+						<CheckMenuItem fx:id="viewMenuArc" mnemonicParsing="false" selected="true" text="Arc" />
+						<CheckMenuItem fx:id="viewMenuFunction" mnemonicParsing="false" selected="true" text="Function" />
+						<CheckMenuItem fx:id="viewMenuState" mnemonicParsing="false" selected="true" text="State" />
+						<CheckMenuItem fx:id="viewMenuTask" mnemonicParsing="false" selected="true" text="Task" />
+						<CheckMenuItem fx:id="viewMenuTransition" mnemonicParsing="false" selected="true" text="Transition" />
+						<SeparatorMenuItem mnemonicParsing="false" />
+						<CheckMenuItem fx:id="viewMenuTeam" mnemonicParsing="false" selected="true" text="Team" />
+						<SeparatorMenuItem mnemonicParsing="false" />
+						<CheckMenuItem fx:id="viewMenuOutput" mnemonicParsing="false" selected="true" text="Output" />
+						<CheckMenuItem fx:id="viewMenuEventLog" mnemonicParsing="false" selected="true" text="Event Log" />
+					</items>
+				</Menu>
+				
 				<Menu mnemonicParsing="false" text="Run">
 					<items>
-						<MenuItem fx:id="runMenuVerify" mnemonicParsing="false" onAction="#runMenuVerifyClicked" text="Verity" />
+						<MenuItem fx:id="runMenuVerify" mnemonicParsing="false" onAction="#runMenuVerifyClicked" text="Validate" />
 						<MenuItem fx:id="runMenuRun" mnemonicParsing="false" onAction="#runMenuRunClicked" text="Run" />
 						<SeparatorMenuItem mnemonicParsing="false" />
-						<CheckMenuItem fx:id="runMenuDisplayWarning" mnemonicParsing="false" text="Display Warnings" />
+						<CheckMenuItem fx:id="runMenuDisplayWarning" mnemonicParsing="false" selected="true" text="Display Warnings" />
 					</items>
 				</Menu>
 				<Menu mnemonicParsing="false" text="Team">
@@ -74,7 +89,7 @@
 				<Button fx:id="newTaskButton" mnemonicParsing="false" onAction="#newTaskButtonOnClick" text="Task" />
 			</items>
 		</ToolBar>
-		<TabPane layoutX="726.0" layoutY="65.0" prefHeight="367.0" prefWidth="298.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="2">
+		<TabPane fx:id="upperRightPane" layoutX="726.0" layoutY="65.0" prefHeight="367.0" prefWidth="298.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="2">
 			<tabs>
 				<Tab fx:id="arcTab" onSelectionChanged="#refreshArcTreeView" text="Arc">
 					<content>
@@ -103,7 +118,7 @@
 				</Tab>
 			</tabs>
 		</TabPane>
-		<TabPane layoutX="726.0" layoutY="434.0" prefHeight="339.0" prefWidth="298.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.rowSpan="2">
+		<TabPane fx:id="lowerRightPane" layoutX="726.0" layoutY="434.0" prefHeight="339.0" prefWidth="298.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.rowSpan="2">
 			<tabs>
 				<Tab fx:id="teamTab" text="Team" />
 				<Tab fx:id="propertyTab" text="Property">
@@ -113,7 +128,7 @@
 				</Tab>
 			</tabs>
 		</TabPane>
-		<TitledPane animated="false" layoutY="65.0" prefHeight="523.0" prefWidth="726.0" text="Drawing" GridPane.rowIndex="2" GridPane.rowSpan="3">
+		<TitledPane animated="false" layoutY="65.0" prefHeight="4000.0" prefWidth="726.0" text="Drawing" GridPane.rowIndex="2" GridPane.rowSpan="3">
 			<content>
 				<ScrollPane prefHeight="200.0" prefWidth="200.0">
 					<content>
@@ -122,16 +137,16 @@
 				</ScrollPane>
 			</content>
 		</TitledPane>
-		<TabPane layoutY="588.0" prefHeight="184.0" prefWidth="726.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="5">
+		<TabPane fx:id="lowerLeftPane" layoutY="588.0" prefHeight="184.0" prefWidth="726.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="5">
 			<tabs>
 				<Tab fx:id="outputTab" text="Output">
 					<content>
-						<TextArea fx:id="outputField" prefHeight="156.0" prefWidth="726.0" />
+						<TextArea fx:id="outputField" editable="false" prefHeight="156.0" prefWidth="726.0" wrapText="true" />
 					</content>
 				</Tab>
 				<Tab fx:id="eventLogTab" text="Event Log">
 					<content>
-						<TextArea fx:id="eventLogField" prefHeight="156.0" prefWidth="726.0" />
+						<TextArea fx:id="eventLogField" editable="false" prefHeight="156.0" prefWidth="726.0" wrapText="true" />
 					</content>
 				</Tab>
 			</tabs>

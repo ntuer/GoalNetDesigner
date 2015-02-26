@@ -2,6 +2,7 @@ package ntu.goalnetdesigner.fxcontrol;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -15,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -36,6 +38,7 @@ import ntu.goalnetdesigner.logic.FunctionManager;
 import ntu.goalnetdesigner.logic.RenderManager;
 import ntu.goalnetdesigner.logic.SaveManager;
 import ntu.goalnetdesigner.logic.TaskManager;
+import ntu.goalnetdesigner.logic.ValidationManager;
 import ntu.goalnetdesigner.render.Drawable;
 import ntu.goalnetdesigner.render.Renderable;
 import ntu.goalnetdesigner.render.RenderedArc;
@@ -96,14 +99,38 @@ public class MainPageController {
     @FXML
     private TreeView<Arc> arcTreeView;
 
-    @FXML
-    private CheckMenuItem runMenuDisplayWarning;
+	@FXML
+	private CheckMenuItem runMenuDisplayWarning;
 
-    @FXML
-    private Tab arcTab;
+	@FXML
+	private CheckMenuItem viewMenuArc;
+	
+	@FXML
+	private CheckMenuItem viewMenuFunction;
+	
+	@FXML
+	private CheckMenuItem viewMenuState;
+	
+	@FXML
+	private CheckMenuItem viewMenuTask;
+	
+	@FXML
+	private CheckMenuItem viewMenuTransition;
+	
+	@FXML
+	private CheckMenuItem viewMenuTeam;
+	
+	@FXML
+	private CheckMenuItem viewMenuOutput;
+	
+	@FXML
+	private CheckMenuItem viewMenuEventLog;
+	
+	@FXML
+	private Tab arcTab;
 
-    @FXML
-    private Tab transitionTab;
+	@FXML
+	private Tab transitionTab;
 
     @FXML
     private MenuItem editMenuDelete;
@@ -163,15 +190,101 @@ public class MainPageController {
     private Label statusLabel;
     
     @FXML
+    private TabPane lowerRightPane;
+    
+    @FXML
+    private TabPane upperRightPane;
+    
+    @FXML
+    private TabPane lowerLeftPane;
+    
+    
+    @FXML
     public void initialize() {
     	// Set Logger
     	ConsoleLogger.setOutputArea(this.eventLogField);
     	StatusBarLogger.setStatusLabel(statusLabel);
     	UIUtility.Draw.renderManager = new RenderManager(this.drawingPane, this.propertyPane);
-    	SetShortcutKeys();
+    	setShortcutKeys();
+    	setViewMenuHandlers();
     }
     
-    private void SetShortcutKeys() {
+    private void setViewMenuHandlers(){
+    	this.viewMenuArc.selectedProperty().addListener(new ChangeListener() {
+ 	        @Override
+ 	        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+ 	        	if ((boolean)newValue)
+ 	        		upperRightPane.getTabs().add(arcTab);
+ 	        	else
+ 	        		upperRightPane.getTabs().remove(arcTab);
+ 	        }
+ 	    });
+    	this.viewMenuFunction.selectedProperty().addListener(new ChangeListener() {
+ 	        @Override
+ 	        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+ 	        	if ((boolean)newValue)
+ 	        		upperRightPane.getTabs().add(functionTab);
+ 	        	else
+ 	        		upperRightPane.getTabs().remove(functionTab);
+ 	        }
+ 	    });
+    	this.viewMenuState.selectedProperty().addListener(new ChangeListener() {
+ 	        @Override
+ 	        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+ 	        	if ((boolean)newValue)
+ 	        		upperRightPane.getTabs().add(stateTab);
+ 	        	else
+ 	        		upperRightPane.getTabs().remove(stateTab);
+ 	        }
+ 	    });
+    	this.viewMenuTask.selectedProperty().addListener(new ChangeListener() {
+ 	        @Override
+ 	        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+ 	        	if ((boolean)newValue)
+ 	        		upperRightPane.getTabs().add(taskTab);
+ 	        	else
+ 	        		upperRightPane.getTabs().remove(taskTab);
+ 	        }
+ 	    });
+    	this.viewMenuTransition.selectedProperty().addListener(new ChangeListener() {
+ 	        @Override
+ 	        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+ 	        	if ((boolean)newValue)
+ 	        		upperRightPane.getTabs().add(transitionTab);
+ 	        	else
+ 	        		upperRightPane.getTabs().remove(transitionTab);
+ 	        }
+ 	    });
+    	this.viewMenuTeam.selectedProperty().addListener(new ChangeListener() {
+ 	        @Override
+ 	        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+ 	        	if ((boolean)newValue)
+ 	        		lowerRightPane.getTabs().add(teamTab);
+ 	        	else
+ 	        		lowerRightPane.getTabs().remove(teamTab);
+ 	        }
+ 	    });
+    	this.viewMenuOutput.selectedProperty().addListener(new ChangeListener() {
+ 	        @Override
+ 	        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+ 	        	if ((boolean)newValue)
+ 	        		lowerLeftPane.getTabs().add(outputTab);
+ 	        	else
+ 	        		lowerLeftPane.getTabs().remove(outputTab);
+ 	        }
+ 	    });
+    	this.viewMenuEventLog.selectedProperty().addListener(new ChangeListener() {
+ 	        @Override
+ 	        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+ 	        	if ((boolean)newValue)
+ 	        		lowerLeftPane.getTabs().add(eventLogTab);
+ 	        	else
+ 	        		lowerLeftPane.getTabs().remove(eventLogTab);
+ 	        }
+ 	    });
+    }
+    
+    private void setShortcutKeys() {
     	this.fileMenuNew.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN));
     	this.fileMenuOpen.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
     	this.fileMenuSave.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
@@ -489,7 +602,19 @@ public class MainPageController {
     
     @FXML
     void runMenuVerifyClicked(ActionEvent event) {
-
+    	this.outputField.appendText("===================== Validation Started =====================\n");
+    	this.outputField.appendText("Validating Goal Net: " + DataSession.Cache.gnet.getName() + "\n");
+    	this.outputField.appendText("Start Time: " + new Date() + "\n");
+    	
+    	ValidationManager vm = new ValidationManager();
+    	vm.validate();
+    	this.outputField.appendText(vm.outputErrors());
+    	if (this.runMenuDisplayWarning.isSelected()){
+    		this.outputField.appendText(vm.outputWarnings());
+    	}
+    	this.outputField.appendText(vm.getErrors().size() + " Error" + ((vm.getErrors().size() > 1) ? "s, " : ", "));
+    	this.outputField.appendText(vm.getWarnings().size() + " Warning" + ((vm.getWarnings().size() > 1) ? "s. " : ". "));
+    	this.outputField.appendText("End Time: " + new Date() + "\n");
     }
 
     @FXML
@@ -499,12 +624,10 @@ public class MainPageController {
     
     @FXML
     void teamMenuUserGroupClicked(ActionEvent event) {
-
     }
 
     @FXML
     void teamMenuGNetVisibilityClicked(ActionEvent event) {
-    	
     }
     
     @FXML
