@@ -31,7 +31,8 @@ public class DataSession {
 		
 		public static List<ActionLog> actionLogs = new ArrayList<ActionLog>();
 		
-		public static void setGNet(Gnet gnet){
+		// this can be used to refresh cache as well
+		public static void setGNetCache(Gnet gnet){
 			if (gnet == null){
 				Cache.gnet = null;
 				Cache.arcs = null;

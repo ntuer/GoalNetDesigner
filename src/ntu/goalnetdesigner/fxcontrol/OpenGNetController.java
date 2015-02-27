@@ -39,7 +39,7 @@ public class OpenGNetController {
     @FXML
     void OKButtonClicked(ActionEvent event) {
     	Gnet selectedGNet = GNetTable.getSelectionModel().getSelectedItem();
-    	DataSession.Cache.setGNet(selectedGNet);
+    	DataSession.Cache.setGNetCache(selectedGNet);
     	DataSession.Cache.loadTasksAndMethods();
     	ConsoleLogger.log("Existing GNet Opened:" + selectedGNet.getName());
     	UIUtility.Navigation.closeContainingStage(OKButton);

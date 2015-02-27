@@ -1,12 +1,15 @@
 package ntu.goalnetdesigner.logic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.data.persistence.Gnet;
+import ntu.goalnetdesigner.data.persistence.Method;
 import ntu.goalnetdesigner.data.persistence.State;
+import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.render.Drawable;
@@ -168,23 +171,79 @@ public class RenderManager {
 		r.setMeh(meh);
 	}
 
-	// Delete: need to find out which object is selected.
-	// Due to various types of objects selected, multiple methods are needed.
-	
-	public void delete(Drawable currentSelection) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public void delete(Renderable currentSelection) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	// fallback option for Task and Function
 	public void delete(Object currentSelection) {
-		// TODO Auto-generated method stub
-		
+		if (currentSelection instanceof Renderable){
+			deleteBaseObject(((Renderable) currentSelection).getBaseObject());
+			deleteRenderable((Renderable) currentSelection);
+		} else if (currentSelection instanceof Drawable){
+			deleteBaseObject(currentSelection);
+			deleteRenderable(((Drawable) currentSelection).getRenderedObject());
+		} else {
+			// fallback option for Task and Function
+			deleteBaseObject(currentSelection);
+		}
+	}
+	
+	// Delete from database
+	// Delete from cache
+	private void deleteBaseObject(Object baseObject){
+		if (baseObject instanceof Method){
+			DataService.method.remove((Method) baseObject);
+			// update cache
+			DataSession.Cache.functions.remove((Method) baseObject);
+		} else if (baseObject instanceof Task){
+			DataService.task.remove((Task) baseObject);
+			// update cache
+			DataSession.Cache.tasks.remove((Task) baseObject);
+		} else if (baseObject instanceof Arc){
+			DataService.arc.remove((Arc) baseObject);
+			// update cache
+			DataSession.Cache.arcs.remove((Arc) baseObject);
+		} else if (baseObject instanceof State){
+			// remove arcs first
+			ArrayList<Arc> arcsToRemove = new ArrayList<>();
+			State s = (State) baseObject;
+			for (Arc a: DataSession.Cache.arcs){
+				if (a.getInputID().equals(s.getId()) || a.getOutputID().equals(s.getId()))
+					arcsToRemove.add(a);
+			}
+			for (Arc a: arcsToRemove){
+				delete(a);
+			}
+			arcsToRemove.clear();
+			DataService.state.remove((State) baseObject);
+			// update cache
+			DataSession.Cache.states.remove((State) baseObject);
+		} else if (baseObject instanceof Transition){
+			// remove arcs first
+			ArrayList<Arc> arcsToRemove = new ArrayList<>();
+			Transition t = (Transition) baseObject;
+			if (t.getTasklist() != null){
+				DataService.tasklist.remove(t.getTasklist());
+				DataSession.Cache.tasklists.remove(t.getTasklist());
+			}
+			for (Arc a: DataSession.Cache.arcs){
+				if (a.getInputID().equals(t.getId()) || a.getOutputID().equals(t.getId()))
+					arcsToRemove.add(a);
+			}
+			for (Arc a: arcsToRemove){
+				delete(a);
+			}
+			arcsToRemove.clear();
+			DataService.transition.remove((Transition) baseObject);
+			// update cache
+			DataSession.Cache.transitions.remove((Transition) baseObject);
+		}
+		DataService.flush();
+	}
+	
+	private void deleteRenderable(Renderable currentSelection){
+		if (currentSelection instanceof RenderedArc){
+			drawingPane.getChildren().remove(((RenderedArc)currentSelection).getShape());
+			drawingPane.getChildren().remove(((RenderedArc)currentSelection).getShape().getArrow());
+		} else if (currentSelection instanceof Renderable){
+			drawingPane.getChildren().remove(((Renderable)currentSelection).getDisplay());
+		}
 	}
 }
 

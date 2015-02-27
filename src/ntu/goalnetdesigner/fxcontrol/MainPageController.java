@@ -588,7 +588,7 @@ public class MainPageController {
     	File file = fileChooser.showOpenDialog(UISession.primaryStage);
     	if (file != null) {
 	    	SaveManager sm = new SaveManager();
-	    	DataSession.Cache.setGNet(sm.openLocally(file.getPath()));
+	    	DataSession.Cache.setGNetCache(sm.openLocally(file.getPath()));
 	    	if (DataSession.Cache.gnet != null)
 	    		this.refreshTreeViewsAndDrawingPane();
     	}
@@ -612,7 +612,7 @@ public class MainPageController {
     		DataService.rollback();
     	}
     	if (response != DialogResponse.CANCEL){
-	        DataSession.Cache.setGNet(null);
+	        DataSession.Cache.setGNetCache(null);
 	        this.refreshTreeViewsAndDrawingPane();
     	}
     }
