@@ -2,6 +2,8 @@ package ntu.goalnetdesigner.render.customcontrol;
 
 
 
+import ntu.goalnetdesigner.render.Renderable;
+import ntu.goalnetdesigner.utility.Resource;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.LineTo;
@@ -10,6 +12,16 @@ import javafx.scene.shape.Path;
 
 public class Arrow extends Line{
 	private Path arrow;
+	
+	private Renderable parentRenderable;
+	
+	public Renderable getParentRenderable() {
+		return parentRenderable;
+	}
+
+	public void setParentRenderable(Renderable parent) {
+		this.parentRenderable = parent;
+	}
 	
 	public Path getArrow() {
 		return arrow;
@@ -22,6 +34,8 @@ public class Arrow extends Line{
 	public Arrow (double sx, double sy, double ex, double ey){
 		super(sx, sy, ex, ey);
 		arrow = new Path();
+		this.setStrokeWidth(Resource.NORMAL_STROKE_WIDTH);
+		arrow.setStrokeWidth(Resource.NORMAL_STROKE_WIDTH);
 		this.handleChange();
 	}
 	

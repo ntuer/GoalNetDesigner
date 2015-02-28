@@ -62,6 +62,7 @@ public class RenderedArc extends RenderedEdge{
 		this.shape = new Arrow(sx, sy, ex, ey);
 		this.shape.setStroke(Resource.ARC_COLOR);
 		this.baseObject.setRenderedObject(this);
+		this.getShape().setParentRenderable(this);
 	}
 	
 	public void update(double x, double y, boolean isStart){
@@ -94,6 +95,7 @@ public class RenderedArc extends RenderedEdge{
 	@Override
 	public void setMeh(RenderableMouseEventHandler meh){
 		this.meh = meh;
+		this.shape.setOnMouseClicked(meh.mouseOnClickHandler);
 	}
 	
 }

@@ -9,13 +9,13 @@ import ntu.goalnetdesigner.render.customcontrol.Arrow;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.utility.Resource;
 
-public class RenderedComposition extends RenderedEdge{
+public class RenderedCompositionEdge extends RenderedEdge{
 	
 	private State baseObjectStart;
 	private State baseObjectEnd;
 	
 	// This is used to generate a new Arc visually using existing modal
-	public RenderedComposition(State s, State e){
+	public RenderedCompositionEdge(State s, State e){
 		super();
 		this.baseObject = null;
 		this.baseObjectStart = s;

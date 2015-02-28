@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ntu.goalnetdesigner.logic.RenderManager;
 import ntu.goalnetdesigner.render.Renderable;
+import ntu.goalnetdesigner.render.customcontrol.Arrow;
 import ntu.goalnetdesigner.session.UISession;
 
 public class UIUtility {
@@ -85,11 +86,15 @@ public class UIUtility {
 		public static RenderManager renderManager = null;
 		
 		public static void setBoldBorder(Renderable r){
-			r.getShape().setStrokeWidth(5);
+			r.getShape().setStrokeWidth(Resource.SELECTED_STROKE_WIDTH);
+			if (r.getShape() instanceof Arrow)
+				(((Arrow)r.getShape()).getArrow()).setStrokeWidth(Resource.SELECTED_STROKE_WIDTH);
 		}
 		
 		public static void restoreBorder(Renderable r){
-			r.getShape().setStrokeWidth(1);
+			r.getShape().setStrokeWidth(Resource.NORMAL_STROKE_WIDTH);
+			if (r.getShape() instanceof Arrow)
+				(((Arrow)r.getShape()).getArrow()).setStrokeWidth(Resource.NORMAL_STROKE_WIDTH);
 		}
 	}
 	public static class GroupSelection{

@@ -3,12 +3,14 @@ package ntu.goalnetdesigner.render;
 import java.io.IOException;
 
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Path;
 import ntu.goalnetdesigner.logger.ConsoleLogger;
+import ntu.goalnetdesigner.render.customcontrol.Arrow;
 import ntu.goalnetdesigner.render.customcontrol.BidirectionalStackPane;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.UISession;
@@ -32,7 +34,10 @@ public class RenderableMouseEventHandler {
 	public EventHandler<MouseEvent> mouseOnClickHandler = new EventHandler<MouseEvent>() {
     	public void handle(MouseEvent e)
     	{
-    		UISession.setCurrentSelection(((BidirectionalStackPane)(e.getSource())).getParentRenderable());
+    		if (e.getSource() instanceof Arrow)
+    			UISession.setCurrentSelection(((Arrow)(e.getSource())).getParentRenderable());
+    		else
+    			UISession.setCurrentSelection(((BidirectionalStackPane)(e.getSource())).getParentRenderable());
     		UISession.isInRenderedObject = true; // flag to cancel drawing pane event
     		
     		// If user action is to add arc
@@ -52,6 +57,12 @@ public class RenderableMouseEventHandler {
 	    		} else if (UISession.currentSelection instanceof RenderedTransition){
 	    			try {
 						propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.TRANSITION_PROPERTY_PANE_PATH));
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+	    		} else if (UISession.currentSelection instanceof RenderedArc){
+	    			try {
+						propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.ARC_PROPERTY_PANE_PATH));
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -104,8 +115,8 @@ public class RenderableMouseEventHandler {
 	            		else
 	            			a.update(newTranslateX, newTranslateY, false);
 	            	}
-            	} else if (ed instanceof RenderedComposition){
-            		RenderedComposition c = (RenderedComposition) ed;
+            	} else if (ed instanceof RenderedCompositionEdge){
+            		RenderedCompositionEdge c = (RenderedCompositionEdge) ed;
             		if (c.getBaseObjectStart() == p.getBaseObject())
             			c.update(newTranslateX, newTranslateY, true);
             		else if (c.getBaseObjectEnd() == p.getBaseObject())

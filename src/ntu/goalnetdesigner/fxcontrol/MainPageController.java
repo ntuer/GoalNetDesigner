@@ -644,7 +644,13 @@ public class MainPageController {
     	// clear property pane
     	UISession.currentPaneController = null;
     	propertyPane.setContent(null);
-    	UIUtility.Draw.renderManager.delete(UISession.currentSelection);
+    	if (UISession.currentGroupSelection.size() > 0){
+    		for(Object obj : UISession.currentGroupSelection.getSelection()){
+    			UIUtility.Draw.renderManager.delete(obj);
+    		}
+    	} else {
+    		UIUtility.Draw.renderManager.delete(UISession.currentSelection);
+    	}
     }
 
     @FXML

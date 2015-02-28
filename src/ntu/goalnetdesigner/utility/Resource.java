@@ -80,5 +80,6 @@ public class Resource {
 	public static final double TRANSITION_HEIGHT = 30.0;
 	public static final double TRANSITION_WIDTH = 60.0;
 	
-	
+	public static final int NORMAL_STROKE_WIDTH = 2;
+	public static final int SELECTED_STROKE_WIDTH = 4;
 }

@@ -130,6 +130,10 @@ public class UISession {
 		public int size(){
 			return selection.size();
 		}
+		
+		public Set<Renderable> getSelection(){
+			return this.selection;
+		}
 	}
 	
 }

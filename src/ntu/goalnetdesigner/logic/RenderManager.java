@@ -12,11 +12,12 @@ import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.data.service.DataService;
+import ntu.goalnetdesigner.logger.ConsoleLogger;
 import ntu.goalnetdesigner.render.Drawable;
 import ntu.goalnetdesigner.render.Renderable;
 import ntu.goalnetdesigner.render.RenderableMouseEventHandler;
 import ntu.goalnetdesigner.render.RenderedArc;
-import ntu.goalnetdesigner.render.RenderedComposition;
+import ntu.goalnetdesigner.render.RenderedCompositionEdge;
 import ntu.goalnetdesigner.render.RenderedEdge;
 import ntu.goalnetdesigner.render.RenderedObjectFactory;
 import ntu.goalnetdesigner.render.RenderedState;
@@ -81,8 +82,8 @@ public class RenderManager {
 		setMouseEventHandler(rt);
 	}
 	
-	public RenderedComposition drawComposition(State start, State end){
-		RenderedComposition rc = new RenderedComposition(start, end);
+	public RenderedCompositionEdge drawComposition(State start, State end){
+		RenderedCompositionEdge rc = new RenderedCompositionEdge(start, end);
 		start.getRenderedObject().getAssociatedRenderedEdges().add(rc);
 		end.getRenderedObject().getAssociatedRenderedEdges().add(rc);
 		drawingPane.getChildren().addAll(rc.getShape());
@@ -93,8 +94,8 @@ public class RenderManager {
 	public void removeComposition(State start, State end){
 		List<RenderedEdge> reList = start.getRenderedObject().getAssociatedRenderedEdges();
 		for (RenderedEdge re: reList){
-			if (re instanceof RenderedComposition){
-				RenderedComposition rc = (RenderedComposition) re;
+			if (re instanceof RenderedCompositionEdge){
+				RenderedCompositionEdge rc = (RenderedCompositionEdge) re;
 				if (rc.getBaseObjectEnd() == end){
 					reList.remove(rc);
 					start.getRenderedObject().getAssociatedRenderedEdges().remove(rc);
@@ -109,6 +110,7 @@ public class RenderManager {
 	
 	public void drawExistingArc(Arc a, List<State> states, List<Transition> transitions){
 		RenderedArc ra = new RenderedArc(a, states, transitions);
+		setMouseEventHandler(ra);
 		drawingPane.getChildren().addAll(ra.getShape());
 		drawingPane.getChildren().addAll(ra.getShape().getArrow());
 	}
@@ -173,11 +175,11 @@ public class RenderManager {
 
 	public void delete(Object currentSelection) {
 		if (currentSelection instanceof Renderable){
-			deleteBaseObject(((Renderable) currentSelection).getBaseObject());
-			deleteRenderable((Renderable) currentSelection);
+			if (deleteBaseObject(((Renderable) currentSelection).getBaseObject()))
+				deleteRenderable((Renderable) currentSelection);
 		} else if (currentSelection instanceof Drawable){
-			deleteBaseObject(currentSelection);
-			deleteRenderable(((Drawable) currentSelection).getRenderedObject());
+			if (deleteBaseObject(currentSelection))
+				deleteRenderable(((Drawable) currentSelection).getRenderedObject());
 		} else {
 			// fallback option for Task and Function
 			deleteBaseObject(currentSelection);
@@ -186,7 +188,9 @@ public class RenderManager {
 	
 	// Delete from database
 	// Delete from cache
-	private void deleteBaseObject(Object baseObject){
+	private boolean deleteBaseObject(Object baseObject){
+		boolean isToDeleteState = true;
+		
 		if (baseObject instanceof Method){
 			DataService.method.remove((Method) baseObject);
 			// update cache
@@ -203,6 +207,34 @@ public class RenderManager {
 			// remove arcs first
 			ArrayList<Arc> arcsToRemove = new ArrayList<>();
 			State s = (State) baseObject;
+			
+			// Don't delete composite state, start and end.
+			if (s.getComposite())
+				isToDeleteState = false;
+			if (DataSession.Cache.gnet.getStartState() != null && 
+					s.getId().equals(DataSession.Cache.gnet.getStartState().getId()))
+				isToDeleteState = false;
+			if (DataSession.Cache.gnet.getEndState() != null && 
+					s.getId().equals(DataSession.Cache.gnet.getEndState().getId()))
+				isToDeleteState = false;
+			if (DataSession.Cache.gnet.getRootState() != null && 
+					s.getId().equals(DataSession.Cache.gnet.getRootState().getId()))
+				isToDeleteState = false;
+			for (State st: DataSession.Cache.states){
+				if (st.getComposite()){
+					if (st.getCompositeStartState() != null &&
+							st.getCompositeStartState().getId().equals(s.getId()))
+						isToDeleteState = false;
+					if (st.getCompositeEndState() != null &&
+							st.getCompositeEndState().getId().equals(s.getId()))
+						isToDeleteState = false;
+				}
+			}
+			
+			if (!isToDeleteState){
+				ConsoleLogger.log("State " + s.getId() + " should not be deleted because used in Goal Net or Composite State.");
+				return false;
+			}
 			for (Arc a: DataSession.Cache.arcs){
 				if (a.getInputID().equals(s.getId()) || a.getOutputID().equals(s.getId()))
 					arcsToRemove.add(a);
@@ -235,6 +267,7 @@ public class RenderManager {
 			DataSession.Cache.transitions.remove((Transition) baseObject);
 		}
 		DataService.flush();
+		return true;
 	}
 	
 	private void deleteRenderable(Renderable currentSelection){
