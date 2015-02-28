@@ -82,4 +82,6 @@ public class Resource {
 	
 	public static final int NORMAL_STROKE_WIDTH = 2;
 	public static final int SELECTED_STROKE_WIDTH = 4;
+
+	public static final int GRAPH_BORDER_SIZE = 50;
 }

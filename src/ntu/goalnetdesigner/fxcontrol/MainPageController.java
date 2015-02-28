@@ -6,9 +6,11 @@ import java.util.Date;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Dialogs;
 import javafx.scene.control.Dialogs.DialogResponse;
@@ -23,12 +25,16 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+
+import javax.imageio.ImageIO;
+
 import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.data.persistence.Method;
 import ntu.goalnetdesigner.data.persistence.State;
@@ -42,7 +48,6 @@ import ntu.goalnetdesigner.logic.RenderManager;
 import ntu.goalnetdesigner.logic.SaveManager;
 import ntu.goalnetdesigner.logic.TaskManager;
 import ntu.goalnetdesigner.logic.ValidationManager;
-import ntu.goalnetdesigner.render.Drawable;
 import ntu.goalnetdesigner.render.Renderable;
 import ntu.goalnetdesigner.render.RenderedArc;
 import ntu.goalnetdesigner.render.customcontrol.RubberBandSelection;
@@ -683,7 +688,34 @@ public class MainPageController {
 
     @FXML
     void runMenuRunClicked(ActionEvent event) {
+    	int maxX = 0, maxY = 0;
+    	for (State s: DataSession.Cache.states){
+    		if (maxX < s.getX())
+    			maxX = s.getX();
+    		if (maxY < s.getY())
+    			maxY = s.getY();
+    	}
     	
+    	for (Transition s: DataSession.Cache.transitions){
+    		if (maxX < s.getX())
+    			maxX = s.getX();
+    		if (maxY < s.getY())
+    			maxY = s.getY();
+    	}
+    	
+    	WritableImage wi = new WritableImage(maxX + Resource.GRAPH_BORDER_SIZE, 
+    			maxY + Resource.GRAPH_BORDER_SIZE);
+    	
+    	WritableImage image = drawingPane.snapshot(new SnapshotParameters(), wi);
+
+        // TODO: probably use a file chooser here
+        File file = new File("chart.png");
+
+        try {
+            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
+        } catch (IOException e) {
+            // TODO: handle exception here
+        }
     }
     
     @FXML
