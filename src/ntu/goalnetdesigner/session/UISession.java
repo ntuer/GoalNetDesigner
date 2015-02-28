@@ -136,8 +136,5 @@ public class UISession {
 			return this.selection;
 		}
 	}
-
-
 	public static CurrentDrawingMode currentDrawingMode = null;
-	
 }

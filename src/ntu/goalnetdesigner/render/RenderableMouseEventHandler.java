@@ -1,14 +1,16 @@
 package ntu.goalnetdesigner.render;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Path;
 import ntu.goalnetdesigner.logger.ConsoleLogger;
 import ntu.goalnetdesigner.render.customcontrol.Arrow;
 import ntu.goalnetdesigner.render.customcontrol.BidirectionalStackPane;
@@ -19,9 +21,14 @@ import ntu.goalnetdesigner.utility.Resource;
 public class RenderableMouseEventHandler {
 	private ScrollPane propertyPane;
 	private AnchorPane drawingPane;
-	private double orgSceneX, orgSceneY;
-	private double orgTranslateX, orgTranslateY;
-	private double newTranslateX, newTranslateY;
+	public double orgSceneX, orgSceneY;
+	
+	private class RenderableCoordinate {
+		public double orgTranslateX, orgTranslateY;
+		public double newTranslateX, newTranslateY;
+	}
+	
+	private HashMap<Renderable, RenderableCoordinate> coordinates = new HashMap<>();
 	
 	public RenderableMouseEventHandler(ScrollPane propertyDisplayPane,
 			AnchorPane drawingPane) {
@@ -78,54 +85,73 @@ public class RenderableMouseEventHandler {
     		UISession.isInRenderedObject = true;
     		orgSceneX = e.getSceneX();
             orgSceneY = e.getSceneY();
-            orgTranslateX = ((StackPane)(e.getSource())).getTranslateX();
-            orgTranslateY = ((StackPane)(e.getSource())).getTranslateY();
+    		if (UISession.currentGroupSelection.size() > 0){
+    			for (Renderable r: UISession.currentGroupSelection.getSelection()){
+    				RenderableCoordinate rc = new RenderableCoordinate();
+    	            rc.orgTranslateX = (r.getDisplay()).getTranslateX();
+    	            rc.orgTranslateY = (r.getDisplay()).getTranslateY();
+    	            coordinates.put(r, rc);
+    			}
+    		} else {
+    			RenderableCoordinate rc = new RenderableCoordinate();
+	            rc.orgTranslateX = ((StackPane) e.getSource()).getTranslateX();
+	            rc.orgTranslateY = ((StackPane) e.getSource()).getTranslateY();
+    			coordinates.put(((BidirectionalStackPane)e.getSource()).getParentRenderable(), rc);
+    		}
     	}
     };
     
-    private void updateDisplay(StackPane p, double offsetX, double offsetY){
-    	newTranslateX = orgTranslateX + offsetX;
-        newTranslateY = orgTranslateY + offsetY;
+    private void updateDisplay(Map.Entry<Renderable, RenderableCoordinate> entry, double offsetX, double offsetY){
+    	StackPane p = entry.getKey().getDisplay();
+    	RenderableCoordinate rc = entry.getValue();
+    	
+    	rc.newTranslateX = rc.orgTranslateX + offsetX;
+    	rc.newTranslateY = rc.orgTranslateY + offsetY;
         
         // Set display
-        p.setTranslateX(newTranslateX);
-        p.setTranslateY(newTranslateY);
+        p.setTranslateX(rc.newTranslateX);
+        p.setTranslateY(rc.newTranslateY);
         
     }
     
-    private void updateArcs(Renderable p){
+    private void updateArcs(Map.Entry<Renderable, RenderableCoordinate> entry){
+    	Renderable p = entry.getKey();
+    	RenderableCoordinate rc = entry.getValue();
     	for (RenderedEdge ed : p.getAssociatedRenderedEdges()){
         	if (ed instanceof RenderedArc){
         		RenderedArc a = (RenderedArc) ed;
             	// state -> transition
             	if (a.getBaseObject().getDirection() == true){
             		if(p instanceof RenderedTransition)
-            			a.update(newTranslateX, newTranslateY, false);
+            			a.update(rc.newTranslateX, rc.newTranslateY, false);
             		else
-            			a.update(newTranslateX, newTranslateY, true);
+            			a.update(rc.newTranslateX, rc.newTranslateY, true);
             	} else {
             		if(p instanceof RenderedTransition)
-            			a.update(newTranslateX, newTranslateY, true);
+            			a.update(rc.newTranslateX, rc.newTranslateY, true);
             		else
-            			a.update(newTranslateX, newTranslateY, false);
+            			a.update(rc.newTranslateX, rc.newTranslateY, false);
             	}
         	} else if (ed instanceof RenderedCompositionEdge){
         		RenderedCompositionEdge c = (RenderedCompositionEdge) ed;
         		if (c.getBaseObjectStart() == p.getBaseObject())
-        			c.update(newTranslateX, newTranslateY, true);
+        			c.update(rc.newTranslateX, rc.newTranslateY, true);
         		else if (c.getBaseObjectEnd() == p.getBaseObject())
-        			c.update(newTranslateX, newTranslateY, false);
+        			c.update(rc.newTranslateX, rc.newTranslateY, false);
         	}
         }
     }
     
-    private void updateBaseObject(Renderable r){
-    	if (r instanceof RenderedState){
-        	((RenderedState) r).getBaseObject().setX((int) (newTranslateX + Resource.STATE_RADIUS));
-        	((RenderedState) r).getBaseObject().setY((int) (newTranslateY + Resource.STATE_RADIUS));
+    private void updateBaseObject(Map.Entry<Renderable, RenderableCoordinate> entry){
+    	Renderable p = entry.getKey();
+    	RenderableCoordinate rc = entry.getValue();
+    	
+    	if (p instanceof RenderedState){
+        	((RenderedState) p).getBaseObject().setX((int) (rc.newTranslateX + Resource.STATE_RADIUS));
+        	((RenderedState) p).getBaseObject().setY((int) (rc.newTranslateY + Resource.STATE_RADIUS));
         } else {
-        	((RenderedTransition) r).getBaseObject().setX((int) newTranslateX);
-        	((RenderedTransition) r).getBaseObject().setY((int) newTranslateY);
+        	((RenderedTransition) p).getBaseObject().setX((int) rc.newTranslateX);
+        	((RenderedTransition) p).getBaseObject().setY((int) rc.newTranslateY);
         }
     }
     
@@ -136,12 +162,11 @@ public class RenderableMouseEventHandler {
     		UISession.isDragging = true; // flag to cancel arc drawing event
     		double offsetX = e.getSceneX() - orgSceneX;
             double offsetY = e.getSceneY() - orgSceneY;
-            updateDisplay((StackPane) e.getSource(), offsetX, offsetY);
+            for (Map.Entry<Renderable, RenderableCoordinate> entry: coordinates.entrySet()){
+            	updateDisplay(entry, offsetX, offsetY);
+                updateArcs(entry);
+            }
             
-            // set underlying object
-            // Set Arcs
-            Renderable p = ((BidirectionalStackPane)(e.getSource())).getParentRenderable();
-            updateArcs(p);
     	}
     };
     
@@ -150,8 +175,10 @@ public class RenderableMouseEventHandler {
     	{
     		if (UISession.isDragging){
     			// after dragging, set underlying object value.
-	    		Renderable r = ((BidirectionalStackPane)(e.getSource())).getParentRenderable();
-	    		updateBaseObject(r);
+    			for (Map.Entry<Renderable, RenderableCoordinate> entry: coordinates.entrySet()){
+    				updateBaseObject(entry);
+    			}
+    			coordinates.clear();
     		}
     	}
     };
