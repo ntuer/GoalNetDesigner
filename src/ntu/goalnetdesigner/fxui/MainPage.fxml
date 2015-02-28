@@ -21,7 +21,7 @@
 						<MenuItem fx:id="fileMenuSaveAsLocal" mnemonicParsing="false" onAction="#fileMenuSaveAsLocalClicked" text="Save As Local" />
 						<SeparatorMenuItem mnemonicParsing="false" />
 						<MenuItem fx:id="fileMenuClose" mnemonicParsing="false" onAction="#fileMenuCloseClicked" text="Close" />
-						<MenuItem fx:id="fileMenuPrint" mnemonicParsing="false" onAction="#fileMenuPrintClicked" text="Print" />
+						<MenuItem fx:id="fileMenuExport" mnemonicParsing="false" onAction="#fileMenuExportClicked" text="Export" />
 						<MenuItem fx:id="fileMenuExit" mnemonicParsing="false" onAction="#fileMenuExitClicked" text="Exit" />
 					</items>
 				</Menu>

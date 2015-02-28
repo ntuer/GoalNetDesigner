@@ -17,9 +17,9 @@ public class UsergroupGnet implements Serializable {
 	@EmbeddedId
 	private UsergroupGnetPK id;
 
-	private boolean read;
+	private boolean canread;
 
-	private boolean write;
+	private boolean canwrite;
 
 	//bi-directional many-to-one association to Gnet
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -43,19 +43,19 @@ public class UsergroupGnet implements Serializable {
 	}
 
 	public boolean getRead() {
-		return this.read;
+		return this.canread;
 	}
 
 	public void setRead(boolean read) {
-		this.read = read;
+		this.canread = read;
 	}
 
 	public boolean getWrite() {
-		return this.write;
+		return this.canwrite;
 	}
 
 	public void setWrite(boolean write) {
-		this.write = write;
+		this.canwrite = write;
 	}
 
 	public Gnet getGnet() {

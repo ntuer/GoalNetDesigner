@@ -94,7 +94,7 @@ public class MainPageController {
     private TreeView<State> stateTreeView;
 
     @FXML
-    private MenuItem fileMenuPrint;
+    private MenuItem fileMenuExport;
 
     @FXML
     private MenuItem fileMenuClose;
@@ -623,8 +623,38 @@ public class MainPageController {
     }
 
     @FXML
-    void fileMenuPrintClicked(ActionEvent event) {
-    	
+    void fileMenuExportClicked(ActionEvent event) {
+    	String input = Dialogs.showInputDialog(UISession.primaryStage, "Enter file name:", "Export as png", "Export");
+    	if (input != null){
+	    	int maxX = 0, maxY = 0;
+	    	for (State s: DataSession.Cache.states){
+	    		if (maxX < s.getX())
+	    			maxX = s.getX();
+	    		if (maxY < s.getY())
+	    			maxY = s.getY();
+	    	}
+	    	
+	    	for (Transition s: DataSession.Cache.transitions){
+	    		if (maxX < s.getX())
+	    			maxX = s.getX();
+	    		if (maxY < s.getY())
+	    			maxY = s.getY();
+	    	}
+	    	
+	    	WritableImage wi = new WritableImage(maxX + Resource.EXPORT_PICTURE_BORDER_SIZE, 
+	    			maxY + Resource.EXPORT_PICTURE_BORDER_SIZE);
+	    	
+	    	WritableImage image = drawingPane.snapshot(new SnapshotParameters(), wi);
+	
+	        // TODO: probably use a file chooser here
+	        File file = new File(input + ".png");
+	
+	        try {
+	            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
+	        } catch (IOException e) {
+	            // TODO: handle exception here
+	        }
+    	}
     }
 
     @FXML
@@ -688,38 +718,12 @@ public class MainPageController {
 
     @FXML
     void runMenuRunClicked(ActionEvent event) {
-    	int maxX = 0, maxY = 0;
-    	for (State s: DataSession.Cache.states){
-    		if (maxX < s.getX())
-    			maxX = s.getX();
-    		if (maxY < s.getY())
-    			maxY = s.getY();
-    	}
     	
-    	for (Transition s: DataSession.Cache.transitions){
-    		if (maxX < s.getX())
-    			maxX = s.getX();
-    		if (maxY < s.getY())
-    			maxY = s.getY();
-    	}
-    	
-    	WritableImage wi = new WritableImage(maxX + Resource.GRAPH_BORDER_SIZE, 
-    			maxY + Resource.GRAPH_BORDER_SIZE);
-    	
-    	WritableImage image = drawingPane.snapshot(new SnapshotParameters(), wi);
-
-        // TODO: probably use a file chooser here
-        File file = new File("chart.png");
-
-        try {
-            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
-        } catch (IOException e) {
-            // TODO: handle exception here
-        }
     }
     
     @FXML
-    void teamMenuUserGroupClicked(ActionEvent event) {
+    void teamMenuUserGroupClicked(ActionEvent event) throws Exception {
+    	Navigation.popUp(Resource.GNET_USERGROUP_PATH, UISession.primaryStage);
     }
 
     @FXML
