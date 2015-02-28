@@ -12,7 +12,6 @@ import javafx.scene.shape.Path;
 import ntu.goalnetdesigner.logger.ConsoleLogger;
 import ntu.goalnetdesigner.render.customcontrol.Arrow;
 import ntu.goalnetdesigner.render.customcontrol.BidirectionalStackPane;
-import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.UISession;
 import ntu.goalnetdesigner.utility.CurrentDrawingMode;
 import ntu.goalnetdesigner.utility.Resource;
@@ -41,7 +40,7 @@ public class RenderableMouseEventHandler {
     		UISession.isInRenderedObject = true; // flag to cancel drawing pane event
     		
     		// If user action is to add arc
-    		if (DataSession.currentDrawingMode == CurrentDrawingMode.ARC &&
+    		if (UISession.currentDrawingMode == CurrentDrawingMode.ARC &&
     				UISession.isDragging != true){
     			UISession.objectsForArc.add(((BidirectionalStackPane)(e.getSource())).getParentRenderable());
     		} else {
@@ -76,12 +75,59 @@ public class RenderableMouseEventHandler {
     public EventHandler<MouseEvent> mousePressedHandler = new EventHandler<MouseEvent>() {
     	public void handle(MouseEvent e)
     	{
+    		UISession.isInRenderedObject = true;
     		orgSceneX = e.getSceneX();
             orgSceneY = e.getSceneY();
             orgTranslateX = ((StackPane)(e.getSource())).getTranslateX();
             orgTranslateY = ((StackPane)(e.getSource())).getTranslateY();
     	}
     };
+    
+    private void updateDisplay(StackPane p, double offsetX, double offsetY){
+    	newTranslateX = orgTranslateX + offsetX;
+        newTranslateY = orgTranslateY + offsetY;
+        
+        // Set display
+        p.setTranslateX(newTranslateX);
+        p.setTranslateY(newTranslateY);
+        
+    }
+    
+    private void updateArcs(Renderable p){
+    	for (RenderedEdge ed : p.getAssociatedRenderedEdges()){
+        	if (ed instanceof RenderedArc){
+        		RenderedArc a = (RenderedArc) ed;
+            	// state -> transition
+            	if (a.getBaseObject().getDirection() == true){
+            		if(p instanceof RenderedTransition)
+            			a.update(newTranslateX, newTranslateY, false);
+            		else
+            			a.update(newTranslateX, newTranslateY, true);
+            	} else {
+            		if(p instanceof RenderedTransition)
+            			a.update(newTranslateX, newTranslateY, true);
+            		else
+            			a.update(newTranslateX, newTranslateY, false);
+            	}
+        	} else if (ed instanceof RenderedCompositionEdge){
+        		RenderedCompositionEdge c = (RenderedCompositionEdge) ed;
+        		if (c.getBaseObjectStart() == p.getBaseObject())
+        			c.update(newTranslateX, newTranslateY, true);
+        		else if (c.getBaseObjectEnd() == p.getBaseObject())
+        			c.update(newTranslateX, newTranslateY, false);
+        	}
+        }
+    }
+    
+    private void updateBaseObject(Renderable r){
+    	if (r instanceof RenderedState){
+        	((RenderedState) r).getBaseObject().setX((int) (newTranslateX + Resource.STATE_RADIUS));
+        	((RenderedState) r).getBaseObject().setY((int) (newTranslateY + Resource.STATE_RADIUS));
+        } else {
+        	((RenderedTransition) r).getBaseObject().setX((int) newTranslateX);
+        	((RenderedTransition) r).getBaseObject().setY((int) newTranslateY);
+        }
+    }
     
     public EventHandler<MouseEvent> mouseDraggedHandler = new EventHandler<MouseEvent>() {
     	public void handle(MouseEvent e)
@@ -90,39 +136,12 @@ public class RenderableMouseEventHandler {
     		UISession.isDragging = true; // flag to cancel arc drawing event
     		double offsetX = e.getSceneX() - orgSceneX;
             double offsetY = e.getSceneY() - orgSceneY;
-            newTranslateX = orgTranslateX + offsetX;
-            newTranslateY = orgTranslateY + offsetY;
-            
-            // Set display
-            ((StackPane)(e.getSource())).setTranslateX(newTranslateX);
-            ((StackPane)(e.getSource())).setTranslateY(newTranslateY);
+            updateDisplay((StackPane) e.getSource(), offsetX, offsetY);
             
             // set underlying object
             // Set Arcs
             Renderable p = ((BidirectionalStackPane)(e.getSource())).getParentRenderable();
-            for (RenderedEdge ed : p.getAssociatedRenderedEdges()){
-            	if (ed instanceof RenderedArc){
-            		RenderedArc a = (RenderedArc) ed;
-	            	// state -> transition
-	            	if (a.getBaseObject().getDirection() == true){
-	            		if(p instanceof RenderedTransition)
-	            			a.update(newTranslateX, newTranslateY, false);
-	            		else
-	            			a.update(newTranslateX, newTranslateY, true);
-	            	} else {
-	            		if(p instanceof RenderedTransition)
-	            			a.update(newTranslateX, newTranslateY, true);
-	            		else
-	            			a.update(newTranslateX, newTranslateY, false);
-	            	}
-            	} else if (ed instanceof RenderedCompositionEdge){
-            		RenderedCompositionEdge c = (RenderedCompositionEdge) ed;
-            		if (c.getBaseObjectStart() == p.getBaseObject())
-            			c.update(newTranslateX, newTranslateY, true);
-            		else if (c.getBaseObjectEnd() == p.getBaseObject())
-            			c.update(newTranslateX, newTranslateY, false);
-            	}
-            }
+            updateArcs(p);
     	}
     };
     
@@ -132,13 +151,7 @@ public class RenderableMouseEventHandler {
     		if (UISession.isDragging){
     			// after dragging, set underlying object value.
 	    		Renderable r = ((BidirectionalStackPane)(e.getSource())).getParentRenderable();
-	            if (r instanceof RenderedState){
-	            	((RenderedState) r).getBaseObject().setX((int) (newTranslateX + Resource.STATE_RADIUS));
-	            	((RenderedState) r).getBaseObject().setY((int) (newTranslateY + Resource.STATE_RADIUS));
-	            } else {
-	            	((RenderedTransition) r).getBaseObject().setX((int) newTranslateX);
-	            	((RenderedTransition) r).getBaseObject().setY((int) newTranslateY);
-	            }
+	    		updateBaseObject(r);
     		}
     	}
     };

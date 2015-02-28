@@ -14,12 +14,8 @@ import ntu.goalnetdesigner.data.persistence.Tasklist;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.render.Drawable;
-import ntu.goalnetdesigner.utility.CurrentDrawingMode;
 
 public class DataSession {
-	public static CurrentDrawingMode currentDrawingMode = 
-			CurrentDrawingMode.STATE;
-	
 	public static class Cache {
 		public static Gnet gnet = null;
 		public static List<Task> tasks = null;
@@ -28,38 +24,37 @@ public class DataSession {
 		public static List<State> states = null;
 		public static List<Method> functions = null;
 		public static List<Transition> transitions = null;
-		
 		public static List<ActionLog> actionLogs = new ArrayList<ActionLog>();
-		
-		// this can be used to refresh cache as well
-		public static void setGNetCache(Gnet gnet){
-			if (gnet == null){
-				Cache.gnet = null;
-				Cache.arcs = null;
-				Cache.states = null;
-				Cache.transitions = null;
-				loadTasksAndMethods(null);
-			} else {
-				Cache.gnet = gnet;
-				Cache.arcs = gnet.getArcs();
-				Cache.states = gnet.getStates();
-				Cache.transitions = gnet.getTransitions();
-				loadTasksAndMethods();
-				DataService.begin();
-			}
+	}
+
+	// this can be used to refresh cache as well
+	public static void setGNetCache(Gnet gnet){
+		if (gnet == null){
+			Cache.gnet = null;
+			Cache.arcs = null;
+			Cache.states = null;
+			Cache.transitions = null;
+			DataSession.loadTasksAndMethods(null);
+		} else {
+			Cache.gnet = gnet;
+			Cache.arcs = gnet.getArcs();
+			Cache.states = gnet.getStates();
+			Cache.transitions = gnet.getTransitions();
+			DataSession.loadTasksAndMethods();
+			DataService.begin();
 		}
-		
-		public static void loadTasksAndMethods(){
-			Cache.functions = DataService.method.findAll();
-			Cache.tasks = DataService.task.findAll();
-			Cache.tasklists = DataService.tasklist.findAll();
-		}
-		
-		public static void loadTasksAndMethods(Object Null){
-			Cache.functions = null;
-			Cache.tasks = null;
-			Cache.tasklists = null;
-		}
+	}
+
+	public static void loadTasksAndMethods(){
+		Cache.functions = DataService.method.findAll();
+		Cache.tasks = DataService.task.findAll();
+		Cache.tasklists = DataService.tasklist.findAll();
+	}
+
+	public static void loadTasksAndMethods(Object Null){
+		Cache.functions = null;
+		Cache.tasks = null;
+		Cache.tasklists = null;
 	}
 	
 }

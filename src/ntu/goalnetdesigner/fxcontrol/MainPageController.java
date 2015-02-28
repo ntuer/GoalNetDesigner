@@ -229,7 +229,7 @@ public class MainPageController {
 								.enableGroupSelectionEventHandler(false);
 						// selection mode
 						if (newValue == null) {
-							DataSession.currentDrawingMode = null;
+							UISession.currentDrawingMode = null;
 							StatusBarLogger.log("Click to select");
 						}
 						// drawing mode
@@ -237,24 +237,24 @@ public class MainPageController {
 							ToggleButton selected = (ToggleButton) newValue
 									.getToggleGroup().getSelectedToggle();
 							if (selected.getId().equals("simpleStateButton"))
-								DataSession.currentDrawingMode = CurrentDrawingMode.STATE;
+								UISession.currentDrawingMode = CurrentDrawingMode.STATE;
 							else if (selected.getId().equals(
 									"compositeStateButton"))
-								DataSession.currentDrawingMode = CurrentDrawingMode.COMPOSITE_STATE;
+								UISession.currentDrawingMode = CurrentDrawingMode.COMPOSITE_STATE;
 							else if (selected.getId()
 									.equals("transitionButton"))
-								DataSession.currentDrawingMode = CurrentDrawingMode.TRANSITION;
+								UISession.currentDrawingMode = CurrentDrawingMode.TRANSITION;
 							else if (selected.getId().equals("arcButton"))
-								DataSession.currentDrawingMode = CurrentDrawingMode.ARC;
+								UISession.currentDrawingMode = CurrentDrawingMode.ARC;
 							else if (selected.getId().equals(
 									"groupSelectionButton")) {
-								DataSession.currentDrawingMode = null;
+								UISession.currentDrawingMode = null;
 								groupObjectSelector
 										.enableGroupSelectionEventHandler(true);
 							}
 							try {
 								StatusBarLogger.log("Click to draw "
-										+ DataSession.currentDrawingMode
+										+ UISession.currentDrawingMode
 												.toString());
 							} catch (NullPointerException npe) {
 								StatusBarLogger
@@ -366,7 +366,7 @@ public class MainPageController {
 			StatusBarLogger.log("Click to select");
     	}
 		groupObjectSelector.enableGroupSelectionEventHandler(false);
-		DataSession.currentDrawingMode = null;
+		UISession.currentDrawingMode = null;
     }
 
 	// It refreshes current view for a given GNet stored in cache.
@@ -522,7 +522,7 @@ public class MainPageController {
     		if (UISession.isInRenderedObject){
     			UISession.isInRenderedObject = false;
     			// if this is a drawing arc state
-    			if (DataSession.currentDrawingMode == CurrentDrawingMode.ARC){
+    			if (UISession.currentDrawingMode == CurrentDrawingMode.ARC){
     				if (UISession.objectsForArc.size() == 2) {
 	    				ConsoleLogger.log("Draw an arc");
 	    		    	Renderable s = UISession.objectsForArc.poll();
@@ -540,7 +540,7 @@ public class MainPageController {
     			return;
     		}
     		// If there is no selection, don't draw anything
-    		if (DataSession.currentDrawingMode == null)
+    		if (UISession.currentDrawingMode == null)
     			return;
     		// Drag state or transition
 			ConsoleLogger.log("User Click on " + me.getX() + "," + me.getY());
@@ -588,7 +588,7 @@ public class MainPageController {
     	File file = fileChooser.showOpenDialog(UISession.primaryStage);
     	if (file != null) {
 	    	SaveManager sm = new SaveManager();
-	    	DataSession.Cache.setGNetCache(sm.openLocally(file.getPath()));
+	    	DataSession.setGNetCache(sm.openLocally(file.getPath()));
 	    	if (DataSession.Cache.gnet != null)
 	    		this.refreshTreeViewsAndDrawingPane();
     	}
@@ -612,7 +612,7 @@ public class MainPageController {
     		DataService.rollback();
     	}
     	if (response != DialogResponse.CANCEL){
-	        DataSession.Cache.setGNetCache(null);
+	        DataSession.setGNetCache(null);
 	        this.refreshTreeViewsAndDrawingPane();
     	}
     }

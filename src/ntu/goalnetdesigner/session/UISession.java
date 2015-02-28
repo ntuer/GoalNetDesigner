@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import ntu.goalnetdesigner.fxcontrol.propertypanecontrol.IPaneController;
 import ntu.goalnetdesigner.render.Drawable;
 import ntu.goalnetdesigner.render.Renderable;
+import ntu.goalnetdesigner.utility.CurrentDrawingMode;
 import ntu.goalnetdesigner.utility.UIUtility;
 
 public class UISession {
@@ -135,5 +136,8 @@ public class UISession {
 			return this.selection;
 		}
 	}
+
+
+	public static CurrentDrawingMode currentDrawingMode = null;
 	
 }

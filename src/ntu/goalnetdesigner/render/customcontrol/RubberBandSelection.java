@@ -43,6 +43,10 @@ public class RubberBandSelection {
     public EventHandler<MouseEvent> onMousePressedEventHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
+        	if (UISession.isInRenderedObject){
+        		UISession.isInRenderedObject = false;
+        		return;
+        	}
             dragContext.mouseAnchorX = event.getX();
             dragContext.mouseAnchorY = event.getY();
 
@@ -62,7 +66,10 @@ public class RubberBandSelection {
     public EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
-
+        	if (UISession.isInRenderedObject){
+        		UISession.isInRenderedObject = false;
+        		return;
+        	}
             double offsetX = event.getX() - dragContext.mouseAnchorX;
             double offsetY = event.getY() - dragContext.mouseAnchorY;
 
@@ -86,6 +93,10 @@ public class RubberBandSelection {
     public EventHandler<MouseEvent> onMouseReleasedEventHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
+        	if (UISession.isInRenderedObject){
+        		UISession.isInRenderedObject = false;
+        		return;
+        	}
 			if (!event.isShiftDown() && !event.isControlDown()) {
 				UISession.currentGroupSelection.clear();
 			}

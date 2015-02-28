@@ -4,7 +4,7 @@ import java.lang.reflect.Constructor;
 
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
-import ntu.goalnetdesigner.session.DataSession;
+import ntu.goalnetdesigner.session.UISession;
 import ntu.goalnetdesigner.utility.CurrentDrawingMode;
 
 public class RenderedObjectFactory{
@@ -16,7 +16,7 @@ public class RenderedObjectFactory{
 		Constructor c = clazz.getConstructor(new Class[]{double.class, double.class});
 		Renderable returnValue = (Renderable) c.newInstance(new Object[]{new Double(x), new Double(y)});
 		// handle composite state
-		if (DataSession.currentDrawingMode == CurrentDrawingMode.COMPOSITE_STATE){
+		if (UISession.currentDrawingMode == CurrentDrawingMode.COMPOSITE_STATE){
 			((RenderedState) returnValue).getBaseObject().setComposite(true);
 			((RenderedState) returnValue).showAsComposite();
 		}
@@ -24,7 +24,7 @@ public class RenderedObjectFactory{
 	}
 	
 	public static String getClassName(){
-		switch(DataSession.currentDrawingMode){
+		switch(UISession.currentDrawingMode){
 			case STATE:
 				return "State";
 			case COMPOSITE_STATE:
