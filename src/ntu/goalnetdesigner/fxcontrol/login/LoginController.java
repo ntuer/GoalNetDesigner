@@ -9,7 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import ntu.goalnetdesigner.logic.LoginManager;
+import ntu.goalnetdesigner.logic.AuthorizationManager;
 import ntu.goalnetdesigner.session.LoginSession;
 import ntu.goalnetdesigner.session.UISession;
 import ntu.goalnetdesigner.utility.UIUtility;
@@ -38,7 +38,7 @@ public class LoginController implements Initializable{
 		LoginSession.serverAddress = serverAddressField.getText();
 		String id = usernameField.getText();
 		String password = passwordField.getText();
-		LoginManager lm = new LoginManager();
+		AuthorizationManager lm = new AuthorizationManager();
 		if (lm.login(id, password)) {
 			UIUtility.Navigation.switchTo(Resource.MAINPAGE_PATH, UISession.primaryStage);
 		}

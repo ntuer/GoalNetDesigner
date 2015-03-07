@@ -1,19 +1,15 @@
 package ntu.goalnetdesigner.render;
 
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
-import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.Transition;
+import ntu.goalnetdesigner.render.customcontrol.TransitionPolygon;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.utility.Resource;
 
 public class RenderedTransition extends Renderable{
-	
 	public RenderedTransition (double x, double y){
 		super();
-		
 		// base object
 		this.baseObject = new Transition(x, y);
 		this.getBaseObject().setGnet(DataSession.Cache.gnet);
@@ -28,13 +24,8 @@ public class RenderedTransition extends Renderable{
 	}
 	
 	public void getGraphicalRepresentation(double x, double y){
-		this.shape = new Rectangle();
-		((Rectangle)this.shape).setWidth(Resource.TRANSITION_WIDTH);
-		((Rectangle)this.shape).setHeight(Resource.TRANSITION_HEIGHT);
-		((Rectangle)this.shape).setFill(Resource.TRANSITION_COLOR.deriveColor(1, 1, 1, 0.5));
-		((Rectangle)this.shape).setStroke(Resource.TRANSITION_COLOR);
-		((Rectangle)this.shape).setStrokeWidth(Resource.NORMAL_STROKE_WIDTH);
-		((Rectangle)this.shape).setStrokeType(StrokeType.OUTSIDE);
+		this.shape = new TransitionPolygon("rectangle");
+		showAsSimple();
 		this.text = new Text(((Transition)this.baseObject).getName());
 		this.display.setTranslateX(x - Resource.TRANSITION_WIDTH / 2);
 		this.display.setTranslateY(y - Resource.TRANSITION_HEIGHT / 2);
@@ -42,11 +33,11 @@ public class RenderedTransition extends Renderable{
 		this.baseObject.setRenderedObject(this);
 	}
 
-	public Rectangle getShape() {
-		return (Rectangle)shape;
+	public TransitionPolygon getShape() {
+		return (TransitionPolygon)shape;
 	}
 
-	public void setShape(Rectangle shape) {
+	public void setShape(TransitionPolygon shape) {
 		this.shape = shape;
 	}
 
@@ -66,11 +57,20 @@ public class RenderedTransition extends Renderable{
 		this.display.setOnMouseDragged(meh.mouseDraggedHandler);
 		this.display.setOnMouseReleased(meh.mouseReleasedHandler);
 	}
+	
 	public void showAsSimple(){
-		
+		((TransitionPolygon)this.shape).transformTo("rectangle");
+		((TransitionPolygon)this.shape).setFill(Resource.TRANSITION_COLOR.deriveColor(1, 1, 1, 0.5));
+		((TransitionPolygon)this.shape).setStroke(Resource.TRANSITION_COLOR);
+		((TransitionPolygon)this.shape).setStrokeWidth(Resource.NORMAL_STROKE_WIDTH);
+		((TransitionPolygon)this.shape).setStrokeType(StrokeType.OUTSIDE);
 	}
 	
 	public void showAsReasoning(){
-		
+		((TransitionPolygon)this.shape).transformTo("diamond");
+		((TransitionPolygon)this.shape).setFill(Resource.TRANSITION_COLOR.deriveColor(1, 1, 1, 0.5));
+		((TransitionPolygon)this.shape).setStroke(Resource.TRANSITION_COLOR);
+		((TransitionPolygon)this.shape).setStrokeWidth(Resource.NORMAL_STROKE_WIDTH);
+		((TransitionPolygon)this.shape).setStrokeType(StrokeType.OUTSIDE);
 	}
 }

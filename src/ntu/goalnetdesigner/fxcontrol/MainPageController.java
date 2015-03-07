@@ -249,6 +249,9 @@ public class MainPageController {
 							else if (selected.getId()
 									.equals("transitionButton"))
 								UISession.currentDrawingMode = CurrentDrawingMode.TRANSITION;
+							else if (selected.getId()
+									.equals("reasoningButton"))
+								UISession.currentDrawingMode = CurrentDrawingMode.REASONING_TRANSITION;
 							else if (selected.getId().equals("arcButton"))
 								UISession.currentDrawingMode = CurrentDrawingMode.ARC;
 							else if (selected.getId().equals(

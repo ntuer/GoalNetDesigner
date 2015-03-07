@@ -7,7 +7,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import ntu.goalnetdesigner.data.persistence.User;
-import ntu.goalnetdesigner.logic.LoginManager;
+import ntu.goalnetdesigner.logic.AuthorizationManager;
 import ntu.goalnetdesigner.session.UISession;
 import ntu.goalnetdesigner.utility.Resource;
 import ntu.goalnetdesigner.utility.UIUtility;
@@ -62,7 +62,7 @@ public class RegisterController{
     	u.setEmail(emailField.getText());
     	u.setAnswer(answerField.getText());
     	u.setQuestion(questionField.getText());
-		LoginManager lm = new LoginManager();
+		AuthorizationManager lm = new AuthorizationManager();
 		if (lm.register(u)) {
 			Dialogs.showInformationDialog(UISession.primaryStage, "You can now login with " + u.getId(), 
 				    "User registered", "Registration");

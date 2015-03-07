@@ -86,6 +86,7 @@
             	</ToggleButton>
            		<ToggleButton fx:id="compositeStateButton" mnemonicParsing="false" text="Composite" toggleGroup="$drawingStateToggleGroup" />
            		<ToggleButton fx:id="transitionButton" mnemonicParsing="false" text="Transition" toggleGroup="$drawingStateToggleGroup" />
+           		<ToggleButton fx:id="reasoningButton" mnemonicParsing="false" text="Reasoning" toggleGroup="$drawingStateToggleGroup" />
            		<ToggleButton fx:id="arcButton" mnemonicParsing="false" text="Arc" toggleGroup="$drawingStateToggleGroup" />
            		<ToggleButton fx:id="groupSelectionButton" mnemonicParsing="false" text="Group Selection" toggleGroup="$drawingStateToggleGroup" />
 				<Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" />

@@ -20,6 +20,10 @@ public class RenderedObjectFactory{
 			((RenderedState) returnValue).getBaseObject().setComposite(true);
 			((RenderedState) returnValue).showAsComposite();
 		}
+		if (UISession.currentDrawingMode == CurrentDrawingMode.REASONING_TRANSITION){
+			((RenderedTransition) returnValue).getBaseObject().setType("reasoning");
+			((RenderedTransition) returnValue).showAsReasoning();
+		}
 		return returnValue;
 	}
 	
@@ -33,6 +37,8 @@ public class RenderedObjectFactory{
 				return "Transition";
 			case ARC:
 				return "Arc";
+			case REASONING_TRANSITION:
+				return "Transition";
 			default:
 				return "State";
 		}
