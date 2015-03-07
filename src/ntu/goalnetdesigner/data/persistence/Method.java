@@ -44,7 +44,12 @@ public class Method implements Serializable, IDataServiceUnitSubscriber {
 	private String PValues;
 
 	private String RTType;
-
+	
+	//bi-directional many-to-one association to Gnet
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="GNetID")
+	private Gnet gnet;
+	
 	//bi-directional many-to-one association to StateFunction
 	@OneToMany(mappedBy="method", orphanRemoval=true)
 	private List<StateFunction> stateFunctions;
@@ -163,5 +168,11 @@ public class Method implements Serializable, IDataServiceUnitSubscriber {
 
 		return taskFunction;
 	}
+	public Gnet getGnet() {
+		return this.gnet;
+	}
 
+	public void setGnet(Gnet gnet) {
+		this.gnet = gnet;
+	}
 }

@@ -41,7 +41,7 @@ public class User implements Serializable, IDataServiceUnitSubscriber {
 
 	//bi-directional many-to-one association to UserUsergroup
 	@OneToMany(mappedBy="user")
-	private List<UserUsergroup> userUsergroups;
+	private List<UserGnet> userGnets;
 
 	public User() {
 	}
@@ -130,26 +130,25 @@ public class User implements Serializable, IDataServiceUnitSubscriber {
 		return feedbackLog;
 	}
 
-	public List<UserUsergroup> getUserUsergroups() {
-		return this.userUsergroups;
+	public List<UserGnet> getUserGnets() {
+		return this.userGnets;
 	}
 
-	public void setUserUsergroups(List<UserUsergroup> userUsergroups) {
-		this.userUsergroups = userUsergroups;
+	public void setUserGnets(List<UserGnet> userGnets) {
+		this.userGnets = userGnets;
 	}
 
-	public UserUsergroup addUserUsergroup(UserUsergroup userUsergroup) {
-		getUserUsergroups().add(userUsergroup);
-		userUsergroup.setUser(this);
-
-		return userUsergroup;
+	public UserGnet addUserGnet(UserGnet userGnets) {
+		getUserGnets().add(userGnets);
+		userGnets.setUser(this);
+		return userGnets;
 	}
 
-	public UserUsergroup removeUserUsergroup(UserUsergroup userUsergroup) {
-		getUserUsergroups().remove(userUsergroup);
-		userUsergroup.setUser(null);
+	public UserGnet removeUserGnet(UserGnet userGnets) {
+		getUserGnets().remove(userGnets);
+		userGnets.setUser(null);
 
-		return userUsergroup;
+		return userGnets;
 	}
 
 }

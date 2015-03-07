@@ -22,7 +22,7 @@ import ntu.goalnetdesigner.data.persistence.Tasklist;
 import ntu.goalnetdesigner.data.persistence.TasklistTask;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.data.persistence.User;
-import ntu.goalnetdesigner.data.persistence.Usergroup;
+import ntu.goalnetdesigner.data.persistence.UserGnet;
 import ntu.goalnetdesigner.session.LoginSession;
 
 public class DataService {
@@ -79,9 +79,9 @@ public class DataService {
 	public static DataServiceUnit<Task> task = new DataServiceUnit<Task>(Task.class);
 	public static DataServiceUnit<Tasklist> tasklist = new DataServiceUnit<Tasklist>(Tasklist.class);
 	public static DataServiceUnit<User> user = new DataServiceUnit<User>(User.class);
-	public static DataServiceUnit<Usergroup> usergroup = new DataServiceUnit<Usergroup>(Usergroup.class);
 	
 	public static AssociationDataServiceUnit<StateFunction> stateFunction = new AssociationDataServiceUnit<StateFunction>(StateFunction.class);
 	public static AssociationDataServiceUnit<TaskFunction> taskFunction = new AssociationDataServiceUnit<TaskFunction>(TaskFunction.class);
 	public static AssociationDataServiceUnit<TasklistTask> tasklistTask = new AssociationDataServiceUnit<TasklistTask>(TasklistTask.class);
+	public static AssociationDataServiceUnit<UserGnet> userGnet = new AssociationDataServiceUnit<UserGnet>(UserGnet.class);
 }

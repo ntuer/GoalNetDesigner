@@ -34,27 +34,18 @@ public class DataSession {
 			Cache.arcs = null;
 			Cache.states = null;
 			Cache.transitions = null;
-			DataSession.loadTasksAndMethods(null);
+			Cache.functions = null;
+			Cache.tasks = null;
+			Cache.tasklists = null;
 		} else {
 			Cache.gnet = gnet;
 			Cache.arcs = gnet.getArcs();
 			Cache.states = gnet.getStates();
 			Cache.transitions = gnet.getTransitions();
-			DataSession.loadTasksAndMethods();
+			Cache.functions = gnet.getMethods();
+			Cache.tasks = gnet.getTasks();
+			Cache.tasklists = DataService.tasklist.findAll();
 			DataService.begin();
 		}
-	}
-
-	public static void loadTasksAndMethods(){
-		Cache.functions = DataService.method.findAll();
-		Cache.tasks = DataService.task.findAll();
-		Cache.tasklists = DataService.tasklist.findAll();
-	}
-
-	public static void loadTasksAndMethods(Object Null){
-		Cache.functions = null;
-		Cache.tasks = null;
-		Cache.tasklists = null;
-	}
-	
+	}	
 }

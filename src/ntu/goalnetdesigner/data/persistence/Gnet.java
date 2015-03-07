@@ -68,10 +68,18 @@ public class Gnet implements Serializable, IDataServiceUnitSubscriber {
 	//bi-directional many-to-one association to Transition
 	@OneToMany(mappedBy="gnet")
 	private List<Transition> transitions;
+	
+	//bi-directional many-to-one association to Arc
+	@OneToMany(mappedBy="gnet")
+	private List<Method> methods;
+		
+	//bi-directional many-to-one association to Arc
+	@OneToMany(mappedBy="gnet")
+	private List<Task> tasks;
 
 	//bi-directional many-to-one association to UsergroupGnet
 	@OneToMany(mappedBy="gnet")
-	private List<UsergroupGnet> usergroupGnets;
+	private List<UserGnet> userGnets;
 
 	public Gnet() {
 		
@@ -244,27 +252,70 @@ public class Gnet implements Serializable, IDataServiceUnitSubscriber {
 
 		return transition;
 	}
-
-	public List<UsergroupGnet> getUsergroupGnets() {
-		return this.usergroupGnets;
+	
+	public List<Method> getMethods() {
+		return this.methods;
 	}
 
-	public void setUsergroupGnets(List<UsergroupGnet> usergroupGnets) {
-		this.usergroupGnets = usergroupGnets;
+	public void setMethods(List<Method> methods) {
+		this.methods = methods;
 	}
 
-	public UsergroupGnet addUsergroupGnet(UsergroupGnet usergroupGnet) {
-		getUsergroupGnets().add(usergroupGnet);
-		usergroupGnet.setGnet(this);
-
-		return usergroupGnet;
+	public Method addMethod(Method method) {
+		getMethods().add(method);
+		method.setGnet(this);
+		return method;
 	}
 
-	public UsergroupGnet removeUsergroupGnet(UsergroupGnet usergroupGnet) {
-		getUsergroupGnets().remove(usergroupGnet);
-		usergroupGnet.setGnet(null);
+	public Method removeMethod(Method method) {
+		getMethods().remove(method);
+		method.setGnet(null);
 
-		return usergroupGnet;
+		return method;
+	}
+	
+	public List<Task> getTasks() {
+		return this.tasks;
+	}
+
+	public void setTasks(List<Task> tasks) {
+		this.tasks = tasks;
+	}
+
+	public Task addTransition(Task task) {
+		getTasks().add(task);
+		task.setGnet(this);
+
+		return task;
+	}
+
+	public Task removeTransition(Task task) {
+		getTasks().remove(task);
+		task.setGnet(null);
+
+		return task;
+	}
+	
+	public List<UserGnet> getUserGnets() {
+		return this.userGnets;
+	}
+
+	public void setUserGnets(List<UserGnet> userGnets) {
+		this.userGnets = userGnets;
+	}
+
+	public UserGnet addUserGnet(UserGnet userGnet) {
+		getUserGnets().add(userGnet);
+		userGnet.setGnet(this);
+
+		return userGnet;
+	}
+
+	public UserGnet removeUserGnet(UserGnet userGnet) {
+		getUserGnets().remove(userGnet);
+		userGnet.setGnet(null);
+
+		return userGnet;
 	}
 
 }

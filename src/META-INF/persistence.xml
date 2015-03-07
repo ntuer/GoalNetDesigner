@@ -20,11 +20,8 @@
 		<class>ntu.goalnetdesigner.data.persistence.TasklistTask</class>
 		<class>ntu.goalnetdesigner.data.persistence.TasklistTaskPK</class>
 		<class>ntu.goalnetdesigner.data.persistence.Transition</class>
-		<class>ntu.goalnetdesigner.data.persistence.UserUsergroup</class>
-		<class>ntu.goalnetdesigner.data.persistence.UserUsergroupPK</class>
-		<class>ntu.goalnetdesigner.data.persistence.Usergroup</class>
-		<class>ntu.goalnetdesigner.data.persistence.UsergroupGnet</class>
-		<class>ntu.goalnetdesigner.data.persistence.UsergroupGnetPK</class>
 		<class>ntu.goalnetdesigner.data.persistence.User</class>
+		<class>ntu.goalnetdesigner.data.persistence.UserGnet</class>
+		<class>ntu.goalnetdesigner.data.persistence.UserGnetPK</class>
 	</persistence-unit>
 </persistence>
