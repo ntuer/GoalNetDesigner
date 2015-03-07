@@ -62,7 +62,9 @@ public class Resource {
 	public static final String REGISTER_PATH = "/ntu/goalnetdesigner/fxui/login/Register.fxml";
 	public static final String RESET_PASSWORD_PATH = "/ntu/goalnetdesigner/fxui/login/ResetPassword.fxml";
 	
-	public static final String GNET_USERGROUP_PATH = "/ntu/goalnetdesigner/fxui/user/GNetUsergroup.fxml";
+	public static final String SHARE_GNET_PATH = "/ntu/goalnetdesigner/fxui/sharing/ShareGNet.fxml";
+	public static final String SHARE_TASK_PATH = "/ntu/goalnetdesigner/fxui/sharing/ShareTask.fxml";
+	public static final String SHARE_FUNCTION_PATH = "/ntu/goalnetdesigner/fxui/sharing/ShareFunction.fxml";
 	
 	public static final String ARC_PROPERTY_PANE_PATH ="/ntu/goalnetdesigner/fxui/propertypane/ArcPropertyPane.fxml";
 	public static final String STATE_PROPERTY_PANE_PATH ="/ntu/goalnetdesigner/fxui/propertypane/StatePropertyPane.fxml";
@@ -86,4 +88,12 @@ public class Resource {
 	public static final int SELECTED_STROKE_WIDTH = 4;
 
 	public static final int EXPORT_PICTURE_BORDER_SIZE = 50;
+	
+	public static class UserGnetAccessLevel{
+		public static final String Read = "Read";
+		public static final String Write = "Write";
+		public static final String Admin = "Admin";
+		
+		
+	}
 }

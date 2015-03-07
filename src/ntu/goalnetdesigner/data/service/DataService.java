@@ -39,6 +39,7 @@ public class DataService {
 			properties.put("javax.persistence.jdbc.user", "root");
 			properties.put("javax.persistence.jdbc.password", "root");
 			properties.put("eclipselink.logging.level", "FINE");
+			//properties.put("eclipselink.query-results-cache", "false");
 			emf = Persistence.createEntityManagerFactory("GoalNetDesigner",properties);
 		}
 		return emf;

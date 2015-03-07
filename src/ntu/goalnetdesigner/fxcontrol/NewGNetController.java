@@ -7,12 +7,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 import ntu.goalnetdesigner.data.persistence.Gnet;
+import ntu.goalnetdesigner.data.persistence.UserGnet;
 import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.logger.ConsoleLogger;
 import ntu.goalnetdesigner.session.DataSession;
+import ntu.goalnetdesigner.session.LoginSession;
+import ntu.goalnetdesigner.utility.Resource;
 import ntu.goalnetdesigner.utility.UIUtility;
 
 public class NewGNetController {
@@ -37,6 +38,11 @@ public class NewGNetController {
     	t.setName(this.nameOfGoalNetField.getText());
     	t.setDescription(descriptionField.getText());
     	DataService.gnet.atomicInsert(t);
+    	UserGnet ug = new UserGnet();
+    	LoginSession.user.addUserGnet(ug);
+    	t.addUserGnet(ug);
+    	ug.setAccessLevel(Resource.UserGnetAccessLevel.Admin);
+    	DataService.userGnet.atomicInsert(ug);
     	DataSession.setGNetCache(t);
     	ConsoleLogger.log("New Goal Net Created: " + t.getName());
     	UIUtility.Navigation.closeContainingStage(okButton);

@@ -31,7 +31,7 @@ public class AssociationDataServiceUnit<T extends IAssociationDataServiceUnitSub
 		return result;
 	}
 	
-	public void insert(T t){
+	public void atomicInsert(T t){
 		em.getTransaction().begin();
 		em.persist(t);
 		em.getTransaction().commit();

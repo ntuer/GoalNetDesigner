@@ -219,7 +219,6 @@ public class MainPageController {
     	ConsoleLogger.setOutputArea(this.eventLogField);
     	StatusBarLogger.setStatusLabel(statusLabel);
     	UIUtility.Draw.renderManager = new RenderManager(this.drawingPane, this.propertyPane);
-    	setShortcutKeys();
     	setViewMenuHandlers();
     	setCurrentDrawingModeSelectionHandlers();
     	groupObjectSelector = new RubberBandSelection(drawingPane);
@@ -350,20 +349,6 @@ public class MainPageController {
  	        }
  	    });
     }
-    
-    private void setShortcutKeys() {
-    	this.fileMenuNew.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN));
-    	this.fileMenuOpen.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
-    	this.fileMenuSave.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
-    	this.fileMenuOpenLocal.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN));
-    	this.fileMenuSaveAsLocal.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN));
-    	this.fileMenuExit.setAccelerator(new KeyCodeCombination(KeyCode.Q, KeyCombination.CONTROL_DOWN));
-    	this.editMenuDelete.setAccelerator(new KeyCodeCombination(KeyCode.DELETE));
-    	this.editMenuClearObjectForArcs.setAccelerator(new KeyCodeCombination(KeyCode.ESCAPE));
-    	this.editMenuUndo.setAccelerator(new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN));
-    	this.runMenuRun.setAccelerator(new KeyCodeCombination(KeyCode.F10, KeyCombination.CONTROL_DOWN));
-    	this.runMenuVerify.setAccelerator(new KeyCodeCombination(KeyCode.F9, KeyCombination.CONTROL_DOWN));
-	}
     
     private void setDrawingHandler(){
     	if(DataSession.Cache.gnet == null){
@@ -648,14 +633,12 @@ public class MainPageController {
 	    			maxY + Resource.EXPORT_PICTURE_BORDER_SIZE);
 	    	
 	    	WritableImage image = drawingPane.snapshot(new SnapshotParameters(), wi);
-	
-	        // TODO: probably use a file chooser here
 	        File file = new File(input + ".png");
 	
 	        try {
 	            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
 	        } catch (IOException e) {
-	            // TODO: handle exception here
+	            ConsoleLogger.log("Failed to export GNet. " + e.getMessage());
 	        }
     	}
     }
@@ -725,12 +708,18 @@ public class MainPageController {
     }
     
     @FXML
-    void teamMenuUserGroupClicked(ActionEvent event) throws Exception {
-    	Navigation.popUp(Resource.GNET_USERGROUP_PATH, UISession.primaryStage);
+    void userShareGoalNetClicked(ActionEvent event) throws Exception {
+    	Navigation.popUp(Resource.SHARE_GNET_PATH, UISession.primaryStage);
     }
 
     @FXML
-    void teamMenuGNetVisibilityClicked(ActionEvent event) {
+    void userShareFunctionClicked(ActionEvent event) throws Exception {
+    	Navigation.popUp(Resource.SHARE_FUNCTION_PATH, UISession.primaryStage);
+    }
+    
+    @FXML
+    void userShareTaskClicked(ActionEvent event) throws Exception {
+    	Navigation.popUp(Resource.SHARE_TASK_PATH, UISession.primaryStage);
     }
     
     @FXML
@@ -743,7 +732,7 @@ public class MainPageController {
     void userMenuLogOutClicked(ActionEvent event) throws Exception{
     	if (DataSession.Cache.gnet != null){
     		DialogResponse response = Dialogs.showConfirmDialog(UISession.primaryStage, 
-        		    "Click Yes to save, No to discard", "Do you want to save your latest changes since last save?", "Log out");
+        		    "Click Yes to save, No to discard", "Do you want to save your changes since last save?", "Log out");
         	if (response == DialogResponse.YES){
         		DataService.commit();
         	} else if (response == DialogResponse.NO){

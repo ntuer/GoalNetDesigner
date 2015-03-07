@@ -59,18 +59,18 @@ public class RenderedTransition extends Renderable{
 	}
 	
 	public void showAsSimple(){
-		((TransitionPolygon)this.shape).transformTo("rectangle");
-		((TransitionPolygon)this.shape).setFill(Resource.TRANSITION_COLOR.deriveColor(1, 1, 1, 0.5));
-		((TransitionPolygon)this.shape).setStroke(Resource.TRANSITION_COLOR);
-		((TransitionPolygon)this.shape).setStrokeWidth(Resource.NORMAL_STROKE_WIDTH);
-		((TransitionPolygon)this.shape).setStrokeType(StrokeType.OUTSIDE);
+		getShape().transformTo("rectangle");
+		getShape().setFill(Resource.TRANSITION_COLOR.deriveColor(1, 1, 1, 0.5));
+		getShape().setStroke(Resource.TRANSITION_COLOR);
+		getShape().setStrokeWidth(Resource.NORMAL_STROKE_WIDTH);
+		getShape().setStrokeType(StrokeType.OUTSIDE);
 	}
 	
 	public void showAsReasoning(){
-		((TransitionPolygon)this.shape).transformTo("diamond");
-		((TransitionPolygon)this.shape).setFill(Resource.TRANSITION_COLOR.deriveColor(1, 1, 1, 0.5));
-		((TransitionPolygon)this.shape).setStroke(Resource.TRANSITION_COLOR);
-		((TransitionPolygon)this.shape).setStrokeWidth(Resource.NORMAL_STROKE_WIDTH);
-		((TransitionPolygon)this.shape).setStrokeType(StrokeType.OUTSIDE);
+		getShape().transformTo("diamond");
+		getShape().setFill(Resource.TRANSITION_COLOR.deriveColor(1, 1, 1, 0.5));
+		getShape().setStroke(Resource.TRANSITION_COLOR);
+		getShape().setStrokeWidth(Resource.NORMAL_STROKE_WIDTH);
+		getShape().setStrokeType(StrokeType.OUTSIDE);
 	}
 }

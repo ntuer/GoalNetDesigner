@@ -43,6 +43,10 @@ public class User implements Serializable, IDataServiceUnitSubscriber {
 	@OneToMany(mappedBy="user")
 	private List<UserGnet> userGnets;
 
+	public String toString(){
+		return this.id;
+	}
+	
 	public User() {
 	}
 

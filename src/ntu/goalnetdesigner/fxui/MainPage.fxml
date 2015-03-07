@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.input.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
@@ -13,25 +14,57 @@
 			<menus>
 				<Menu mnemonicParsing="false" text="File">
 					<items>
-						<MenuItem fx:id="fileMenuNew" mnemonicParsing="false" onAction="#fileMenuNewClicked" text="New" />
-						<MenuItem fx:id="fileMenuOpen" mnemonicParsing="false" onAction="#fileMenuOpenClicked" text="Open" />
-						<MenuItem fx:id="fileMenuSave" mnemonicParsing="false" onAction="#fileMenuSaveClicked" text="Save Changes" />
+						<MenuItem fx:id="fileMenuNew" mnemonicParsing="false" onAction="#fileMenuNewClicked" text="New">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+						<MenuItem fx:id="fileMenuOpen" mnemonicParsing="false" onAction="#fileMenuOpenClicked" text="Open">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+						<MenuItem fx:id="fileMenuSave" mnemonicParsing="false" onAction="#fileMenuSaveClicked" text="Save Changes">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
 						<SeparatorMenuItem mnemonicParsing="false" />
-						<MenuItem fx:id="fileMenuOpenLocal" mnemonicParsing="false" onAction="#fileMenuOpenLocalClicked" text="Open Local" />
-						<MenuItem fx:id="fileMenuSaveAsLocal" mnemonicParsing="false" onAction="#fileMenuSaveAsLocalClicked" text="Save As Local" />
+						<MenuItem fx:id="fileMenuOpenLocal" mnemonicParsing="false" onAction="#fileMenuOpenLocalClicked" text="Open Local">
+                     <accelerator>
+                        <KeyCodeCombination alt="DOWN" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+						<MenuItem fx:id="fileMenuSaveAsLocal" mnemonicParsing="false" onAction="#fileMenuSaveAsLocalClicked" text="Save As Local">
+                     <accelerator>
+                        <KeyCodeCombination alt="DOWN" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
 						<SeparatorMenuItem mnemonicParsing="false" />
 						<MenuItem fx:id="fileMenuClose" mnemonicParsing="false" onAction="#fileMenuCloseClicked" text="Close" />
-						<MenuItem fx:id="fileMenuExport" mnemonicParsing="false" onAction="#fileMenuExportClicked" text="Export" />
+						<MenuItem fx:id="fileMenuExport" mnemonicParsing="false" onAction="#fileMenuExportClicked" text="Export">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
 						<MenuItem fx:id="fileMenuExit" mnemonicParsing="false" onAction="#fileMenuExitClicked" text="Exit" />
 					</items>
 				</Menu>
 				<Menu mnemonicParsing="false" text="Edit">
 					<items>
-						<MenuItem fx:id="editMenuUndo" mnemonicParsing="false" onAction="#editMenuUndoClicked" text="Undo" />
-						<MenuItem fx:id="editMenuDelete" mnemonicParsing="false" onAction="#editMenuDeleteClicked" text="Delete" />
-                  <MenuItem fx:id="editMenuClearObjectForArcs" mnemonicParsing="false" onAction="#editMenuClearObjectForArcsClicked" text="Clear Objects for Arc" />
+						<MenuItem fx:id="editMenuUndo" mnemonicParsing="false" onAction="#editMenuUndoClicked" text="Undo">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="Z" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+						<MenuItem fx:id="editMenuDelete" mnemonicParsing="false" onAction="#editMenuDeleteClicked" text="Delete">
+						<accelerator>
+                        <KeyCodeCombination alt="UP" code="DELETE" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                     	</accelerator>
+						</MenuItem>
+                  <MenuItem fx:id="editMenuClearObjectForArcs" mnemonicParsing="false" onAction="#editMenuClearObjectForArcsClicked" text="Clear Objects for Arc">
+                  <accelerator>
+                        <KeyCodeCombination alt="UP" code="ESCAPE" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                     	</accelerator>
+                  </MenuItem>
 						<SeparatorMenuItem mnemonicParsing="false" />
-						<MenuItem fx:id="editMenuGoalNetProperty" mnemonicParsing="false" onAction="#editMenuGoalNetPropertyClicked" text="Goal Net Property" />
+						<MenuItem fx:id="editMenuGoalNetProperty" mnemonicParsing="false" onAction="#editMenuGoalNetPropertyClicked" text="Goal Net Property">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
+                     </accelerator></MenuItem>
 					</items>
 				</Menu>
 				<Menu mnemonicParsing="false" text="View">
@@ -51,20 +84,33 @@
 				
 				<Menu mnemonicParsing="false" text="Run">
 					<items>
-						<MenuItem fx:id="runMenuVerify" mnemonicParsing="false" onAction="#runMenuVerifyClicked" text="Validate" />
-						<MenuItem fx:id="runMenuRun" mnemonicParsing="false" onAction="#runMenuRunClicked" text="Run" />
+						<MenuItem fx:id="runMenuVerify" mnemonicParsing="false" onAction="#runMenuVerifyClicked" text="Validate">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="F10" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+						<MenuItem fx:id="runMenuRun" mnemonicParsing="false" onAction="#runMenuRunClicked" text="Run">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="F5" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
 						<SeparatorMenuItem mnemonicParsing="false" />
 						<CheckMenuItem fx:id="runMenuDisplayWarning" mnemonicParsing="false" selected="true" text="Display Warnings" />
 					</items>
 				</Menu>
-				<Menu mnemonicParsing="false" text="Team">
-					<items>
-						<MenuItem mnemonicParsing="false" onAction="#teamMenuUserGroupClicked" text="User Group" />
-						<MenuItem mnemonicParsing="false" onAction="#teamMenuGNetVisibilityClicked" text="GNet Visibility" />
-					</items>
-				</Menu>
 				<Menu mnemonicParsing="false" text="User">
 					<items>
+						<MenuItem mnemonicParsing="false" onAction="#userShareGoalNetClicked" text="Share Goal Net">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+						<MenuItem mnemonicParsing="false" onAction="#userShareFunctionClicked" text="Share Function">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="F" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#userShareTaskClicked" text="Share Task">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+                     <SeparatorMenuItem mnemonicParsing="false" />
 						<MenuItem fx:id="userMenuCurrentUser" mnemonicParsing="false" onAction="#userMenuCurrentUserClicked" text="View Current User" />
 						<MenuItem fx:id="userMenuLogOut" mnemonicParsing="false" onAction="#userMenuLogOutClicked" text="Log Out" />
 					</items>

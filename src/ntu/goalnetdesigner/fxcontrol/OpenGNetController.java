@@ -11,7 +11,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import ntu.goalnetdesigner.data.persistence.Gnet;
 import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.logger.ConsoleLogger;
+import ntu.goalnetdesigner.logic.AuthorizationManager;
 import ntu.goalnetdesigner.session.DataSession;
+import ntu.goalnetdesigner.session.LoginSession;
 import ntu.goalnetdesigner.utility.UIUtility;
 
 public class OpenGNetController {
@@ -30,7 +32,8 @@ public class OpenGNetController {
 
     @FXML
     public void initialize(){
-    	ObservableList<Gnet> gNets = FXCollections.observableArrayList(DataService.gnet.findAll());
+    	AuthorizationManager am = new AuthorizationManager();
+    	ObservableList<Gnet> gNets = FXCollections.observableArrayList(am.getReadableGnetsOfUser(LoginSession.user));
     	GNetTable.setItems(gNets);
     	nameColumn.setCellValueFactory(new PropertyValueFactory<Gnet,String>("name"));
     	descriptionColumn.setCellValueFactory(new PropertyValueFactory<Gnet,String>("description"));

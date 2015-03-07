@@ -282,14 +282,14 @@ public class Gnet implements Serializable, IDataServiceUnitSubscriber {
 		this.tasks = tasks;
 	}
 
-	public Task addTransition(Task task) {
+	public Task addTask(Task task) {
 		getTasks().add(task);
 		task.setGnet(this);
 
 		return task;
 	}
 
-	public Task removeTransition(Task task) {
+	public Task removeTask(Task task) {
 		getTasks().remove(task);
 		task.setGnet(null);
 
