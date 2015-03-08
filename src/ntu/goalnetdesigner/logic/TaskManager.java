@@ -10,7 +10,9 @@ import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.data.persistence.TaskFunction;
 import ntu.goalnetdesigner.data.persistence.TasklistTask;
 import ntu.goalnetdesigner.data.service.DataService;
+import ntu.goalnetdesigner.logger.DatabaseActionLogger;
 import ntu.goalnetdesigner.session.DataSession;
+import ntu.goalnetdesigner.utility.Resource;
 
 public class TaskManager {
 	public static Task newInstance(){

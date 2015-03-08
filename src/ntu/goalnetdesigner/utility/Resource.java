@@ -90,10 +90,25 @@ public class Resource {
 	public static final int EXPORT_PICTURE_BORDER_SIZE = 50;
 	
 	public static class UserGnetAccessLevel{
-		public static final String Read = "Read";
-		public static final String Write = "Write";
-		public static final String Admin = "Admin";
-		
-		
+		public static final String READ = "Read";
+		public static final String WRITE = "Write";
+		public static final String ADMIN = "Admin";
+	}
+	
+	public static class Action{
+		public static final String CREATE = "Create";
+		public static final String UPDATE = "Update";
+		public static final String DELETE = "Delete";
+		public static final String LOGIN = "Login";
+		public static final String LOGOUT = "Logout";
+	}
+	
+	public static class ActionTargetType{
+		public static final String GNET = "GNet";
+		public static final String METHOD = "Method";
+		public static final String TASK = "Task";
+		public static final String STATE = "State";
+		public static final String TRANSITION = "Transition";
+		public static final String ARC = "Arc";
 	}
 }

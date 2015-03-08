@@ -44,7 +44,9 @@ import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.logger.ConsoleLogger;
+import ntu.goalnetdesigner.logger.DatabaseActionLogger;
 import ntu.goalnetdesigner.logger.StatusBarLogger;
+import ntu.goalnetdesigner.logic.AuthorizationManager;
 import ntu.goalnetdesigner.logic.FunctionManager;
 import ntu.goalnetdesigner.logic.RenderManager;
 import ntu.goalnetdesigner.logic.SaveManager;
@@ -111,6 +113,9 @@ public class MainPageController {
 
     @FXML
     private TreeView<Arc> arcTreeView;
+    
+    @FXML
+    private TreeView<String> teamTreeView;
 
 	@FXML
 	private CheckMenuItem runMenuDisplayWarning;
@@ -162,9 +167,6 @@ public class MainPageController {
 
     @FXML
     private MenuItem userMenuCurrentUser;
-
-    @FXML
-    private MenuItem editMenuUndo;
 
     @FXML
     private Tab functionTab;
@@ -434,6 +436,7 @@ public class MainPageController {
     	refreshFunctionTreeView();
         refreshTaskTreeView();
         setTreeViewChangeHandler();
+        refreshTeamTreeView();
         UISession.isTreeViewRefreshing = false;
         ConsoleLogger.log("TreeViews and Drawing Pane refreshed");
         UIUtility.Draw.renderManager.renderGNet(DataSession.Cache.gnet);
@@ -566,7 +569,24 @@ public class MainPageController {
     	arcTreeView.showRootProperty().set(false);
     	UISession.isTreeViewRefreshing = false;
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	public void refreshTeamTreeView() {
+		if (DataSession.Cache.gnet == null)
+			return;
+		TreeItem<String> dummyRoot = new TreeItem<>();
+		AuthorizationManager am = new AuthorizationManager();
+		TreeItem<String> admin = UIUtility.TreeView.convertToTreeItem(am.getUsersOfGnetByAccessLevel(DataSession.Cache.gnet, Resource.UserGnetAccessLevel.ADMIN));
+		admin.setValue(Resource.UserGnetAccessLevel.ADMIN);
+		TreeItem<String> read = UIUtility.TreeView.convertToTreeItem(am.getUsersOfGnetByAccessLevel(DataSession.Cache.gnet, Resource.UserGnetAccessLevel.READ));
+		read.setValue(Resource.UserGnetAccessLevel.READ);
+		TreeItem<String> write = UIUtility.TreeView.convertToTreeItem(am.getUsersOfGnetByAccessLevel(DataSession.Cache.gnet, Resource.UserGnetAccessLevel.WRITE));
+		write.setValue(Resource.UserGnetAccessLevel.WRITE);
+		dummyRoot.getChildren().addAll(admin, read, write);
+		teamTreeView.setRoot(dummyRoot);
+    	teamTreeView.showRootProperty().set(false);
+	}
+	
 	// Drawing handler
 	// This happens after onclick event on individual Renderable object
     public EventHandler<MouseEvent> clickToDrawHandler = new EventHandler<MouseEvent>() {
@@ -717,11 +737,6 @@ public class MainPageController {
     }
 
     @FXML
-    void editMenuUndoClicked(ActionEvent event) {
-
-    }
-
-    @FXML
     void editMenuDeleteClicked(ActionEvent event) {
     	// clear property pane
     	UISession.currentPaneController = null;
@@ -810,6 +825,7 @@ public class MainPageController {
     	}
     	Navigation.switchTo(Resource.LOGIN_PATH, UISession.primaryStage);
     	LoginSession.isLoggedIn = false;
+    	LoginSession.user = null;
     }
 
     @FXML

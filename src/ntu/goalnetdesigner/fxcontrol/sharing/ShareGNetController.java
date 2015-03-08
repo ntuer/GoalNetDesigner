@@ -52,9 +52,9 @@ public class ShareGNetController {
     private String selectedAccessLevel;
     
     private ObservableList<String> levelChoice = FXCollections.observableArrayList (
-		    new String(Resource.UserGnetAccessLevel.Read),
-		    new String(Resource.UserGnetAccessLevel.Write),
-		    new String(Resource.UserGnetAccessLevel.Admin)
+		    new String(Resource.UserGnetAccessLevel.READ),
+		    new String(Resource.UserGnetAccessLevel.WRITE),
+		    new String(Resource.UserGnetAccessLevel.ADMIN)
 		);
     
     @FXML

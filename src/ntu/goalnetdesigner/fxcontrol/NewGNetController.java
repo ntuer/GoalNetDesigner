@@ -41,7 +41,7 @@ public class NewGNetController {
     	UserGnet ug = new UserGnet();
     	LoginSession.user.addUserGnet(ug);
     	t.addUserGnet(ug);
-    	ug.setAccessLevel(Resource.UserGnetAccessLevel.Admin);
+    	ug.setAccessLevel(Resource.UserGnetAccessLevel.ADMIN);
     	DataService.userGnet.atomicInsert(ug);
     	DataSession.setGNetCache(t);
     	ConsoleLogger.log("New Goal Net Created: " + t.getName());

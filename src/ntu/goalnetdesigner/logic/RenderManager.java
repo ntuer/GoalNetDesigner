@@ -13,6 +13,7 @@ import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.logger.ConsoleLogger;
+import ntu.goalnetdesigner.logger.DatabaseActionLogger;
 import ntu.goalnetdesigner.render.Drawable;
 import ntu.goalnetdesigner.render.Renderable;
 import ntu.goalnetdesigner.render.RenderableMouseEventHandler;
@@ -24,6 +25,7 @@ import ntu.goalnetdesigner.render.RenderedState;
 import ntu.goalnetdesigner.render.RenderedTransition;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.UISession;
+import ntu.goalnetdesigner.utility.Resource;
 
 public class RenderManager {
 	
@@ -128,6 +130,7 @@ public class RenderManager {
     	UISession.objectsForArc.clear();
     	setMouseEventHandler(a);
     	DataService.arc.persist(a.getBaseObject());
+    	DatabaseActionLogger.log(Resource.Action.CREATE, Resource.ActionTargetType.ARC, a.getBaseObject().getId());
     	return a;
 	}
 	

@@ -16,7 +16,7 @@
    
    	<Label text="Password:" GridPane.rowIndex="3" />
    
-   	<TextField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+   	<PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
    
    	<Label text="Confirm Password" GridPane.rowIndex="4" />
    

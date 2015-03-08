@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import ntu.goalnetdesigner.logger.DatabaseActionLogger;
 import ntu.goalnetdesigner.logic.AuthorizationManager;
 import ntu.goalnetdesigner.session.LoginSession;
 import ntu.goalnetdesigner.session.UISession;

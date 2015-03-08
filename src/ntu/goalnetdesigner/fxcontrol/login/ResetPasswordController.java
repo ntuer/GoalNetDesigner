@@ -45,7 +45,7 @@ public class ResetPasswordController{
     
     @FXML
     public void initialize(){
-    	questionField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+    	usernameField.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> arg0,
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
@@ -83,12 +83,12 @@ public class ResetPasswordController{
     	}
     	AuthorizationManager lm = new AuthorizationManager();
 		if (lm.changePassword(user, passwordField.getText())) {
-			Dialogs.showInformationDialog(UISession.primaryStage, "You can now login with your new password.", 
+			Dialogs.showInformationDialog(UISession.primaryStage, "You can login with your new password now.", 
 				    "User password reset", "Password Reset");
 			UIUtility.Navigation.switchTo(Resource.LOGIN_PATH, UISession.primaryStage);
 		}
 		else
-			actiontarget.setText("Registration Failed. User already exists.");
+			actiontarget.setText("Reset failed.");
     }
 
     @FXML

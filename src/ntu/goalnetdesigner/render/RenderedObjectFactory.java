@@ -4,8 +4,10 @@ import java.lang.reflect.Constructor;
 
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
+import ntu.goalnetdesigner.logger.DatabaseActionLogger;
 import ntu.goalnetdesigner.session.UISession;
 import ntu.goalnetdesigner.utility.CurrentDrawingMode;
+import ntu.goalnetdesigner.utility.Resource;
 
 public class RenderedObjectFactory{
 	
@@ -15,7 +17,7 @@ public class RenderedObjectFactory{
 		Class clazz = Class.forName("ntu.goalnetdesigner.render.Rendered" + getClassName());
 		Constructor c = clazz.getConstructor(new Class[]{double.class, double.class});
 		Renderable returnValue = (Renderable) c.newInstance(new Object[]{new Double(x), new Double(y)});
-		// handle composite state
+		
 		if (UISession.currentDrawingMode == CurrentDrawingMode.COMPOSITE_STATE){
 			((RenderedState) returnValue).getBaseObject().setComposite(true);
 			((RenderedState) returnValue).showAsComposite();

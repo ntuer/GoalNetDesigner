@@ -29,7 +29,7 @@ public class ShareFunctionController {
     @FXML
     public void initialize(){
     	AuthorizationManager am = new AuthorizationManager();
-    	if (am.getGnetAccessLevelOfUser(LoginSession.user, DataSession.Cache.gnet).equals(Resource.UserGnetAccessLevel.Read)){
+    	if (am.getGnetAccessLevelOfUser(LoginSession.user, DataSession.Cache.gnet).equals(Resource.UserGnetAccessLevel.READ)){
     		Dialogs.showErrorDialog(UISession.secondaryStage, "You do not have write access to this Goal net and cannot use this function!", "Unauthorized", "Error");
     		cloneButton.setDisable(true);
     	}
