@@ -14,7 +14,6 @@ import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.LoginSession;
 import ntu.goalnetdesigner.session.UISession;
 import ntu.goalnetdesigner.utility.Resource;
-import ntu.goalnetdesigner.utility.UIUtility;
 
 public class ShareFunctionController {
 

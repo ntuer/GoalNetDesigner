@@ -39,6 +39,7 @@ public class Arrow extends Line{
 		this.handleChange();
 	}
 	
+	// change arrow direction accordingly based on new X and Y. 
 	public void handleChange(){
 		double sx = this.getStartX();
 		double sy = this.getStartY();

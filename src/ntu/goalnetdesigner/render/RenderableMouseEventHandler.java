@@ -3,20 +3,23 @@ package ntu.goalnetdesigner.render;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javafx.event.EventHandler;
-import javafx.scene.Node;
+import javafx.geometry.Point2D;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import ntu.goalnetdesigner.data.persistence.State;
+import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.logger.ConsoleLogger;
 import ntu.goalnetdesigner.render.customcontrol.Arrow;
 import ntu.goalnetdesigner.render.customcontrol.BidirectionalStackPane;
+import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.UISession;
 import ntu.goalnetdesigner.utility.CurrentDrawingMode;
 import ntu.goalnetdesigner.utility.Resource;
+import ntu.goalnetdesigner.utility.UIUtility;
 
 public class RenderableMouseEventHandler {
 	private ScrollPane propertyPane;
@@ -116,28 +119,52 @@ public class RenderableMouseEventHandler {
     
     private void updateArcs(Map.Entry<Renderable, RenderableCoordinate> entry){
     	Renderable p = entry.getKey();
-    	RenderableCoordinate rc = entry.getValue();
+    	Renderable s = null, e = null;
     	for (RenderedEdge ed : p.getAssociatedRenderedEdges()){
         	if (ed instanceof RenderedArc){
         		RenderedArc a = (RenderedArc) ed;
             	// state -> transition
             	if (a.getBaseObject().getDirection() == true){
-            		if(p instanceof RenderedTransition)
-            			a.update(rc.newTranslateX, rc.newTranslateY, false);
-            		else
-            			a.update(rc.newTranslateX, rc.newTranslateY, true);
+            		if(p instanceof RenderedTransition){
+            			e = p;
+            			String stateId = a.getBaseObject().getInputID();
+            			for (State state: DataSession.Cache.states){
+            				if (state.getId().equals(stateId))
+            					s = state.getRenderedObject();
+            			}
+            		} else {
+            			s = p;
+            			String transitionId = a.getBaseObject().getOutputID();
+            			for (Transition transition: DataSession.Cache.transitions){
+            				if (transition.getId().equals(transitionId))
+            					e = transition.getRenderedObject();
+            			}
+            		}
             	} else {
-            		if(p instanceof RenderedTransition)
-            			a.update(rc.newTranslateX, rc.newTranslateY, true);
-            		else
-            			a.update(rc.newTranslateX, rc.newTranslateY, false);
+            		if(p instanceof RenderedTransition){
+            			s = p;
+            			String stateId = a.getBaseObject().getOutputID();
+            			for (State state: DataSession.Cache.states){
+            				if (state.getId().equals(stateId))
+            					e = state.getRenderedObject();
+            			}
+            		} else {
+            			e = p;
+            			String transitionId = a.getBaseObject().getInputID();
+            			for (Transition transition: DataSession.Cache.transitions){
+            				if (transition.getId().equals(transitionId))
+            					s = transition.getRenderedObject();
+            			}
+            		}
             	}
+            	Point2D p1 = UIUtility.Draw.findPointOnBorderForFirstRenderable(s, e);
+            	Point2D p2 = UIUtility.Draw.findPointOnBorderForFirstRenderable(e, s);
+            	a.update(p1.getX(), p1.getY(), p2.getX(), p2.getY());
         	} else if (ed instanceof RenderedCompositionEdge){
         		RenderedCompositionEdge c = (RenderedCompositionEdge) ed;
-        		if (c.getBaseObjectStart() == p.getBaseObject())
-        			c.update(rc.newTranslateX, rc.newTranslateY, true);
-        		else if (c.getBaseObjectEnd() == p.getBaseObject())
-        			c.update(rc.newTranslateX, rc.newTranslateY, false);
+    			Point2D p1 = UIUtility.Draw.findPointOnBorderForFirstRenderable(c.getBaseObjectStart().getRenderedObject(), c.getBaseObjectEnd().getRenderedObject());
+            	Point2D p2 = UIUtility.Draw.findPointOnBorderForFirstRenderable(c.getBaseObjectEnd().getRenderedObject(), c.getBaseObjectStart().getRenderedObject());
+            	c.update(p1.getX(), p1.getY(), p2.getX(), p2.getY());
         	}
         }
     }
@@ -163,10 +190,10 @@ public class RenderableMouseEventHandler {
     		double offsetX = e.getSceneX() - orgSceneX;
             double offsetY = e.getSceneY() - orgSceneY;
             for (Map.Entry<Renderable, RenderableCoordinate> entry: coordinates.entrySet()){
+            	updateBaseObject(entry);
             	updateDisplay(entry, offsetX, offsetY);
                 updateArcs(entry);
             }
-            
     	}
     };
     

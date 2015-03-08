@@ -44,7 +44,6 @@ public class RenderManager {
 		this.drawingPane = drawingPane;
 	}
 	
-	
 	public void renderGNet(Gnet gnet){
 		if (gnet == null){
 			drawingPane.getChildren().clear();
@@ -82,6 +81,56 @@ public class RenderManager {
 		setMouseEventHandler(rt);
 	}
 	
+	
+	public void drawExistingArc(Arc a, List<State> states, List<Transition> transitions){
+		RenderedArc ra = new RenderedArc(a, states, transitions);
+		setMouseEventHandler(ra);
+		drawingPane.getChildren().addAll(ra.getShape());
+		drawingPane.getChildren().addAll(ra.getShape().getArrow());
+	}
+	
+	public Renderable drawNewStateOrTransition(double x, double y){
+		try {
+			Renderable r =  RenderedObjectFactory.getNewRenderedObject(x, y, propertyPane, drawingPane);
+			setMouseEventHandler(r);
+			if (r instanceof RenderedTransition)
+				DataService.transition.persist((Transition) r.getBaseObject());
+			else
+				DataService.state.persist((State) r.getBaseObject());
+			return r;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public RenderedArc drawNewArcByStartAndEnd(Renderable s, Renderable e){
+    	RenderedArc a = null;
+    	if (s instanceof RenderedState){
+    		if (!(e instanceof RenderedTransition)){
+    			UISession.objectsForArc.clear();
+    			return a;
+    		}
+			a = new RenderedArc((RenderedState)s, (RenderedTransition) e);
+    	} else if (s instanceof RenderedTransition){
+    		if (!(e instanceof RenderedState)){
+    			UISession.objectsForArc.clear();
+    			return a;
+    		}
+    		a = new RenderedArc((RenderedTransition)s, (RenderedState) e);
+    	} 
+    	
+    	s.getAssociatedRenderedEdges().add(a);
+    	e.getAssociatedRenderedEdges().add(a);
+    	a.getBaseObject().setGnet(DataSession.Cache.gnet);
+    	a.getBaseObject().setIsDirect(true);
+    	
+    	UISession.objectsForArc.clear();
+    	setMouseEventHandler(a);
+    	DataService.arc.persist(a.getBaseObject());
+    	return a;
+	}
+	
 	public RenderedCompositionEdge drawComposition(State start, State end){
 		RenderedCompositionEdge rc = new RenderedCompositionEdge(start, end);
 		start.getRenderedObject().getAssociatedRenderedEdges().add(rc);
@@ -108,66 +157,6 @@ public class RenderManager {
 		}
 	}
 	
-	public void drawExistingArc(Arc a, List<State> states, List<Transition> transitions){
-		RenderedArc ra = new RenderedArc(a, states, transitions);
-		setMouseEventHandler(ra);
-		drawingPane.getChildren().addAll(ra.getShape());
-		drawingPane.getChildren().addAll(ra.getShape().getArrow());
-	}
-	
-	public RenderedArc drawNewArcByStartAndEnd(Renderable s, Renderable e){
-    	RenderedArc a = null;
-    	if (s instanceof RenderedState){
-    		if (!(e instanceof RenderedTransition)){
-    			UISession.objectsForArc.clear();
-    			return a;
-    		}
-			a = new RenderedArc(
-					((RenderedState) s).getDisplay().getTranslateX(), ((RenderedState) s).getDisplay().getTranslateY(),
-					((RenderedTransition) e).getDisplay().getTranslateX(), ((RenderedTransition) e).getDisplay().getTranslateY());
-    		a.getBaseObject().setDirection(true);
-    		a.getBaseObject().setInputID(((RenderedState) s).getBaseObject().getId());
-    		a.getBaseObject().setOutputID(((RenderedTransition) e).getBaseObject().getId());
-    		
-    	} else if (s instanceof RenderedTransition){
-    		if (!(e instanceof RenderedState)){
-    			UISession.objectsForArc.clear();
-    			return a;
-    		}
-			a = new RenderedArc(
-					((RenderedTransition) s).getDisplay().getTranslateX(), ((RenderedTransition) s).getDisplay().getTranslateY(),
-					((RenderedState) e).getDisplay().getTranslateX(), ((RenderedState) e).getDisplay().getTranslateY());
-    		a.getBaseObject().setDirection(false);
-    		a.getBaseObject().setInputID(((RenderedTransition) s).getBaseObject().getId());
-    		a.getBaseObject().setOutputID(((RenderedState) e).getBaseObject().getId());
-    	} 
-    	
-    	s.getAssociatedRenderedEdges().add(a);
-    	e.getAssociatedRenderedEdges().add(a);
-    	a.getBaseObject().setGnet(DataSession.Cache.gnet);
-    	a.getBaseObject().setIsDirect(true);
-    	
-    	UISession.objectsForArc.clear();
-    	setMouseEventHandler(a);
-    	DataService.arc.persist(a.getBaseObject());
-    	return a;
-	}
-	
-	public Renderable drawNewStateOrTransition(double x, double y){
-		try {
-			Renderable r =  RenderedObjectFactory.getNewRenderedObject(x, y, propertyPane, drawingPane);
-			setMouseEventHandler(r);
-			if (r instanceof RenderedTransition)
-				DataService.transition.persist((Transition) r.getBaseObject());
-			else
-				DataService.state.persist((State) r.getBaseObject());
-			return r;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
 	private void setMouseEventHandler(Renderable r){
 		RenderableMouseEventHandler meh = new RenderableMouseEventHandler(propertyPane, drawingPane);
 		r.setMeh(meh);

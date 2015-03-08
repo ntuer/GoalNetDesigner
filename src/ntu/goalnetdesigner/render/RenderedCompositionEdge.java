@@ -2,12 +2,14 @@ package ntu.goalnetdesigner.render;
 
 import java.util.List;
 
+import javafx.geometry.Point2D;
 import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.render.customcontrol.Arrow;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.utility.Resource;
+import ntu.goalnetdesigner.utility.UIUtility;
 
 public class RenderedCompositionEdge extends RenderedEdge{
 	
@@ -21,8 +23,9 @@ public class RenderedCompositionEdge extends RenderedEdge{
 		this.baseObjectStart = s;
 		this.baseObjectEnd = e;
 
-		getGraphicalRepresentation(s.getRenderedObject().getDisplay().getTranslateX(), s.getRenderedObject().getDisplay().getTranslateY(), 
-								   e.getRenderedObject().getDisplay().getTranslateX(), e.getRenderedObject().getDisplay().getTranslateY());
+		Point2D p1 = UIUtility.Draw.findPointOnBorderForFirstRenderable(s.getRenderedObject(), e.getRenderedObject());
+		Point2D p2 = UIUtility.Draw.findPointOnBorderForFirstRenderable(e.getRenderedObject(), s.getRenderedObject());
+		getGraphicalRepresentation(p1.getX(), p1.getY(), p2.getX(), p2.getY());
 		s.getRenderedObject().getAssociatedRenderedEdges().add(this);
 		e.getRenderedObject().getAssociatedRenderedEdges().add(this);
 	}
@@ -31,25 +34,6 @@ public class RenderedCompositionEdge extends RenderedEdge{
 		this.shape = new Arrow(sx, sy, ex, ey);
 		this.shape.setStroke(Resource.COMPOSITION_ARC_COLOR);
 		this.getShape().getArrow().setStroke(Resource.COMPOSITE_STATE_COLOR);
-	}
-	
-	public void update(double x, double y, boolean isStart){
-		if (isStart){
-			this.getShape().setStartX(x);
-			this.getShape().setStartY(y);
-		} else {
-			this.getShape().setEndX(x);
-			this.getShape().setEndY(y);
-		}
-		this.getShape().handleChange();
-	}
-	
-	public Arrow getShape() {
-		return (Arrow)shape;
-	}
-
-	public void setShape(Arrow shape) {
-		this.shape = shape;
 	}
 	
 	@Override
