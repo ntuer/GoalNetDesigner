@@ -19,17 +19,17 @@ public class StateValidator implements IComponentValidator {
 			if (s.getComposite()){
 				if (s.getCompositeStartState() == null){
 					parentValidationManager
-					.addError("Composite state " + s.getName() + " has no start state.");
+					.addError(s, "Composite state " + s.getName() + " has no start state.");
 				}
 				if (s.getCompositeEndState() == null){
 					parentValidationManager
-					.addError("Composite state " + s.getName() + " has no end state.");
+					.addError(s, "Composite state " + s.getName() + " has no end state.");
 				}
 			} else {
 				if(s.getStateFunctions() == null ||
 						s.getStateFunctions().size() == 0){
 					parentValidationManager
-					.addWarning("State " + s.getName() + " has no functions associated and it is not a composite state.");
+					.addWarning(s, "State " + s.getName() + " has no functions associated and it is not a composite state.");
 				}
 			}
 		}

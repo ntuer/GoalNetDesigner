@@ -6,6 +6,8 @@ import java.util.Date;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,16 +21,16 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.WritableImage;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
@@ -48,9 +50,11 @@ import ntu.goalnetdesigner.logic.RenderManager;
 import ntu.goalnetdesigner.logic.SaveManager;
 import ntu.goalnetdesigner.logic.TaskManager;
 import ntu.goalnetdesigner.logic.ValidationManager;
+import ntu.goalnetdesigner.render.Drawable;
 import ntu.goalnetdesigner.render.Renderable;
 import ntu.goalnetdesigner.render.RenderedArc;
 import ntu.goalnetdesigner.render.customcontrol.RubberBandSelection;
+import ntu.goalnetdesigner.run.ObjectStringPair;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.LoginSession;
 import ntu.goalnetdesigner.session.UISession;
@@ -128,6 +132,9 @@ public class MainPageController {
 	
 	@FXML
 	private CheckMenuItem viewMenuTeam;
+	
+	@FXML
+	private CheckMenuItem viewMenuProblem;
 	
 	@FXML
 	private CheckMenuItem viewMenuOutput;
@@ -210,6 +217,18 @@ public class MainPageController {
     @FXML
     private ToggleGroup drawingStateToggleGroup;
     
+    @FXML
+    private Tab problemTab;
+    
+    @FXML
+    private TableView<ObjectStringPair> problemTableView;
+    
+    @FXML
+    private TableColumn<ObjectStringPair, String> objectColumn;
+    
+    @FXML
+    private TableColumn<ObjectStringPair, String> messageColumn;
+    
     // One group selection model
     private RubberBandSelection groupObjectSelector;
     
@@ -220,10 +239,42 @@ public class MainPageController {
     	StatusBarLogger.setStatusLabel(statusLabel);
     	UIUtility.Draw.renderManager = new RenderManager(this.drawingPane, this.propertyPane);
     	setViewMenuHandlers();
+    	setProblemTableSelectionHandler();
     	setCurrentDrawingModeSelectionHandlers();
     	groupObjectSelector = new RubberBandSelection(drawingPane);
     }
     
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private void setProblemTableSelectionHandler() {
+		problemTableView.getSelectionModel().selectedItemProperty().addListener( new ChangeListener() {
+			@Override
+ 	        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+ 	        	ObjectStringPair nv = (ObjectStringPair) newValue;
+ 	        	if (nv.getObject() == null){
+ 	        		return;
+ 	        	}
+ 	            try {
+ 	            	if (nv.getObject() instanceof State){
+ 	            		UISession.setCurrentSelection((Drawable)nv.getObject());
+ 	            		propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.STATE_PROPERTY_PANE_PATH));
+ 	            	} else if (nv.getObject() instanceof Transition){
+ 	            		UISession.setCurrentSelection((Drawable)nv.getObject());
+ 	            		propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.TRANSITION_PROPERTY_PANE_PATH));
+ 	            	} else if (nv.getObject() instanceof Task){
+ 	            		UISession.setCurrentSelection(nv.getObject());
+ 	            		propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.TASK_PROPERTY_PANE_PATH));
+ 	            	} else if (nv.getObject() instanceof Method){
+ 	            		UISession.setCurrentSelection(nv.getObject());
+ 	            		propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.FUNCTION_PROPERTY_PANE_PATH));
+ 	            	}
+ 	            } catch (IOException e) {
+					e.printStackTrace();
+				}
+ 	            UISession.currentPaneController.refresh();
+ 	        }
+ 	    });
+	}
+
 	private void setCurrentDrawingModeSelectionHandlers() {
 		drawingStateToggleGroup.selectedToggleProperty().addListener(
 				new ChangeListener<Toggle>() {
@@ -275,7 +326,8 @@ public class MainPageController {
 				});
 	}
     
-    private void setViewMenuHandlers(){
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	private void setViewMenuHandlers(){
     	this.viewMenuArc.selectedProperty().addListener(new ChangeListener() {
  	        @Override
  	        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
@@ -346,6 +398,15 @@ public class MainPageController {
  	        		lowerLeftPane.getTabs().add(eventLogTab);
  	        	else
  	        		lowerLeftPane.getTabs().remove(eventLogTab);
+ 	        }
+ 	    });
+    	this.viewMenuProblem.selectedProperty().addListener(new ChangeListener() {
+ 	        @Override
+ 	        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+ 	        	if ((boolean)newValue)
+ 	        		lowerLeftPane.getTabs().add(problemTab);
+ 	        	else
+ 	        		lowerLeftPane.getTabs().remove(problemTab);
  	        }
  	    });
     }
@@ -700,6 +761,14 @@ public class MainPageController {
     	this.outputField.appendText(vm.getErrors().size() + " Error" + ((vm.getErrors().size() > 1) ? "s, " : ", "));
     	this.outputField.appendText(vm.getWarnings().size() + " Warning" + ((vm.getWarnings().size() > 1) ? "s. " : ". "));
     	this.outputField.appendText("End Time: " + new Date() + "\n");
+    	
+    	ObservableList<ObjectStringPair> list = FXCollections.observableArrayList(vm.getErrors());
+    	if (this.runMenuDisplayWarning.isSelected()){
+    		list.addAll(vm.getWarnings());
+    	}
+    	this.problemTableView.setItems(list);
+    	this.objectColumn.setCellValueFactory(new PropertyValueFactory<ObjectStringPair, String>("object"));
+    	this.messageColumn.setCellValueFactory(new PropertyValueFactory<ObjectStringPair, String>("string"));
     }
 
     @FXML

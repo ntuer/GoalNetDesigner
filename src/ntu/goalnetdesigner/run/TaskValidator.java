@@ -16,7 +16,7 @@ public class TaskValidator implements IComponentValidator{
 		for (Task t: DataSession.Cache.tasks){
 			if (t.getTaskFunctions() == null || t.getTaskFunctions().size() == 0){
 				parentValidationManager
-				.addWarning("Task " + t.getName() + " has no functions associated.");
+				.addWarning(t, "Task " + t.getName() + " has no functions associated.");
 			}
 		}
 	}

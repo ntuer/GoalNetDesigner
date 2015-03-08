@@ -29,33 +29,45 @@ public class ConnectionValidator implements IComponentValidator{
 	}
 	
 	public void validate() {
-		HashMap<String, OffsetStatus> stateArcOffset = new HashMap<String, OffsetStatus>();
-		HashMap<String, OffsetStatus> transitionArcOffset = new HashMap<String, OffsetStatus>();
+		HashMap<State, OffsetStatus> stateArcOffset = new HashMap<State, OffsetStatus>();
+		HashMap<Transition, OffsetStatus> transitionArcOffset = new HashMap<Transition, OffsetStatus>();
 		// init values in hashmap
 		for (State s: gnet.getStates()){
-			stateArcOffset.put(s.getId(), OffsetStatus.NOT_VISITED);
+			stateArcOffset.put(s, OffsetStatus.NOT_VISITED);
 		}
 		for (Transition s: gnet.getTransitions()){
-			transitionArcOffset.put(s.getId(), OffsetStatus.NOT_VISITED);
+			transitionArcOffset.put(s, OffsetStatus.NOT_VISITED);
 		}
 		// iterate arcs, and mark states and transitions
 		// process start first
 		for (Arc a: gnet.getArcs()){
 			if (a.getDirection()){ // State to transition
-				stateArcOffset.put(a.getInputID(), OffsetStatus.HALF);
+				for (State st: gnet.getStates()){
+					if (st.getId().equals(a.getInputID()))
+						stateArcOffset.put(st, OffsetStatus.HALF);
+				}
 			} else { // Transition to state
-				transitionArcOffset.put(a.getInputID(), OffsetStatus.HALF);
+				for (Transition tr: gnet.getTransitions()){
+					if (tr.getId().equals(a.getInputID()))
+						transitionArcOffset.put(tr, OffsetStatus.HALF);
+				}
 			}
 		}
 		// process end later
 		for (Arc a: gnet.getArcs()){
 			if (a.getDirection()){ // State to transition
-				transitionArcOffset.put(a.getOutputID(), OffsetStatus.getNext(transitionArcOffset.get(a.getOutputID())));
+				for (Transition tr: gnet.getTransitions()){
+					if (tr.getId().equals(a.getOutputID()))
+						transitionArcOffset.put(tr, OffsetStatus.getNext(transitionArcOffset.get(tr)));
+				}
 			} else { // Transition to state
-				stateArcOffset.put(a.getOutputID(), OffsetStatus.getNext(stateArcOffset.get(a.getOutputID())));
+				for (State st: gnet.getStates()){
+					if (st.getId().equals(a.getOutputID()))
+						stateArcOffset.put(st, OffsetStatus.getNext(stateArcOffset.get(st)));
+				}
 			}
 		}
-		for (Map.Entry<String, OffsetStatus> entry : stateArcOffset.entrySet()) {
+		for (Map.Entry<State, OffsetStatus> entry : stateArcOffset.entrySet()) {
 		    // Stand alone state not root
 			if(entry.getValue() == OffsetStatus.NOT_VISITED){
 				// Root state exception case
@@ -64,7 +76,7 @@ public class ConnectionValidator implements IComponentValidator{
 					continue;
 				
 		    	parentValidationManager
-				.addError("State ID " + entry.getKey() + " is not connected to any transition and it's not the root state.");
+				.addError(entry.getKey(), "State " + entry.getKey() + " is not connected to any transition and it's not the root state.");
 		    }
 			
 			if(entry.getValue() == OffsetStatus.HALF){
@@ -74,18 +86,18 @@ public class ConnectionValidator implements IComponentValidator{
 					continue;
 				
 		    	parentValidationManager
-				.addWarning("State ID " + entry.getKey() + " is a deadend. Make sure this is the behaviour you want.");
+				.addWarning(entry.getKey(), "State " + entry.getKey() + " is a deadend. Make sure this is the behaviour you want.");
 		    }
 		}
 		
-		for (Map.Entry<String, OffsetStatus> entry : transitionArcOffset.entrySet()) {
+		for (Map.Entry<Transition, OffsetStatus> entry : transitionArcOffset.entrySet()) {
 		    // Stand alone state not root
 			if(entry.getValue() == OffsetStatus.NOT_VISITED){
 				parentValidationManager
-				.addError("Transition ID " + entry.getKey() + " is not connected to any state.");
+				.addError(entry.getKey(), "Transition " + entry.getKey() + " is not connected to any state.");
 			} else if(entry.getValue() == OffsetStatus.HALF){
 				parentValidationManager
-				.addError("Transition ID " + entry.getKey() + " is a deadend.");
+				.addError(entry.getKey(), "Transition " + entry.getKey() + " is a deadend.");
 			}
 		}
 	}

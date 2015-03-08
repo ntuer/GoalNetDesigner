@@ -20,7 +20,7 @@ public class TransitionValidator implements IComponentValidator{
 					t.getTasklist().getTasklistTasks() == null || 
 					t.getTasklist().getTasklistTasks().size() == 0){
 				parentValidationManager
-				.addWarning("Transition " + t.getName() + " has no tasks associated.");
+				.addWarning(t, "Transition " + t.getName() + " has no tasks associated.");
 			}
 		}
 	}
