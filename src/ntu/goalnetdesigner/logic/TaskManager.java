@@ -39,6 +39,8 @@ public class TaskManager {
 				TaskFunction newtf = new TaskFunction();
 				newm.addTaskFunction(newtf);
 				t.addTaskFunction(newtf);
+				newtf.setArguments(oldtf.getArguments());
+				newtf.setSequence(oldtf.getSequence());
 				DataService.taskFunction.persist(newtf);
 			}
 		}

@@ -8,6 +8,7 @@ import ntu.goalnetdesigner.data.persistence.User;
 import ntu.goalnetdesigner.data.persistence.UserGnet;
 import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.session.LoginSession;
+import ntu.goalnetdesigner.utility.Resource;
 
 public class AuthorizationManager {
 	
@@ -53,6 +54,16 @@ public class AuthorizationManager {
 		ArrayList<Gnet> gnets = new ArrayList<>();
 		for (UserGnet ug: user.getUserGnets()){
 			gnets.add(ug.getGnet());
+		}
+		return gnets;
+	}
+	
+	public ArrayList<Gnet> getWriteableGnetsOfUser(User user){
+		ArrayList<Gnet> gnets = new ArrayList<>();
+		for (UserGnet ug: user.getUserGnets()){
+			if (ug.getAccessLevel().equals(Resource.UserGnetAccessLevel.Write) || 
+					ug.getAccessLevel().equals(Resource.UserGnetAccessLevel.Admin))
+				gnets.add(ug.getGnet());
 		}
 		return gnets;
 	}

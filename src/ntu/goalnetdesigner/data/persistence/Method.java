@@ -23,7 +23,7 @@ import java.util.List;
 public class Method implements Serializable, IDataServiceUnitSubscriber {
 	
 	public String toString(){
-		return this.getName();
+		return this.name;
 	}
 	
 	private static final long serialVersionUID = 1L;

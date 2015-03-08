@@ -81,6 +81,10 @@ public class Gnet implements Serializable, IDataServiceUnitSubscriber {
 	@OneToMany(mappedBy="gnet")
 	private List<UserGnet> userGnets;
 
+	public String toString(){
+		return this.name;
+	}
+	
 	public Gnet() {
 		
 	}

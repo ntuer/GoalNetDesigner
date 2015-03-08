@@ -102,11 +102,11 @@
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
-						<MenuItem mnemonicParsing="false" onAction="#userShareFunctionClicked" text="Share Function">
+						<MenuItem mnemonicParsing="false" onAction="#userShareFunctionClicked" text="Clone Function">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="F" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#userShareTaskClicked" text="Share Task">
+                  <MenuItem mnemonicParsing="false" onAction="#userShareTaskClicked" text="Clone Task">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
