@@ -13,6 +13,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.logic.RenderManager;
+import ntu.goalnetdesigner.render.RenderedEdge;
 import ntu.goalnetdesigner.render.RenderedState;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.UISession;
@@ -136,6 +137,10 @@ public class StatePropertyPaneController implements IPaneController{
 						((RenderedState) StatePropertyPaneController.this.selectedObject.getRenderedObject()).showAsComposite();
 					} else {
 						((RenderedState) StatePropertyPaneController.this.selectedObject.getRenderedObject()).showAsSimple();
+						UIUtility.Draw.renderManager.removeComposition(StatePropertyPaneController.this.selectedObject, 
+								StatePropertyPaneController.this.selectedObject.getCompositeStartState());
+						UIUtility.Draw.renderManager.removeComposition(StatePropertyPaneController.this.selectedObject.getCompositeEndState(), 
+								StatePropertyPaneController.this.selectedObject);
 					}
 					setCompositeStateComboBoxUsable(newValue);
 				} 

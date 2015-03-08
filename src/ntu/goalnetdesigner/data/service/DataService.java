@@ -39,7 +39,6 @@ public class DataService {
 			properties.put("javax.persistence.jdbc.user", "root");
 			properties.put("javax.persistence.jdbc.password", "root");
 			properties.put("eclipselink.logging.level", "FINE");
-			//properties.put("eclipselink.query-results-cache", "false");
 			emf = Persistence.createEntityManagerFactory("GoalNetDesigner",properties);
 		}
 		return emf;
@@ -50,6 +49,27 @@ public class DataService {
 			em = getEntityManagerFactory().createEntityManager();
 		}
 		return em;
+	}
+	
+	public static void reestablish(){
+		em.close();
+		em = getEntityManagerFactory().createEntityManager();
+		actionLog.reestablish();
+		feedbackLog.reestablish();
+		question.reestablish();
+		arc.reestablish();
+		method.reestablish();
+		gnet.reestablish();
+		property.reestablish();
+		state.reestablish();
+		transition.reestablish();
+		task.reestablish();
+		tasklist.reestablish();
+		user.reestablish();
+		stateFunction.reestablish();
+		taskFunction.reestablish();
+		tasklistTask.reestablish();
+		userGnet.reestablish();
 	}
 	
 	public static void begin(){

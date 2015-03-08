@@ -1,15 +1,11 @@
 package ntu.goalnetdesigner.data.service;
 
-import java.lang.reflect.Method;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
 import ntu.goalnetdesigner.data.persistence.IAssociationDataServiceUnitSubscriber;
-import ntu.goalnetdesigner.data.persistence.IDataServiceUnitSubscriber;
 
 public class AssociationDataServiceUnit<T extends IAssociationDataServiceUnitSubscriber> {
 	protected EntityManager em;
@@ -17,6 +13,10 @@ public class AssociationDataServiceUnit<T extends IAssociationDataServiceUnitSub
 	
 	public AssociationDataServiceUnit(Class<T> type){
 		this.type = type;
+		em = DataService.getEntityManager();
+	}
+	
+	public void reestablish(){
 		em = DataService.getEntityManager();
 	}
 	

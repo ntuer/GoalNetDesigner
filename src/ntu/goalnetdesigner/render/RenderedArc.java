@@ -17,9 +17,12 @@ public class RenderedArc extends RenderedEdge{
 		// base object
 		this.baseObject = new Arc();
 		DataSession.Cache.arcs.add(this.getBaseObject());
+		
 		// Graphical representation
-		getGraphicalRepresentation(s.getDisplay().getTranslateX(),  s.getDisplay().getTranslateY(),
-				t.getDisplay().getTranslateX(),  t.getDisplay().getTranslateY());
+		Point2D p1 = UIUtility.Draw.findPointOnBorderForFirstRenderable(s, t);
+		Point2D p2 = UIUtility.Draw.findPointOnBorderForFirstRenderable(t, s);
+		getGraphicalRepresentation(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+		
 		this.getBaseObject().setDirection(true);
 		this.getBaseObject().setInputID(s.getBaseObject().getId());
 		this.getBaseObject().setOutputID(t.getBaseObject().getId());
@@ -28,11 +31,14 @@ public class RenderedArc extends RenderedEdge{
 	public RenderedArc (RenderedTransition t, RenderedState s){
 		this.baseObject = new Arc();
 		DataSession.Cache.arcs.add(this.getBaseObject());
+		
 		// Graphical representation
-		getGraphicalRepresentation(t.getDisplay().getTranslateX(),  t.getDisplay().getTranslateY(),
-				s.getDisplay().getTranslateX(),  s.getDisplay().getTranslateY());
+		Point2D p1 = UIUtility.Draw.findPointOnBorderForFirstRenderable(t, s);
+		Point2D p2 = UIUtility.Draw.findPointOnBorderForFirstRenderable(s, t);
+		getGraphicalRepresentation(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+		
 		this.getBaseObject().setDirection(false);
-		this.getBaseObject().setInputID(s.getBaseObject().getId());
+		this.getBaseObject().setInputID(t.getBaseObject().getId());
 		this.getBaseObject().setOutputID(s.getBaseObject().getId());
 	}
 	

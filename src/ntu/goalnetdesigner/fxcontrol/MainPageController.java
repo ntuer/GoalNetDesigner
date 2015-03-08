@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Dialogs;
+import javafx.scene.control.Dialogs.DialogOptions;
 import javafx.scene.control.Dialogs.DialogResponse;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -44,7 +45,6 @@ import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.logger.ConsoleLogger;
-import ntu.goalnetdesigner.logger.DatabaseActionLogger;
 import ntu.goalnetdesigner.logger.StatusBarLogger;
 import ntu.goalnetdesigner.logic.AuthorizationManager;
 import ntu.goalnetdesigner.logic.FunctionManager;
@@ -624,19 +624,36 @@ public class MainPageController {
     	}
     };
     
+    private void closeOpenedGnet(){
+    	if (DataSession.Cache.gnet != null){
+	    	DialogResponse response = Dialogs.showConfirmDialog(UISession.primaryStage, 
+	    		    "Click Yes to save, No to discard.", "Do you want to save your latest changes since last save?", "Exit", DialogOptions.YES_NO);
+	    	if (response == DialogResponse.YES){
+	    		DataService.commit();
+	    	} else if (response == DialogResponse.NO){
+	    		DataService.rollback();
+	    	}
+	        DataSession.setGNetCache(null);
+	        this.refreshTreeViewsAndDrawingPane();
+    	}
+    }
+    
     @FXML
     void newFunctionButtonOnClick(ActionEvent event) {
     	FunctionManager.newInstance();
+    	refreshFunctionTreeView();
     }
     
     @FXML
     void newTaskButtonOnClick(ActionEvent event) {
     	TaskManager.newInstance();
+    	refreshTaskTreeView();
     }
     
     // Menu click handlers
     @FXML
     void fileMenuNewClicked(ActionEvent event) throws Exception{
+    	closeOpenedGnet();
     	UIUtility.Navigation.popUp(Resource.NEW_GNET_PATH, UISession.primaryStage);
     	if (DataSession.Cache.gnet != null)
     		this.refreshTreeViewsAndDrawingPane();
@@ -644,6 +661,7 @@ public class MainPageController {
 
     @FXML
     void fileMenuOpenClicked(ActionEvent event) throws Exception{
+    	closeOpenedGnet();
     	UIUtility.Navigation.popUp(Resource.OPEN_GNET_PATH, UISession.primaryStage);
     	if (DataSession.Cache.gnet != null)
     		this.refreshTreeViewsAndDrawingPane();
@@ -678,17 +696,7 @@ public class MainPageController {
     }
     @FXML
     void fileMenuCloseClicked(ActionEvent event) {
-    	DialogResponse response = Dialogs.showConfirmDialog(UISession.primaryStage, 
-    		    "Click Yes to save, No to discard.", "Do you want to save your latest changes since last save?", "Exit");
-    	if (response == DialogResponse.YES){
-    		DataService.commit();
-    	} else if (response == DialogResponse.NO){
-    		DataService.rollback();
-    	}
-    	if (response != DialogResponse.CANCEL){
-	        DataSession.setGNetCache(null);
-	        this.refreshTreeViewsAndDrawingPane();
-    	}
+    	closeOpenedGnet();
     }
 
     @FXML
@@ -726,13 +734,7 @@ public class MainPageController {
 
     @FXML
     void fileMenuExitClicked(ActionEvent event) {
-    	DialogResponse response = Dialogs.showConfirmDialog(UISession.primaryStage, 
-    		    "Click Yes to save, No to discard", "Do you want to save your latest changes since last save?", "Exit");
-    	if (response == DialogResponse.YES){
-    		DataService.commit();
-    	} else if (response == DialogResponse.NO){
-    		DataService.rollback();
-    	}
+    	closeOpenedGnet();
 		UISession.primaryStage.close();
     }
 
@@ -814,15 +816,7 @@ public class MainPageController {
 
     @FXML
     void userMenuLogOutClicked(ActionEvent event) throws Exception{
-    	if (DataSession.Cache.gnet != null){
-    		DialogResponse response = Dialogs.showConfirmDialog(UISession.primaryStage, 
-        		    "Click Yes to save, No to discard", "Do you want to save your changes since last save?", "Log out");
-        	if (response == DialogResponse.YES){
-        		DataService.commit();
-        	} else if (response == DialogResponse.NO){
-        		DataService.rollback();
-        	}
-    	}
+    	closeOpenedGnet();
     	Navigation.switchTo(Resource.LOGIN_PATH, UISession.primaryStage);
     	LoginSession.isLoggedIn = false;
     	LoginSession.user = null;

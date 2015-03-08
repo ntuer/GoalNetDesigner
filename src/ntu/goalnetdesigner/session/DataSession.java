@@ -6,14 +6,12 @@ import java.util.List;
 import ntu.goalnetdesigner.data.persistence.ActionLog;
 import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.data.persistence.Gnet;
-import ntu.goalnetdesigner.data.persistence.IDataServiceUnitSubscriber;
 import ntu.goalnetdesigner.data.persistence.Method;
 import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.data.persistence.Tasklist;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.data.service.DataService;
-import ntu.goalnetdesigner.render.Drawable;
 
 public class DataSession {
 	public static class Cache {
@@ -37,6 +35,10 @@ public class DataSession {
 			Cache.functions = null;
 			Cache.tasks = null;
 			Cache.tasklists = null;
+			DataService.reestablish();
+			String userId = LoginSession.user.getId();
+			LoginSession.user = null;
+			LoginSession.user = DataService.user.find(userId);
 		} else {
 			Cache.gnet = gnet;
 			Cache.arcs = gnet.getArcs();
@@ -47,5 +49,6 @@ public class DataSession {
 			Cache.tasklists = DataService.tasklist.findAll();
 			DataService.begin();
 		}
+		
 	}	
 }

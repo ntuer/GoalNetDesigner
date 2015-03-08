@@ -1,12 +1,17 @@
 package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
-
-import javax.persistence.*;
-
 import java.math.BigInteger;
 import java.util.List;
-import java.util.UUID;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 
 /**

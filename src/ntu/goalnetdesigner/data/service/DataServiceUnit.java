@@ -4,8 +4,6 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
 import ntu.goalnetdesigner.data.persistence.IDataServiceUnitSubscriber;
@@ -16,6 +14,10 @@ public class DataServiceUnit<T extends IDataServiceUnitSubscriber> {
 	
 	public DataServiceUnit(Class<T> type){
 		this.type = type;
+		em = DataService.getEntityManager();
+	}
+	
+	public void reestablish(){
 		em = DataService.getEntityManager();
 	}
 	
