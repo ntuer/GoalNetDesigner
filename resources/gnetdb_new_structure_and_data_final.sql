@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 12, 2015 at 03:53 PM
+-- Generation Time: Mar 09, 2015 at 10:53 AM
 -- Server version: 5.5.40
 -- PHP Version: 5.4.32
 
@@ -33,9 +33,9 @@ CREATE TABLE IF NOT EXISTS `action_log` (
   `UserID` char(36) NOT NULL COMMENT 'User of this action',
   `ID` char(36) NOT NULL COMMENT 'Unique Identifier',
   `Action` varchar(20) NOT NULL COMMENT 'Create, Update, Delete',
-  `GNetID` char(36) NOT NULL COMMENT 'Action performed on GNet',
-  `OperationTargetObject` varchar(20) NOT NULL COMMENT 'Target object of this action: arc/transition/state/task/function',
-  `TargetObjectID` char(36) NOT NULL COMMENT 'Target object''s ID',
+  `GNetID` char(36) DEFAULT NULL COMMENT 'Action performed on GNet',
+  `OperationTargetObject` varchar(20) DEFAULT NULL COMMENT 'Target object of this action: arc/transition/state/task/function',
+  `TargetObjectID` char(36) DEFAULT NULL COMMENT 'Target object''s ID',
   `Timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Time of action'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Record user behaviors for analytics';
 
@@ -44,7 +44,9 @@ CREATE TABLE IF NOT EXISTS `action_log` (
 --
 
 INSERT INTO `action_log` (`UserID`, `ID`, `Action`, `GNetID`, `OperationTargetObject`, `TargetObjectID`, `Timestamp`) VALUES
-('lisiyao', 'f34c7687-9a6f-11e4-a7a6-002556c2fbd9', '', '22af170a-2677-406b-bf31-3c5c412d865d', '', '', '2015-01-12 15:30:34');
+('yuhan', '25987725-5f3f-45d6-8852-2e15d7eb610e', 'Create', '445b84d0-096e-4ea8-9939-76e40b07cdb0', 'Arc', 'ffa5e8ac-2671-4581-927c-4a245e8fd25e', '2015-03-09 06:49:06'),
+('yuhan', '35ecfed1-28a7-4c26-8a1c-9a9205646366', 'Create', '445b84d0-096e-4ea8-9939-76e40b07cdb0', 'Arc', '5ef426fd-e797-4e53-ba47-fc56470b628a', '2015-03-09 06:49:02'),
+('yuhan', 'b5ee4249-692c-4b78-a565-d722bc3cebd3', 'Create', '445b84d0-096e-4ea8-9939-76e40b07cdb0', 'Arc', '350b3f75-198d-46b7-ab95-5e24f1b98569', '2015-03-09 06:49:20');
 
 -- --------------------------------------------------------
 
@@ -64,6 +66,22 @@ CREATE TABLE IF NOT EXISTS `arc` (
   `OutputID` char(36) DEFAULT '0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0' COMMENT 'Output entity id'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `arc`
+--
+
+INSERT INTO `arc` (`ID`, `GNetID`, `Name`, `Description`, `Direction`, `IsDirect`, `InputID`, `OutputID`) VALUES
+('0d3209c2-4d08-4287-ad2b-807cf5002cea', 'acc8e102-c71b-4487-8b5e-8d15b5bbcd7a', 'Arc', NULL, 0, 1, '41b8a9cc-4741-43e3-a4e0-ffe09d3575c0', 'a95cd2fd-85a7-4402-ad52-2bcded916aa0'),
+('177931f6-48a7-4e9a-ab93-46d4f6a84cc3', 'acc8e102-c71b-4487-8b5e-8d15b5bbcd7a', 'Arc', NULL, 0, 1, '41b8a9cc-4741-43e3-a4e0-ffe09d3575c0', '18ec018c-bf16-46cf-af68-ac3d219b5aca'),
+('350b3f75-198d-46b7-ab95-5e24f1b98569', '445b84d0-096e-4ea8-9939-76e40b07cdb0', 'Arc', NULL, 1, 1, '5c4ace4b-afd1-4d7c-a6dc-40921a578687', '24a1b01f-3f7e-4d76-aeb7-607a4f5df5a6'),
+('5ef426fd-e797-4e53-ba47-fc56470b628a', '445b84d0-096e-4ea8-9939-76e40b07cdb0', 'Arc', NULL, 1, 1, '7b9c5d3b-c7ad-41c9-98d3-f43e21597f24', '24a1b01f-3f7e-4d76-aeb7-607a4f5df5a6'),
+('b4cc1fa8-0a86-4f13-8dc7-031f8953bd01', 'acc8e102-c71b-4487-8b5e-8d15b5bbcd7a', 'Arc', NULL, 0, 1, 'f40ab67b-3aea-4448-8e44-e84f6c38035b', 'a95cd2fd-85a7-4402-ad52-2bcded916aa0'),
+('d1245265-4420-4745-9677-0cf9a07a5a99', '445b84d0-096e-4ea8-9939-76e40b07cdb0', 'Arc', NULL, 1, 1, '7b9c5d3b-c7ad-41c9-98d3-f43e21597f24', '9cab4c9c-457d-4616-9d63-de4e8580216b'),
+('e3ff49b2-5fb7-4ef0-b4a2-8b4fa492d470', '445b84d0-096e-4ea8-9939-76e40b07cdb0', 'Arc', NULL, 0, 1, '9cab4c9c-457d-4616-9d63-de4e8580216b', '5c4ace4b-afd1-4d7c-a6dc-40921a578687'),
+('e5247b50-a8d0-4914-8c7a-c7b916224bf4', 'acc8e102-c71b-4487-8b5e-8d15b5bbcd7a', 'Arc', NULL, 1, 1, '519f007c-0e77-4ed3-8385-608f0785173a', '41b8a9cc-4741-43e3-a4e0-ffe09d3575c0'),
+('e7b49900-18fb-4919-9a91-b5f6c3673cc3', 'acc8e102-c71b-4487-8b5e-8d15b5bbcd7a', 'Arc', NULL, 1, 1, 'dbdf395a-402b-4e98-b8a9-45cd65580eb4', 'f40ab67b-3aea-4448-8e44-e84f6c38035b'),
+('ffa5e8ac-2671-4581-927c-4a245e8fd25e', '445b84d0-096e-4ea8-9939-76e40b07cdb0', 'Arc', NULL, 0, 1, '24a1b01f-3f7e-4d76-aeb7-607a4f5df5a6', '5c5d8ddf-67c6-4b24-b1c6-e73b3acb0ae6');
+
 -- --------------------------------------------------------
 
 --
@@ -76,26 +94,17 @@ CREATE TABLE IF NOT EXISTS `feedback_log` (
   `QuestionID` char(36) NOT NULL,
   `Timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `UserID` char(36) NOT NULL,
-  `Version` varchar(20) NOT NULL
+  `Version` varchar(20) NOT NULL,
+  `Answer` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `function`
+-- Dumping data for table `feedback_log`
 --
 
-DROP TABLE IF EXISTS `function`;
-CREATE TABLE IF NOT EXISTS `function` (
-  `ID` char(36) NOT NULL,
-  `Alias` varchar(50) DEFAULT NULL COMMENT 'Alias of the function',
-  `FileName` varchar(255) NOT NULL COMMENT 'Dll filename from which the function comes',
-  `RTType` varchar(50) NOT NULL DEFAULT 'void' COMMENT 'return type of the function',
-  `Name` varchar(50) NOT NULL COMMENT 'function name',
-  `Params` varchar(500) DEFAULT NULL COMMENT 'parameters of the function in sequence separated by semicolons, eg int,float,string,char',
-  `Values` varchar(500) DEFAULT NULL COMMENT 'Values of each parameter in the same sequence.',
-  `Description` varchar(255) DEFAULT NULL COMMENT 'Description for the function'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `feedback_log` (`ID`, `QuestionID`, `Timestamp`, `UserID`, `Version`, `Answer`) VALUES
+('34a917e7-dbcf-4497-b52f-461950ff3dab', '2d7a8182-b8e0-11e4-b791-002556c2fbd9', '2015-02-20 09:40:09', 'lisiyao', '1.0', ''),
+('abce0a99-7bfe-479a-bf30-8d7de93b2e17', '2d7ab880-b8e0-11e4-b791-002556c2fbd9', '2015-02-20 09:40:09', 'lisiyao', '1.0', '');
 
 -- --------------------------------------------------------
 
@@ -122,8 +131,40 @@ CREATE TABLE IF NOT EXISTS `gnet` (
 --
 
 INSERT INTO `gnet` (`ID`, `Name`, `Description`, `StateCount`, `TransitionCount`, `StartStateID`, `EndStateID`, `RootID`, `GoalSelectionType`, `IsOpen`) VALUES
-('22af170a-2677-406b-bf31-3c5c412d865d', 'G2', '', NULL, NULL, NULL, NULL, NULL, 0, 0),
-('d944a252-972c-4707-9537-275e4e723b5e', 'G1', 'Desc', NULL, NULL, NULL, NULL, NULL, 0, 0);
+('445b84d0-096e-4ea8-9939-76e40b07cdb0', 'GTransition', '', NULL, NULL, '7b9c5d3b-c7ad-41c9-98d3-f43e21597f24', '5c4ace4b-afd1-4d7c-a6dc-40921a578687', '5c5d8ddf-67c6-4b24-b1c6-e73b3acb0ae6', 0, 0),
+('acc8e102-c71b-4487-8b5e-8d15b5bbcd7a', 'GTest', '', NULL, NULL, NULL, NULL, NULL, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `method`
+--
+
+DROP TABLE IF EXISTS `method`;
+CREATE TABLE IF NOT EXISTS `method` (
+  `ID` char(36) NOT NULL,
+  `Alias` varchar(50) DEFAULT NULL COMMENT 'Alias of the function',
+  `FileName` varchar(255) NOT NULL COMMENT 'Dll filename from which the function comes',
+  `RTType` varchar(50) NOT NULL DEFAULT 'void' COMMENT 'return type of the function',
+  `Name` varchar(50) NOT NULL COMMENT 'function name',
+  `Params` varchar(500) DEFAULT NULL COMMENT 'parameters of the function in sequence separated by semicolons, eg int,float,string,char',
+  `PValues` varchar(500) DEFAULT NULL COMMENT 'Values of each parameter in the same sequence.',
+  `Description` varchar(255) DEFAULT NULL COMMENT 'Description for the function',
+  `GNetID` varchar(36) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `method`
+--
+
+INSERT INTO `method` (`ID`, `Alias`, `FileName`, `RTType`, `Name`, `Params`, `PValues`, `Description`, `GNetID`) VALUES
+('41b9a62e-0f59-440d-bebd-37b6eae541a1', NULL, 'filename', 'void', 'F4', NULL, NULL, NULL, '445b84d0-096e-4ea8-9939-76e40b07cdb0'),
+('475e8eb3-1dda-49e5-af1b-7d9c6d0abfc5', NULL, 'filename', 'void', 'F5', NULL, NULL, NULL, '445b84d0-096e-4ea8-9939-76e40b07cdb0'),
+('737a863b-9a77-11e4-a7a6-002556c2fbd9', NULL, '', 'void', 'function1', NULL, NULL, NULL, '445b84d0-096e-4ea8-9939-76e40b07cdb0'),
+('737aabc5-9a77-11e4-a7a6-002556c2fbd9', NULL, '', 'void', 'Function2', NULL, NULL, NULL, '445b84d0-096e-4ea8-9939-76e40b07cdb0'),
+('7870c1fa-95ff-487b-a02d-15a7390e333f', NULL, 'filename2', 'void', 'function 3', NULL, NULL, NULL, '445b84d0-096e-4ea8-9939-76e40b07cdb0'),
+('7d5051ff-98e3-42a5-b560-568950fad2ff', NULL, 'filename', 'void', 'F4', NULL, NULL, NULL, 'acc8e102-c71b-4487-8b5e-8d15b5bbcd7a'),
+('db8e6c17-164f-4a1a-aae2-fbf5fad8006d', NULL, 'filename2', 'void', 'function 3', NULL, NULL, NULL, 'acc8e102-c71b-4487-8b5e-8d15b5bbcd7a');
 
 -- --------------------------------------------------------
 
@@ -153,6 +194,14 @@ CREATE TABLE IF NOT EXISTS `question` (
   `Body` text NOT NULL COMMENT 'Question body'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `question`
+--
+
+INSERT INTO `question` (`ID`, `Body`) VALUES
+('2d7a8182-b8e0-11e4-b791-002556c2fbd9', 'Do you think this designer is easy to use?'),
+('2d7ab880-b8e0-11e4-b791-002556c2fbd9', 'Do you think this designer is problematic?');
+
 -- --------------------------------------------------------
 
 --
@@ -176,6 +225,21 @@ CREATE TABLE IF NOT EXISTS `state` (
   `Y` int(11) NOT NULL COMMENT 'Y coordinate of the state on the canvas'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `state`
+--
+
+INSERT INTO `state` (`ID`, `GNetID`, `ParentGNetID`, `Name`, `Description`, `Composite`, `Cost`, `Achievement`, `SubGNetStartID`, `SubGNetEndID`, `Token`, `X`, `Y`) VALUES
+('0dfee222-c88c-49f7-a6d0-56ca1a5deef1', 'acc8e102-c71b-4487-8b5e-8d15b5bbcd7a', NULL, 'State', NULL, 1, 0, 0, '9f041653-25be-4975-b68b-6d1638a4e462', 'a95cd2fd-85a7-4402-ad52-2bcded916aa0', NULL, 118, 297),
+('18ec018c-bf16-46cf-af68-ac3d219b5aca', 'acc8e102-c71b-4487-8b5e-8d15b5bbcd7a', NULL, 'State2', NULL, 0, 0, 0, NULL, NULL, NULL, 367, 94),
+('519f007c-0e77-4ed3-8385-608f0785173a', 'acc8e102-c71b-4487-8b5e-8d15b5bbcd7a', NULL, 'State1', NULL, 0, 0, 0, NULL, NULL, NULL, 69, 141),
+('5c4ace4b-afd1-4d7c-a6dc-40921a578687', '445b84d0-096e-4ea8-9939-76e40b07cdb0', NULL, 'State2', NULL, 0, 0, 0, NULL, NULL, NULL, 225, 265),
+('5c5d8ddf-67c6-4b24-b1c6-e73b3acb0ae6', '445b84d0-096e-4ea8-9939-76e40b07cdb0', NULL, 'State', NULL, 0, 0, 0, NULL, NULL, NULL, 501, 265),
+('7b9c5d3b-c7ad-41c9-98d3-f43e21597f24', '445b84d0-096e-4ea8-9939-76e40b07cdb0', NULL, 'State1', NULL, 0, 0, 0, NULL, NULL, NULL, 66, 103),
+('9f041653-25be-4975-b68b-6d1638a4e462', 'acc8e102-c71b-4487-8b5e-8d15b5bbcd7a', NULL, 'State1n', NULL, 0, 0, 0, NULL, NULL, NULL, 25, 225),
+('a95cd2fd-85a7-4402-ad52-2bcded916aa0', 'acc8e102-c71b-4487-8b5e-8d15b5bbcd7a', NULL, 'State2n', NULL, 0, 0, 0, NULL, NULL, NULL, 380, 238),
+('dbdf395a-402b-4e98-b8a9-45cd65580eb4', 'acc8e102-c71b-4487-8b5e-8d15b5bbcd7a', NULL, 'State', NULL, 0, 0, 0, NULL, NULL, NULL, 77, 366);
+
 -- --------------------------------------------------------
 
 --
@@ -189,6 +253,15 @@ CREATE TABLE IF NOT EXISTS `state_function` (
   `Sequence` int(10) unsigned NOT NULL COMMENT 'The sequence number of the function in the current state, starting from 1.',
   `Arguments` varchar(500) DEFAULT NULL COMMENT 'Function arguments separated by ";"'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `state_function`
+--
+
+INSERT INTO `state_function` (`StateID`, `FunctionID`, `Sequence`, `Arguments`) VALUES
+('18ec018c-bf16-46cf-af68-ac3d219b5aca', '737aabc5-9a77-11e4-a7a6-002556c2fbd9', 1, NULL),
+('519f007c-0e77-4ed3-8385-608f0785173a', '737a863b-9a77-11e4-a7a6-002556c2fbd9', 1, NULL),
+('519f007c-0e77-4ed3-8385-608f0785173a', '737aabc5-9a77-11e4-a7a6-002556c2fbd9', 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -206,8 +279,17 @@ CREATE TABLE IF NOT EXISTS `task` (
   `ChildrenTaskCount` int(11) DEFAULT '0' COMMENT 'total number of children task for a composite task',
   `ChildTaskID` char(36) DEFAULT '0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0' COMMENT 'the child task ID',
   `Cost` int(11) DEFAULT '0' COMMENT 'Cost of execuing the task.',
-  `Achievement` int(11) DEFAULT '0' COMMENT 'Achievement after executing the task.'
+  `Achievement` int(11) DEFAULT '0' COMMENT 'Achievement after executing the task.',
+  `GNetID` varchar(36) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `task`
+--
+
+INSERT INTO `task` (`ID`, `Name`, `Description`, `Composite`, `ClassName`, `ChildrenTaskCount`, `ChildTaskID`, `Cost`, `Achievement`, `GNetID`) VALUES
+('9158dc04-d18d-4e28-b73a-840227a789e7', 'Task2', NULL, 0, NULL, 0, NULL, 0, 0, '445b84d0-096e-4ea8-9939-76e40b07cdb0'),
+('aeb6ab9d-f3a1-49cd-a984-804270c4e73f', 'Task1', NULL, 0, NULL, 0, NULL, 0, 0, 'acc8e102-c71b-4487-8b5e-8d15b5bbcd7a');
 
 -- --------------------------------------------------------
 
@@ -221,6 +303,14 @@ CREATE TABLE IF NOT EXISTS `tasklist` (
   `Name` varchar(50) NOT NULL COMMENT 'Tasklist name',
   `Description` varchar(255) DEFAULT NULL COMMENT 'Tasklist Description'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `tasklist`
+--
+
+INSERT INTO `tasklist` (`ID`, `Name`, `Description`) VALUES
+('e37f6ccf-d603-4495-9965-c7ec2b2fc07c', 'New tasklist', NULL),
+('f001660b-df05-4f04-9f9f-381fcc3dfc04', 'New tasklist', NULL);
 
 -- --------------------------------------------------------
 
@@ -249,6 +339,14 @@ CREATE TABLE IF NOT EXISTS `task_function` (
   `Arguments` varchar(500) DEFAULT NULL COMMENT 'Function arguments separated by ";"'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `task_function`
+--
+
+INSERT INTO `task_function` (`TaskID`, `FunctionID`, `Sequence`, `Arguments`) VALUES
+('9158dc04-d18d-4e28-b73a-840227a789e7', '41b9a62e-0f59-440d-bebd-37b6eae541a1', 1, NULL),
+('aeb6ab9d-f3a1-49cd-a984-804270c4e73f', 'db8e6c17-164f-4a1a-aae2-fbf5fad8006d', 0, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -273,39 +371,16 @@ CREATE TABLE IF NOT EXISTS `transition` (
   `Y` int(11) NOT NULL COMMENT 'Y coordinate of the transition on the canvas'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `usergroup`
+-- Dumping data for table `transition`
 --
 
-DROP TABLE IF EXISTS `usergroup`;
-CREATE TABLE IF NOT EXISTS `usergroup` (
-  `ID` char(36) NOT NULL,
-  `Name` varchar(50) NOT NULL COMMENT 'User group name.',
-  `Description` varchar(255) DEFAULT NULL COMMENT 'User group description.'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `usergroup`
---
-
-INSERT INTO `usergroup` (`ID`, `Name`, `Description`) VALUES
-('7cad18fc-9a4c-11e4-9b96-002556c2fbd9', 'Group1', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `usergroup_gnet`
---
-
-DROP TABLE IF EXISTS `usergroup_gnet`;
-CREATE TABLE IF NOT EXISTS `usergroup_gnet` (
-  `UserGroupID` char(36) NOT NULL COMMENT 'User group ID.',
-  `GNetID` char(36) NOT NULL COMMENT 'Goal Net ID',
-  `Read` tinyint(1) NOT NULL COMMENT 'Read privilege',
-  `Write` tinyint(1) NOT NULL COMMENT 'Writing privilege.'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `transition` (`ID`, `GNetID`, `Name`, `Description`, `Type`, `TaskListID`, `TaskCount`, `ExceptionStateID`, `Level`, `Enabled`, `Cost`, `Achievement`, `X`, `Y`) VALUES
+('24a1b01f-3f7e-4d76-aeb7-607a4f5df5a6', '445b84d0-096e-4ea8-9939-76e40b07cdb0', 'Transition', NULL, 'reasoning', NULL, NULL, 0, 0, 0, 0, 0, 313, 54),
+('41b8a9cc-4741-43e3-a4e0-ffe09d3575c0', 'acc8e102-c71b-4487-8b5e-8d15b5bbcd7a', 'Transition1', NULL, 'simple', 'f001660b-df05-4f04-9f9f-381fcc3dfc04', NULL, 0, 0, 0, 0, 0, 224, 209),
+('8bf42759-a4ac-4807-bb39-3da6c5715720', 'acc8e102-c71b-4487-8b5e-8d15b5bbcd7a', 'Transition', NULL, 'simple', NULL, NULL, 0, 0, 0, 0, 0, 309, 496),
+('9cab4c9c-457d-4616-9d63-de4e8580216b', '445b84d0-096e-4ea8-9939-76e40b07cdb0', 'Transition1', NULL, 'simple', NULL, NULL, 0, 0, 0, 0, 0, 23, 349),
+('f40ab67b-3aea-4448-8e44-e84f6c38035b', 'acc8e102-c71b-4487-8b5e-8d15b5bbcd7a', 'Transition', NULL, 'simple', NULL, NULL, 0, 0, 0, 0, 0, 263, 353);
 
 -- --------------------------------------------------------
 
@@ -319,35 +394,40 @@ CREATE TABLE IF NOT EXISTS `users` (
   `Email` varchar(50) NOT NULL COMMENT 'User name, must be unique',
   `Password` varchar(20) NOT NULL COMMENT 'User password',
   `Question` varchar(255) NOT NULL COMMENT 'Secret question (for password retrieval).',
-  `Answer` varchar(255) NOT NULL COMMENT 'Answer to secret question.'
+  `Answer` varchar(255) NOT NULL COMMENT 'Answer to secret question.',
+  `Age` int(11) NOT NULL,
+  `EducationLevel` enum('High School and Below','Undergraduate','Graduate') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`ID`, `Email`, `Password`, `Question`, `Answer`) VALUES
-('lisiyao', 'lisi0010@e.ntu.edu.sg', 'lisiyao', 'lisiyao', 'lisiyao');
+INSERT INTO `users` (`ID`, `Email`, `Password`, `Question`, `Answer`, `Age`, `EducationLevel`) VALUES
+('lisiyao', 'lisi0010@e.ntu.edu.sg', 'lisiyao', 'lisiyao', 'lisiyao', 0, 'High School and Below'),
+('yuhan', 'yuhan@ntu.edu.sg', 'yuhan', 'yuhan', 'yuhan', 0, 'High School and Below');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_usergroup`
+-- Table structure for table `user_gnet`
 --
 
-DROP TABLE IF EXISTS `user_usergroup`;
-CREATE TABLE IF NOT EXISTS `user_usergroup` (
-  `UserID` char(36) NOT NULL COMMENT 'User ID',
-  `UserGroupID` char(36) NOT NULL COMMENT 'Group ID',
-  `IsAdmin` bigint(20) unsigned NOT NULL COMMENT 'True: this user is the administrator of this group; False: otherwise.'
+DROP TABLE IF EXISTS `user_gnet`;
+CREATE TABLE IF NOT EXISTS `user_gnet` (
+  `UserID` varchar(36) NOT NULL,
+  `GNetID` varchar(36) NOT NULL,
+  `AccessLevel` enum('Read','Write','Admin') NOT NULL DEFAULT 'Read'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `user_usergroup`
+-- Dumping data for table `user_gnet`
 --
 
-INSERT INTO `user_usergroup` (`UserID`, `UserGroupID`, `IsAdmin`) VALUES
-('lisiyao', '7cad18fc-9a4c-11e4-9b96-002556c2fbd9', 1);
+INSERT INTO `user_gnet` (`UserID`, `GNetID`, `AccessLevel`) VALUES
+('lisiyao', '445b84d0-096e-4ea8-9939-76e40b07cdb0', 'Admin'),
+('lisiyao', 'acc8e102-c71b-4487-8b5e-8d15b5bbcd7a', 'Admin'),
+('yuhan', '445b84d0-096e-4ea8-9939-76e40b07cdb0', 'Admin');
 
 --
 -- Indexes for dumped tables
@@ -372,16 +452,16 @@ ALTER TABLE `feedback_log`
  ADD PRIMARY KEY (`ID`), ADD KEY `QuestionID` (`QuestionID`,`UserID`), ADD KEY `UserID` (`UserID`);
 
 --
--- Indexes for table `function`
---
-ALTER TABLE `function`
- ADD PRIMARY KEY (`ID`);
-
---
 -- Indexes for table `gnet`
 --
 ALTER TABLE `gnet`
  ADD PRIMARY KEY (`ID`), ADD KEY `StartStateID` (`StartStateID`), ADD KEY `EndStateID` (`EndStateID`), ADD KEY `RootID` (`RootID`);
+
+--
+-- Indexes for table `method`
+--
+ALTER TABLE `method`
+ ADD PRIMARY KEY (`ID`), ADD KEY `GNetID` (`GNetID`);
 
 --
 -- Indexes for table `property`
@@ -411,7 +491,7 @@ ALTER TABLE `state_function`
 -- Indexes for table `task`
 --
 ALTER TABLE `task`
- ADD PRIMARY KEY (`ID`), ADD KEY `ChildTaskID` (`ChildTaskID`);
+ ADD PRIMARY KEY (`ID`), ADD KEY `ChildTaskID` (`ChildTaskID`), ADD KEY `GNetID` (`GNetID`);
 
 --
 -- Indexes for table `tasklist`
@@ -438,28 +518,16 @@ ALTER TABLE `transition`
  ADD PRIMARY KEY (`ID`), ADD KEY `GNetID` (`GNetID`), ADD KEY `TaskListID` (`TaskListID`);
 
 --
--- Indexes for table `usergroup`
---
-ALTER TABLE `usergroup`
- ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `usergroup_gnet`
---
-ALTER TABLE `usergroup_gnet`
- ADD PRIMARY KEY (`UserGroupID`,`GNetID`), ADD KEY `GNetID` (`GNetID`);
-
---
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
  ADD PRIMARY KEY (`ID`);
 
 --
--- Indexes for table `user_usergroup`
+-- Indexes for table `user_gnet`
 --
-ALTER TABLE `user_usergroup`
- ADD PRIMARY KEY (`UserID`,`UserGroupID`), ADD KEY `UserGroupID` (`UserGroupID`);
+ALTER TABLE `user_gnet`
+ ADD PRIMARY KEY (`UserID`,`GNetID`), ADD KEY `UserID` (`UserID`), ADD KEY `GNetID` (`GNetID`);
 
 --
 -- Constraints for dumped tables
@@ -482,24 +550,30 @@ ADD CONSTRAINT `arc_gnet_id` FOREIGN KEY (`GNetID`) REFERENCES `gnet` (`ID`) ON 
 -- Constraints for table `feedback_log`
 --
 ALTER TABLE `feedback_log`
-ADD CONSTRAINT `feedback_log_user_id` FOREIGN KEY (`UserID`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `feedback_log_question_id` FOREIGN KEY (`QuestionID`) REFERENCES `question` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `feedback_log_question_id` FOREIGN KEY (`QuestionID`) REFERENCES `question` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `feedback_log_user_id` FOREIGN KEY (`UserID`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `gnet`
 --
 ALTER TABLE `gnet`
-ADD CONSTRAINT `gnet_root_id` FOREIGN KEY (`RootID`) REFERENCES `state` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT `gnet_end_id` FOREIGN KEY (`EndStateID`) REFERENCES `state` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `gnet_root_id` FOREIGN KEY (`RootID`) REFERENCES `state` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT `gnet_start_id` FOREIGN KEY (`StartStateID`) REFERENCES `state` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `method`
+--
+ALTER TABLE `method`
+ADD CONSTRAINT `method_gnet_id` FOREIGN KEY (`GNetID`) REFERENCES `gnet` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `state`
 --
 ALTER TABLE `state`
-ADD CONSTRAINT `state_sub_end_id` FOREIGN KEY (`SubGNetEndID`) REFERENCES `state` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT `state_gnet_id` FOREIGN KEY (`GNetID`) REFERENCES `gnet` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT `state_parent_state_id` FOREIGN KEY (`ParentGNetID`) REFERENCES `state` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `state_sub_end_id` FOREIGN KEY (`SubGNetEndID`) REFERENCES `state` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT `state_sub_start_id` FOREIGN KEY (`SubGNetStartID`) REFERENCES `state` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
@@ -507,7 +581,13 @@ ADD CONSTRAINT `state_sub_start_id` FOREIGN KEY (`SubGNetStartID`) REFERENCES `s
 --
 ALTER TABLE `state_function`
 ADD CONSTRAINT `state_function_ibfk_1` FOREIGN KEY (`StateID`) REFERENCES `state` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `state_function_ibfk_2` FOREIGN KEY (`FunctionID`) REFERENCES `function` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `state_function_ibfk_2` FOREIGN KEY (`FunctionID`) REFERENCES `method` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `task`
+--
+ALTER TABLE `task`
+ADD CONSTRAINT `task_gnet_id` FOREIGN KEY (`GNetID`) REFERENCES `gnet` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tasklist_task`
@@ -521,28 +601,21 @@ ADD CONSTRAINT `tasklist_task_ibfk_2` FOREIGN KEY (`TaskID`) REFERENCES `task` (
 --
 ALTER TABLE `task_function`
 ADD CONSTRAINT `task_function_ibfk_1` FOREIGN KEY (`TaskID`) REFERENCES `task` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `task_function_ibfk_2` FOREIGN KEY (`FunctionID`) REFERENCES `function` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `task_function_ibfk_2` FOREIGN KEY (`FunctionID`) REFERENCES `method` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `transition`
 --
 ALTER TABLE `transition`
-ADD CONSTRAINT `transition_tasklist_id` FOREIGN KEY (`TaskListID`) REFERENCES `tasklist` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `transition_gnet_id` FOREIGN KEY (`GNetID`) REFERENCES `gnet` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `transition_gnet_id` FOREIGN KEY (`GNetID`) REFERENCES `gnet` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `transition_tasklist_id` FOREIGN KEY (`TaskListID`) REFERENCES `tasklist` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `usergroup_gnet`
+-- Constraints for table `user_gnet`
 --
-ALTER TABLE `usergroup_gnet`
-ADD CONSTRAINT `usergroup_gnet_ibfk_1` FOREIGN KEY (`UserGroupID`) REFERENCES `usergroup` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `usergroup_gnet_ibfk_2` FOREIGN KEY (`GNetID`) REFERENCES `gnet` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `user_usergroup`
---
-ALTER TABLE `user_usergroup`
-ADD CONSTRAINT `user_usergroup_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `user_usergroup_ibfk_2` FOREIGN KEY (`UserGroupID`) REFERENCES `usergroup` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `user_gnet`
+ADD CONSTRAINT `user_gnet_gnet_id` FOREIGN KEY (`GNetID`) REFERENCES `gnet` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `user_gnet_user_id` FOREIGN KEY (`UserID`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
