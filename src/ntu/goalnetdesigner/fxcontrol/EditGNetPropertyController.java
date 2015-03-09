@@ -49,7 +49,7 @@ public class EditGNetPropertyController{
 		if (DataSession.Cache.gnet.getStartState() != null){
 			// set selection
 			for (i = 0; i < startStateComboBox.getItems().size(); ++i) {
-				if (startStateComboBox.getItems().get(i).getId() == DataSession.Cache.gnet.getStartState().getId())
+				if (startStateComboBox.getItems().get(i).getId().equals(DataSession.Cache.gnet.getStartState().getId()))
 					break;
 			}
 			startStateComboBox.getSelectionModel().select(i);
@@ -58,7 +58,7 @@ public class EditGNetPropertyController{
 		if (DataSession.Cache.gnet.getStartState() != null){
 			// set selection
 			for (i = 0; i < endStateComboBox.getItems().size(); ++i) {
-				if (endStateComboBox.getItems().get(i).getId() == DataSession.Cache.gnet.getEndState().getId())
+				if (endStateComboBox.getItems().get(i).getId().equals(DataSession.Cache.gnet.getEndState().getId()))
 					break;
 			}
 			endStateComboBox.getSelectionModel().select(i);
@@ -67,7 +67,7 @@ public class EditGNetPropertyController{
 		if (DataSession.Cache.gnet.getStartState() != null){
 			// set selection
 			for (i = 0; i < rootStateComboBox.getItems().size(); ++i) {
-				if (rootStateComboBox.getItems().get(i).getId() == DataSession.Cache.gnet.getRootState().getId())
+				if (rootStateComboBox.getItems().get(i).getId().equals(DataSession.Cache.gnet.getRootState().getId()))
 					break;
 			}
 			rootStateComboBox.getSelectionModel().select(i);

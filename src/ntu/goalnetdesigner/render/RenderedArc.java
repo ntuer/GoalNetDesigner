@@ -16,8 +16,6 @@ public class RenderedArc extends RenderedEdge{
 	public RenderedArc (RenderedState s, RenderedTransition t){
 		// base object
 		this.baseObject = new Arc();
-		DataSession.Cache.arcs.add(this.getBaseObject());
-		
 		// Graphical representation
 		Point2D p1 = UIUtility.Draw.findPointOnBorderForFirstRenderable(s, t);
 		Point2D p2 = UIUtility.Draw.findPointOnBorderForFirstRenderable(t, s);

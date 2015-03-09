@@ -18,7 +18,7 @@ public class GNetValidator implements IComponentValidator{
 		State root = this.gnet.getRootState();
 		if (root == null) {
 			parentValidationManager
-					.addWarning(null, "This Goal Net has no root state.");
+					.addWarning(this.gnet, "This Goal Net has no root state.");
 		} else if (!root.getComposite()) {
 			parentValidationManager
 					.addError(root, "A Goal Net's root state must be a composite state. Current root state "
@@ -26,10 +26,10 @@ public class GNetValidator implements IComponentValidator{
 		}
 		if (this.gnet.getStartState() == null) {
 			parentValidationManager
-					.addError(null, "This Goal Net has no start state.");
+					.addError(this.gnet, "This Goal Net has no start state.");
 		}
 		if (this.gnet.getEndState() == null) {
-			parentValidationManager.addError(null, "This Goal Net has no end state.");
+			parentValidationManager.addError(this.gnet, "This Goal Net has no end state.");
 		}
 	}
 }

@@ -21,7 +21,7 @@ public class TaskManager {
 		t.setName("New Task");
 		t.setTaskFunctions(new ArrayList<TaskFunction>());
 		t.setTasklistTasks(new ArrayList<TasklistTask>());
-		DataSession.Cache.tasks.add(t);
+		DataSession.Cache.gnet.addTask(t);
 		DataService.task.persist(t);
 		return t;
 	}

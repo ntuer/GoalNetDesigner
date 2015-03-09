@@ -101,6 +101,10 @@ public class StatePropertyPaneController implements IPaneController{
 	private void setCompositeStateComboBoxUsable(boolean usable){
 		this.startStateComboBox.setDisable(!usable);
 		this.endStateComboBox.setDisable(!usable);
+		if (!usable){
+			this.startStateComboBox.getSelectionModel().clearSelection();
+			this.endStateComboBox.getSelectionModel().clearSelection();
+		}
 	}
 	
 	private void setBidirectionalUpdate(){
@@ -141,6 +145,8 @@ public class StatePropertyPaneController implements IPaneController{
 								StatePropertyPaneController.this.selectedObject.getCompositeStartState());
 						UIUtility.Draw.renderManager.removeComposition(StatePropertyPaneController.this.selectedObject.getCompositeEndState(), 
 								StatePropertyPaneController.this.selectedObject);
+						StatePropertyPaneController.this.selectedObject.setCompositeStartState(null);
+						StatePropertyPaneController.this.selectedObject.setCompositeEndState(null);
 					}
 					setCompositeStateComboBoxUsable(newValue);
 				} 

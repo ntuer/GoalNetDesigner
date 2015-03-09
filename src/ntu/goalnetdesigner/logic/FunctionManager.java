@@ -19,7 +19,7 @@ public class FunctionManager {
 		m.setRTType("void");
 		m.setStateFunctions(new ArrayList<StateFunction>());
 		m.setTaskFunctions(new ArrayList<TaskFunction>());
-		DataSession.Cache.functions.add(m);
+		DataSession.Cache.gnet.addMethod(m);
 		DataService.method.persist(m);
 		return m;
 	}

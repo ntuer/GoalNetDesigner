@@ -35,10 +35,12 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import javafx.stage.WindowEvent;
 
 import javax.imageio.ImageIO;
 
 import ntu.goalnetdesigner.data.persistence.Arc;
+import ntu.goalnetdesigner.data.persistence.Gnet;
 import ntu.goalnetdesigner.data.persistence.Method;
 import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.Task;
@@ -244,6 +246,40 @@ public class MainPageController {
     	setProblemTableSelectionHandler();
     	setCurrentDrawingModeSelectionHandlers();
     	groupObjectSelector = new RubberBandSelection(drawingPane);
+    	UISession.primaryStage.setOnHiding(new EventHandler<WindowEvent>() {
+    	      public void handle(WindowEvent event) {
+    	    	  closeOpenedGnet();
+    	      }
+    	});
+    }
+    
+    private void setMenuAndButtonAvailability(boolean value){
+    	this.fileMenuClose.setDisable(!value);
+    	this.fileMenuExport.setDisable(!value);
+    	this.fileMenuSave.setDisable(!value);
+    	this.fileMenuSaveAsLocal.setDisable(!value);
+    	this.editMenuClearObjectForArcs.setDisable(!value);
+    	this.editMenuDelete.setDisable(!value);
+    	this.editMenuGoalNetProperty.setDisable(!value);
+    	this.runMenuRun.setDisable(!value);
+    	this.runMenuVerify.setDisable(!value);
+    	this.fileMenuExport.setDisable(!value);
+    	this.fileMenuExport.setDisable(!value);
+    	this.fileMenuExport.setDisable(!value);
+    	this.fileMenuExport.setDisable(!value);
+    	this.fileMenuExport.setDisable(!value);
+    	this.fileMenuExport.setDisable(!value);
+    	this.fileMenuExport.setDisable(!value);
+    	this.fileMenuExport.setDisable(!value);
+    	this.fileMenuExport.setDisable(!value);
+    	this.fileMenuExport.setDisable(!value);
+    	this.fileMenuExport.setDisable(!value);
+    	this.fileMenuExport.setDisable(!value);
+    	this.fileMenuExport.setDisable(!value);
+    	this.fileMenuExport.setDisable(!value);
+    	this.fileMenuExport.setDisable(!value);
+    	this.fileMenuExport.setDisable(!value);
+    	this.fileMenuExport.setDisable(!value);
     }
     
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -252,7 +288,7 @@ public class MainPageController {
 			@Override
  	        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
  	        	ObjectStringPair nv = (ObjectStringPair) newValue;
- 	        	if (nv.getObject() == null){
+ 	        	if (nv.getObject() instanceof Gnet){
  	        		return;
  	        	}
  	            try {
@@ -606,6 +642,7 @@ public class MainPageController {
 		    				drawingPane.getChildren().addAll(a.getShape());
 		    				drawingPane.getChildren().addAll(a.getShape().getArrow());
 	    				}
+	    				refreshArcTreeView();
 	    				StatusBarLogger.clear();
     				} else if (UISession.objectsForArc.size() == 1){
     					StatusBarLogger.log("(ESC to cancel) Current selection of start of arc: " + UISession.getDrawableFromCurrentSelection());
@@ -621,21 +658,28 @@ public class MainPageController {
 			Renderable object = UIUtility.Draw.renderManager.drawNewStateOrTransition(me.getX(), me.getY());
 			if (object != null)
 				drawingPane.getChildren().addAll(object.getDisplay());
+			refreshStateTreeView();
+			refreshTransitionTreeView();
     	}
     };
     
     private void closeOpenedGnet(){
     	if (DataSession.Cache.gnet != null){
-	    	DialogResponse response = Dialogs.showConfirmDialog(UISession.primaryStage, 
-	    		    "Click Yes to save, No to discard.", "Do you want to save your latest changes since last save?", "Exit", DialogOptions.YES_NO);
-	    	if (response == DialogResponse.YES){
-	    		DataService.commit();
-	    	} else if (response == DialogResponse.NO){
-	    		DataService.rollback();
-	    	}
-	        DataSession.setGNetCache(null);
-	        this.refreshTreeViewsAndDrawingPane();
+    		AuthorizationManager am = new AuthorizationManager();
+        	if (am.getGnetAccessLevelOfUser(LoginSession.user, DataSession.Cache.gnet).equals(Resource.UserGnetAccessLevel.READ)){
+        		DataService.rollback();
+        	} else {
+		    	DialogResponse response = Dialogs.showConfirmDialog(UISession.primaryStage, 
+		    		    "Click Yes to save, No to discard.", "Do you want to save your latest changes since last save?", "Exit", DialogOptions.YES_NO);
+		    	if (response == DialogResponse.YES){
+		    		DataService.commit();
+		    	} else if (response == DialogResponse.NO){
+		    		DataService.rollback();
+		    	}
+        	}
     	}
+    	DataSession.setGNetCache(null);
+        this.refreshTreeViewsAndDrawingPane();
     }
     
     @FXML
@@ -669,8 +713,14 @@ public class MainPageController {
 
     @FXML
     void fileMenuSaveClicked(ActionEvent event) {
-    	SaveManager sm = new SaveManager();
-    	sm.saveToDatabase(DataSession.Cache.gnet);
+    	AuthorizationManager am = new AuthorizationManager();
+    	if (am.getGnetAccessLevelOfUser(LoginSession.user, DataSession.Cache.gnet).equals(Resource.UserGnetAccessLevel.READ)){
+    		Dialogs.showErrorDialog(UISession.primaryStage, "You don't have the access right to store this goal net. However, you can continue to edit locally and export it.", 
+    				"Unauthorized", "Save Gnet Error");
+    	} else {
+	    	SaveManager sm = new SaveManager();
+	    	sm.saveToDatabase(DataSession.Cache.gnet);
+    	}
     }
 
     @FXML
@@ -817,6 +867,7 @@ public class MainPageController {
     @FXML
     void userMenuLogOutClicked(ActionEvent event) throws Exception{
     	closeOpenedGnet();
+    	UISession.primaryStage.setOnHiding(null);
     	Navigation.switchTo(Resource.LOGIN_PATH, UISession.primaryStage);
     	LoginSession.isLoggedIn = false;
     	LoginSession.user = null;

@@ -125,6 +125,7 @@ public class RenderManager {
     	s.getAssociatedRenderedEdges().add(a);
     	e.getAssociatedRenderedEdges().add(a);
     	a.getBaseObject().setGnet(DataSession.Cache.gnet);
+    	DataSession.Cache.arcs.add(a.getBaseObject());
     	a.getBaseObject().setIsDirect(true);
     	
     	UISession.objectsForArc.clear();
