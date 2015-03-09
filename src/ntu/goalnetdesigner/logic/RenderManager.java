@@ -9,7 +9,11 @@ import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.data.persistence.Gnet;
 import ntu.goalnetdesigner.data.persistence.Method;
 import ntu.goalnetdesigner.data.persistence.State;
+import ntu.goalnetdesigner.data.persistence.StateFunction;
 import ntu.goalnetdesigner.data.persistence.Task;
+import ntu.goalnetdesigner.data.persistence.TaskFunction;
+import ntu.goalnetdesigner.data.persistence.Tasklist;
+import ntu.goalnetdesigner.data.persistence.TasklistTask;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.logger.ConsoleLogger;
@@ -188,10 +192,47 @@ public class RenderManager {
 			DataService.method.remove((Method) baseObject);
 			// update cache
 			DataSession.Cache.functions.remove((Method) baseObject);
+			// remove from related states
+			for (State state: DataSession.Cache.states){
+				for (StateFunction sf: state.getStateFunctions()){
+					if (sf.getMethod().getId().equals(((Method)baseObject).getId())){
+						state.getStateFunctions().remove(sf);
+						break;
+					}
+				}
+			}
+			// remove from related functions
+			for (Task task: DataSession.Cache.tasks){
+				for (TaskFunction tf: task.getTaskFunctions()){
+					if (tf.getMethod().getId().equals(((Method)baseObject).getId())){
+						task.getTaskFunctions().remove(tf);
+						break;
+					}
+				}
+			}
 		} else if (baseObject instanceof Task){
 			DataService.task.remove((Task) baseObject);
 			// update cache
 			DataSession.Cache.tasks.remove((Task) baseObject);
+			// remove from related functions 
+			for (Method method: DataSession.Cache.functions){
+				for (TaskFunction tf: method.getTaskFunctions()){
+					if (tf.getTask().getId().equals(((Task)baseObject).getId())){
+						method.getTaskFunctions().remove(tf);
+						break;
+					}
+				}
+			}
+			// remove from related tasklists
+			for (Tasklist tl: DataSession.Cache.tasklists){
+				for (TasklistTask tlt: tl.getTasklistTasks()){
+					if (tlt.getTask().getId().equals(((Task)baseObject).getId())){
+						tl.getTasklistTasks().remove(tlt);
+						break;
+					}
+				}
+			}
+			
 		} else if (baseObject instanceof Arc){
 			DataService.arc.remove((Arc) baseObject);
 			// update cache

@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Dialogs;
 import javafx.scene.control.Dialogs.DialogOptions;
@@ -68,6 +69,30 @@ import ntu.goalnetdesigner.utility.UIUtility;
 import ntu.goalnetdesigner.utility.UIUtility.Navigation;
 
 public class MainPageController {    
+	@FXML
+	private ToggleButton simpleStateButton;
+	
+	@FXML
+	private ToggleButton compositeStateButton;
+
+	@FXML
+	private ToggleButton transitionButton;
+	
+	@FXML
+	private ToggleButton reasoningButton;
+	
+	@FXML
+	private ToggleButton arcButton;
+	
+	@FXML
+	private ToggleButton groupSelectionButton;
+	
+	@FXML
+	private Button newFunctionButton;
+	
+	@FXML
+	private Button newTaskButton;
+	
 	@FXML
     private MenuItem fileMenuOpenLocal;
 	
@@ -168,7 +193,7 @@ public class MainPageController {
     private MenuItem fileMenuExit;
 
     @FXML
-    private MenuItem userMenuCurrentUser;
+    private MenuItem userMenuShareTask;
 
     @FXML
     private Tab functionTab;
@@ -198,7 +223,10 @@ public class MainPageController {
     private MenuItem runMenuRun;
 
     @FXML
-    private MenuItem userMenuLogOut;
+    private MenuItem userMenuShareFunction;
+    
+    @FXML
+    private MenuItem userMenuShareGoalNet;
 
     @FXML
     private AnchorPane drawingPane;
@@ -245,6 +273,7 @@ public class MainPageController {
     	setViewMenuHandlers();
     	setProblemTableSelectionHandler();
     	setCurrentDrawingModeSelectionHandlers();
+    	setMenuAndButtonAvailability(false);
     	groupObjectSelector = new RubberBandSelection(drawingPane);
     	UISession.primaryStage.setOnHiding(new EventHandler<WindowEvent>() {
     	      public void handle(WindowEvent event) {
@@ -263,23 +292,17 @@ public class MainPageController {
     	this.editMenuGoalNetProperty.setDisable(!value);
     	this.runMenuRun.setDisable(!value);
     	this.runMenuVerify.setDisable(!value);
-    	this.fileMenuExport.setDisable(!value);
-    	this.fileMenuExport.setDisable(!value);
-    	this.fileMenuExport.setDisable(!value);
-    	this.fileMenuExport.setDisable(!value);
-    	this.fileMenuExport.setDisable(!value);
-    	this.fileMenuExport.setDisable(!value);
-    	this.fileMenuExport.setDisable(!value);
-    	this.fileMenuExport.setDisable(!value);
-    	this.fileMenuExport.setDisable(!value);
-    	this.fileMenuExport.setDisable(!value);
-    	this.fileMenuExport.setDisable(!value);
-    	this.fileMenuExport.setDisable(!value);
-    	this.fileMenuExport.setDisable(!value);
-    	this.fileMenuExport.setDisable(!value);
-    	this.fileMenuExport.setDisable(!value);
-    	this.fileMenuExport.setDisable(!value);
-    	this.fileMenuExport.setDisable(!value);
+    	this.userMenuShareFunction.setDisable(!value);
+    	this.userMenuShareGoalNet.setDisable(!value);
+    	this.userMenuShareTask.setDisable(!value);
+    	this.simpleStateButton.setDisable(!value);
+    	this.compositeStateButton.setDisable(!value);
+    	this.transitionButton.setDisable(!value);
+    	this.reasoningButton.setDisable(!value);
+    	this.arcButton.setDisable(!value);
+    	this.groupSelectionButton.setDisable(!value);
+    	this.newFunctionButton.setDisable(!value);
+    	this.newTaskButton.setDisable(!value);
     }
     
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -288,6 +311,8 @@ public class MainPageController {
 			@Override
  	        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
  	        	ObjectStringPair nv = (ObjectStringPair) newValue;
+ 	        	if (nv == null)
+ 	        		return;
  	        	if (nv.getObject() instanceof Gnet){
  	        		return;
  	        	}
@@ -678,6 +703,7 @@ public class MainPageController {
 		    	}
         	}
     	}
+    	setMenuAndButtonAvailability(false);
     	DataSession.setGNetCache(null);
         this.refreshTreeViewsAndDrawingPane();
     }
@@ -699,16 +725,20 @@ public class MainPageController {
     void fileMenuNewClicked(ActionEvent event) throws Exception{
     	closeOpenedGnet();
     	UIUtility.Navigation.popUp(Resource.NEW_GNET_PATH, UISession.primaryStage);
-    	if (DataSession.Cache.gnet != null)
+    	if (DataSession.Cache.gnet != null){
     		this.refreshTreeViewsAndDrawingPane();
+    		setMenuAndButtonAvailability(true);
+    	}
     }
 
     @FXML
     void fileMenuOpenClicked(ActionEvent event) throws Exception{
     	closeOpenedGnet();
     	UIUtility.Navigation.popUp(Resource.OPEN_GNET_PATH, UISession.primaryStage);
-    	if (DataSession.Cache.gnet != null)
+    	if (DataSession.Cache.gnet != null) {
     		this.refreshTreeViewsAndDrawingPane();
+    		setMenuAndButtonAvailability(true);
+    	}
     }
 
     @FXML
@@ -731,8 +761,10 @@ public class MainPageController {
     	if (file != null) {
 	    	SaveManager sm = new SaveManager();
 	    	DataSession.setGNetCache(sm.openLocally(file.getPath()));
-	    	if (DataSession.Cache.gnet != null)
+	    	if (DataSession.Cache.gnet != null){
 	    		this.refreshTreeViewsAndDrawingPane();
+	    		setMenuAndButtonAvailability(true);
+	    	}
     	}
     }
 
@@ -800,6 +832,12 @@ public class MainPageController {
     	} else {
     		UIUtility.Draw.renderManager.delete(UISession.currentSelection);
     	}
+    	
+    	refreshArcTreeView();
+    	refreshFunctionTreeView();
+    	refreshStateTreeView();
+    	refreshTaskTreeView();
+    	refreshTransitionTreeView();
     }
 
     @FXML
@@ -846,6 +884,7 @@ public class MainPageController {
     @FXML
     void userShareGoalNetClicked(ActionEvent event) throws Exception {
     	Navigation.popUp(Resource.SHARE_GNET_PATH, UISession.primaryStage);
+    	refreshTeamTreeView();
     }
 
     @FXML

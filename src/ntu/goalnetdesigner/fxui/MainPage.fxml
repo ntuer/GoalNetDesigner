@@ -95,21 +95,21 @@
 				</Menu>
 				<Menu mnemonicParsing="false" text="User">
 					<items>
-						<MenuItem mnemonicParsing="false" onAction="#userShareGoalNetClicked" text="Share Goal Net">
+						<MenuItem fx:id="userMenuShareGoalNet" mnemonicParsing="false" onAction="#userShareGoalNetClicked" text="Share Goal Net">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
-						<MenuItem mnemonicParsing="false" onAction="#userShareFunctionClicked" text="Clone Function">
+						<MenuItem fx:id="userMenuShareFunction" mnemonicParsing="false" onAction="#userShareFunctionClicked" text="Clone Function">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="F" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#userShareTaskClicked" text="Clone Task">
+                  <MenuItem fx:id="userMenuShareTask" mnemonicParsing="false" onAction="#userShareTaskClicked" text="Clone Task">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
                      <SeparatorMenuItem mnemonicParsing="false" />
-						<MenuItem fx:id="userMenuCurrentUser" mnemonicParsing="false" onAction="#userMenuCurrentUserClicked" text="View Current User" />
-						<MenuItem fx:id="userMenuLogOut" mnemonicParsing="false" onAction="#userMenuLogOutClicked" text="Log Out" />
+						<MenuItem mnemonicParsing="false" onAction="#userMenuCurrentUserClicked" text="View Current User" />
+						<MenuItem mnemonicParsing="false" onAction="#userMenuLogOutClicked" text="Log Out" />
 					</items>
 				</Menu>
 				<Menu mnemonicParsing="false" text="Help">
@@ -133,8 +133,8 @@
            		<ToggleButton fx:id="arcButton" mnemonicParsing="false" text="Arc" toggleGroup="$drawingStateToggleGroup" />
            		<ToggleButton fx:id="groupSelectionButton" mnemonicParsing="false" text="Group Selection" toggleGroup="$drawingStateToggleGroup" />
 				<Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" />
-				<Button fx:id="newFunctionButton" mnemonicParsing="false" onAction="#newFunctionButtonOnClick" text="Function" />
-				<Button fx:id="newTaskButton" mnemonicParsing="false" onAction="#newTaskButtonOnClick" text="Task" />
+				<Button fx:id="newFunctionButton" mnemonicParsing="false" onAction="#newFunctionButtonOnClick" text="Add Function" />
+				<Button fx:id="newTaskButton" mnemonicParsing="false" onAction="#newTaskButtonOnClick" text="Add Task" />
 			</items>
 		</ToolBar>
 		<TabPane fx:id="upperRightPane" layoutX="726.0" layoutY="65.0" prefHeight="367.0" prefWidth="298.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="2">
