@@ -7,11 +7,14 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Dialogs;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import ntu.goalnetdesigner.data.persistence.FeedbackLog;
 import ntu.goalnetdesigner.data.persistence.Question;
 import ntu.goalnetdesigner.data.service.DataService;
@@ -42,8 +45,14 @@ public class FeedbackController {
         	grid.add(new Label(questions.get(i).getBody()), 0, i);
         	grid.add(answer, 1, i);
     	}
+
     	submitButton = new Button("Submit");
-    	grid.add(submitButton, 0, i);
+    	HBox hbox = new HBox();
+    	hbox.getChildren().add(submitButton);
+    	grid.add(hbox, 0, i);
+    	GridPane.setColumnSpan(hbox, 2);
+    	GridPane.setHgrow(hbox, Priority.ALWAYS);
+    	hbox.setAlignment(Pos.CENTER);
     	submitButton.setOnAction(onSubmitHandler);
     }
     
