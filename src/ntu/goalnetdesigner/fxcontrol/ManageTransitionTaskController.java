@@ -20,8 +20,10 @@ import ntu.goalnetdesigner.data.persistence.Tasklist;
 import ntu.goalnetdesigner.data.persistence.TasklistTask;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.data.service.DataService;
+import ntu.goalnetdesigner.logger.DatabaseActionLogger;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.UISession;
+import ntu.goalnetdesigner.utility.Resource;
 
 public class ManageTransitionTaskController {
     @FXML
@@ -53,7 +55,8 @@ public class ManageTransitionTaskController {
 		});
     }
     
-    @FXML
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	@FXML
     void addButtonOnClick(ActionEvent event) {
     	GridPane grid = new GridPane();
     	grid.setHgap(10);
@@ -80,12 +83,15 @@ public class ManageTransitionTaskController {
     		refreshSequence();
     		DataService.tasklistTask.persist(tt);
     		taskView.setItems(FXCollections.observableArrayList(this.tasklistTaskList));
+    		DatabaseActionLogger.log(Resource.Action.CREATE, Resource.ActionTargetType.TASKLIST_TASK, selectedTasklist.getTransitions().get(0).getId());
     	}
     }
 
     @FXML
     void moveUpOnClick(ActionEvent event) {
     	int index = this.taskView.getSelectionModel().getSelectedIndex();
+    	if (index == -1)
+    		return;
     	TasklistTask tt = this.tasklistTaskList.get(index);
     	this.tasklistTaskList.remove(index);
     	index = index - 1 < 0 ? 0 : index - 1;
@@ -93,11 +99,14 @@ public class ManageTransitionTaskController {
     	refreshSequence();
     	taskView.setItems(FXCollections.observableArrayList(this.tasklistTaskList));
     	this.taskView.getSelectionModel().select(index);
+    	DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.TASKLIST_TASK, selectedTasklist.getTransitions().get(0).getId());
     }
 
     @FXML
     void moveDownOnClick(ActionEvent event) {
     	int index = this.taskView.getSelectionModel().getSelectedIndex();
+    	if (index == -1)
+    		return;
     	TasklistTask tt = this.tasklistTaskList.get(index);
     	this.tasklistTaskList.remove(index);
     	index = index + 1 > this.tasklistTaskList.size() ? this.tasklistTaskList.size() : index + 1;
@@ -105,16 +114,20 @@ public class ManageTransitionTaskController {
     	refreshSequence();
     	taskView.setItems(FXCollections.observableArrayList(this.tasklistTaskList));
     	this.taskView.getSelectionModel().select(index);
+    	DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.TASKLIST_TASK, selectedTasklist.getTransitions().get(0).getId());
     }
 
     @FXML
     void deleteOnClick(ActionEvent event) {
     	int index = this.taskView.getSelectionModel().getSelectedIndex();
+    	if (index == -1)
+    		return;
     	TasklistTask sf = this.tasklistTaskList.get(index);
     	this.tasklistTaskList.remove(index);
     	refreshSequence();
     	DataService.tasklistTask.remove(sf);
     	taskView.setItems(FXCollections.observableArrayList(this.tasklistTaskList));
+    	DatabaseActionLogger.log(Resource.Action.DELETE, Resource.ActionTargetType.TASKLIST_TASK, selectedTasklist.getTransitions().get(0).getId());
     }
 
     void refreshSequence() {

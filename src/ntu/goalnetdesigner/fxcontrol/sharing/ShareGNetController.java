@@ -78,7 +78,8 @@ public class ShareGNetController {
     	}
     }
     
-    @FXML
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	@FXML
     void addButtonClicked(ActionEvent event) {
     	GridPane grid = new GridPane();
     	grid.setHgap(10);

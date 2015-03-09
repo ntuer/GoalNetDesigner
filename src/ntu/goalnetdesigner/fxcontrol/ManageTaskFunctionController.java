@@ -16,8 +16,10 @@ import ntu.goalnetdesigner.data.persistence.Method;
 import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.data.persistence.TaskFunction;
 import ntu.goalnetdesigner.data.service.DataService;
+import ntu.goalnetdesigner.logger.DatabaseActionLogger;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.UISession;
+import ntu.goalnetdesigner.utility.Resource;
 
 public class ManageTaskFunctionController {
 
@@ -38,7 +40,8 @@ public class ManageTaskFunctionController {
     	functionListView.setItems(FXCollections.observableArrayList(this.taskFunctionList));
     }
     
-    @FXML
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	@FXML
     void addButtonOnClick(ActionEvent event) {
     	GridPane grid = new GridPane();
     	grid.setHgap(10);
@@ -65,12 +68,15 @@ public class ManageTaskFunctionController {
     		refreshSequence();
     		DataService.taskFunction.persist(tf);
     		functionListView.setItems(FXCollections.observableArrayList(this.taskFunctionList));
+    		DatabaseActionLogger.log(Resource.Action.CREATE, Resource.ActionTargetType.TASK_FUNCTION, selectedTask.getId());
     	}
     }
 
     @FXML
     void moveUpOnClick(ActionEvent event) {
     	int index = this.functionListView.getSelectionModel().getSelectedIndex();
+    	if (index == -1)
+    		return;
     	TaskFunction tf = this.taskFunctionList.get(index);
     	this.taskFunctionList.remove(index);
     	index = index - 1 < 0 ? 0 : index - 1;
@@ -78,11 +84,14 @@ public class ManageTaskFunctionController {
     	refreshSequence();
     	functionListView.setItems(FXCollections.observableArrayList(this.taskFunctionList));
     	this.functionListView.getSelectionModel().select(index);
+    	DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.TASK_FUNCTION, selectedTask.getId());
     }
 
     @FXML
     void moveDownOnClick(ActionEvent event) {
     	int index = this.functionListView.getSelectionModel().getSelectedIndex();
+    	if (index == -1)
+    		return;
     	TaskFunction tf = this.taskFunctionList.get(index);
     	this.taskFunctionList.remove(index);
     	index = index + 1 > this.taskFunctionList.size() ? this.taskFunctionList.size() : index + 1;
@@ -90,16 +99,20 @@ public class ManageTaskFunctionController {
     	refreshSequence();
     	functionListView.setItems(FXCollections.observableArrayList(this.taskFunctionList));
     	this.functionListView.getSelectionModel().select(index);
+    	DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.TASK_FUNCTION, selectedTask.getId());
     }
 
     @FXML
     void deleteOnClick(ActionEvent event) {
     	int index = this.functionListView.getSelectionModel().getSelectedIndex();
+    	if (index == -1)
+    		return;
     	TaskFunction sf = this.taskFunctionList.get(index);
     	this.taskFunctionList.remove(index);
     	refreshSequence();
     	DataService.taskFunction.remove(sf);
     	functionListView.setItems(FXCollections.observableArrayList(this.taskFunctionList));
+    	DatabaseActionLogger.log(Resource.Action.DELETE, Resource.ActionTargetType.TASK_FUNCTION, selectedTask.getId());
     }
 
     void refreshSequence() {

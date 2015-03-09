@@ -99,10 +99,14 @@ public class RenderManager {
 		try {
 			Renderable r =  RenderedObjectFactory.getNewRenderedObject(x, y, propertyPane, drawingPane);
 			setMouseEventHandler(r);
-			if (r instanceof RenderedTransition)
+			if (r instanceof RenderedTransition){
 				DataService.transition.persist((Transition) r.getBaseObject());
-			else
+				DatabaseActionLogger.log(Resource.Action.CREATE, Resource.ActionTargetType.TRANSITION, ((Transition) r.getBaseObject()).getId());
+			}
+			else{
 				DataService.state.persist((State) r.getBaseObject());
+				DatabaseActionLogger.log(Resource.Action.CREATE, Resource.ActionTargetType.STATE, ((State) r.getBaseObject()).getId());
+			}
 			return r;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -189,6 +193,7 @@ public class RenderManager {
 		boolean isToDeleteState = true;
 		
 		if (baseObject instanceof Method){
+			DatabaseActionLogger.log(Resource.Action.DELETE, Resource.ActionTargetType.METHOD, ((Method) baseObject).getId());
 			DataService.method.remove((Method) baseObject);
 			// update cache
 			DataSession.Cache.functions.remove((Method) baseObject);
@@ -211,6 +216,7 @@ public class RenderManager {
 				}
 			}
 		} else if (baseObject instanceof Task){
+			DatabaseActionLogger.log(Resource.Action.DELETE, Resource.ActionTargetType.TASK, ((Task) baseObject).getId());
 			DataService.task.remove((Task) baseObject);
 			// update cache
 			DataSession.Cache.tasks.remove((Task) baseObject);
@@ -234,6 +240,7 @@ public class RenderManager {
 			}
 			
 		} else if (baseObject instanceof Arc){
+			DatabaseActionLogger.log(Resource.Action.DELETE, Resource.ActionTargetType.ARC, ((Arc) baseObject).getId());
 			DataService.arc.remove((Arc) baseObject);
 			// update cache
 			DataSession.Cache.arcs.remove((Arc) baseObject);
@@ -241,7 +248,7 @@ public class RenderManager {
 			// remove arcs first
 			ArrayList<Arc> arcsToRemove = new ArrayList<>();
 			State s = (State) baseObject;
-			
+			DatabaseActionLogger.log(Resource.Action.DELETE, Resource.ActionTargetType.STATE, s.getId());
 			// Don't delete composite state, start and end.
 			if (s.getComposite())
 				isToDeleteState = false;
@@ -284,6 +291,7 @@ public class RenderManager {
 			// remove arcs first
 			ArrayList<Arc> arcsToRemove = new ArrayList<>();
 			Transition t = (Transition) baseObject;
+			DatabaseActionLogger.log(Resource.Action.DELETE, Resource.ActionTargetType.TRANSITION, t.getId());
 			if (t.getTasklist() != null){
 				DataService.tasklist.remove(t.getTasklist());
 				DataSession.Cache.tasklists.remove(t.getTasklist());

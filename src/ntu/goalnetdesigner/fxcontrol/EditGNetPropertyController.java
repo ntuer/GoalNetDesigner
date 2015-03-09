@@ -11,7 +11,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import ntu.goalnetdesigner.data.persistence.State;
+import ntu.goalnetdesigner.logger.DatabaseActionLogger;
 import ntu.goalnetdesigner.session.DataSession;
+import ntu.goalnetdesigner.utility.Resource;
 
 public class EditGNetPropertyController{
 
@@ -83,6 +85,7 @@ public class EditGNetPropertyController{
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					DataSession.Cache.gnet.setName(name.getText());
+					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.GNET, DataSession.Cache.gnet.getId());
 				}
 			}
 		});
@@ -93,6 +96,7 @@ public class EditGNetPropertyController{
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					DataSession.Cache.gnet.setDescription(description.getText());
+					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.GNET, DataSession.Cache.gnet.getId());
 				} 
 			}
 		});
@@ -104,6 +108,7 @@ public class EditGNetPropertyController{
 					ObservableValue<? extends State> selected,
 					State oldValue, State newValue) {
 				DataSession.Cache.gnet.setStartState(newValue);
+				DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.GNET, DataSession.Cache.gnet.getId());
 			}
 		});
 		endStateComboBox.getSelectionModel().selectedItemProperty()
@@ -113,6 +118,7 @@ public class EditGNetPropertyController{
 					ObservableValue<? extends State> selected,
 					State oldValue, State newValue) {
 				DataSession.Cache.gnet.setEndState(newValue);
+				DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.GNET, DataSession.Cache.gnet.getId());
 			}
 		});
 		rootStateComboBox.getSelectionModel().selectedItemProperty()
@@ -122,6 +128,7 @@ public class EditGNetPropertyController{
 					ObservableValue<? extends State> selected,
 					State oldValue, State newValue) {
 				DataSession.Cache.gnet.setRootState(newValue);
+				DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.GNET, DataSession.Cache.gnet.getId());
 			}
 		});
 	}

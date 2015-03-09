@@ -1,5 +1,7 @@
 package ntu.goalnetdesigner.logger;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.UUID;
 
 import ntu.goalnetdesigner.data.persistence.ActionLog;
@@ -16,6 +18,8 @@ public class DatabaseActionLogger {
 		al.setTargetObjectID(targetObjectId);
 		al.setGnet(DataSession.Cache.gnet);
 		al.setUser(LoginSession.user);
+		al.setTimestamp(new Timestamp((new Date()).getTime()));;
 		DataService.actionLog.persist(al);
+		DataSession.Cache.actionLogs.add(al);
 	}
 }

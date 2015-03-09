@@ -10,7 +10,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import ntu.goalnetdesigner.data.persistence.Method;
+import ntu.goalnetdesigner.logger.DatabaseActionLogger;
 import ntu.goalnetdesigner.session.UISession;
+import ntu.goalnetdesigner.utility.Resource;
 
 public class FunctionPropertyPaneController implements IPaneController{
     @FXML
@@ -67,6 +69,7 @@ public class FunctionPropertyPaneController implements IPaneController{
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					FunctionPropertyPaneController.this.selectedObject.setName(name.getText());
+					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.METHOD, selectedObject.getId());
 				}
 			}
 		});
@@ -77,6 +80,7 @@ public class FunctionPropertyPaneController implements IPaneController{
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					FunctionPropertyPaneController.this.selectedObject.setDescription(description.getText());
+					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.METHOD, selectedObject.getId());
 				}
 			}
 		});
@@ -86,6 +90,7 @@ public class FunctionPropertyPaneController implements IPaneController{
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					FunctionPropertyPaneController.this.selectedObject.setAlias(alias.getText());
+					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.METHOD, selectedObject.getId());
 				}
 			}
 		});
@@ -95,6 +100,7 @@ public class FunctionPropertyPaneController implements IPaneController{
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					FunctionPropertyPaneController.this.selectedObject.setFileName(filename.getText());
+					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.METHOD, selectedObject.getId());
 				}
 			}
 		});
@@ -104,6 +110,7 @@ public class FunctionPropertyPaneController implements IPaneController{
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					FunctionPropertyPaneController.this.selectedObject.setRTType(returnType.getText());
+					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.METHOD, selectedObject.getId());
 				}
 			}
 		});
@@ -113,6 +120,7 @@ public class FunctionPropertyPaneController implements IPaneController{
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					FunctionPropertyPaneController.this.selectedObject.setPValues(parameterValues.getText());
+					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.METHOD, selectedObject.getId());
 				}
 			}
 		});
@@ -122,6 +130,7 @@ public class FunctionPropertyPaneController implements IPaneController{
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					FunctionPropertyPaneController.this.selectedObject.setParams(parameterTypes.getText());
+					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.METHOD, selectedObject.getId());
 				}
 			}
 		});

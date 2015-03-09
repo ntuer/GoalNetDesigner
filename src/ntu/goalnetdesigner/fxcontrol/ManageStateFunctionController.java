@@ -16,8 +16,10 @@ import ntu.goalnetdesigner.data.persistence.Method;
 import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.StateFunction;
 import ntu.goalnetdesigner.data.service.DataService;
+import ntu.goalnetdesigner.logger.DatabaseActionLogger;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.UISession;
+import ntu.goalnetdesigner.utility.Resource;
 
 public class ManageStateFunctionController {
 
@@ -38,7 +40,8 @@ public class ManageStateFunctionController {
     	functionListView.setItems(FXCollections.observableArrayList(this.stateFunctionList));
     }
     
-    @FXML
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	@FXML
     void addButtonOnClick(ActionEvent event) {
     	GridPane grid = new GridPane();
     	grid.setHgap(10);
@@ -65,12 +68,15 @@ public class ManageStateFunctionController {
     		refreshSequence();
     		DataService.stateFunction.persist(sf);
     		functionListView.setItems(FXCollections.observableArrayList(this.stateFunctionList));
+    		DatabaseActionLogger.log(Resource.Action.CREATE, Resource.ActionTargetType.STATE_FUNCTION, selectedState.getId());
     	}
     }
 
     @FXML
     void moveUpOnClick(ActionEvent event) {
     	int index = this.functionListView.getSelectionModel().getSelectedIndex();
+    	if (index == -1)
+    		return;
     	StateFunction sf = this.stateFunctionList.get(index);
     	this.stateFunctionList.remove(index);
     	index = index - 1 < 0 ? 0 : index - 1;
@@ -78,11 +84,14 @@ public class ManageStateFunctionController {
     	refreshSequence();
     	functionListView.setItems(FXCollections.observableArrayList(this.stateFunctionList));
     	this.functionListView.getSelectionModel().select(index);
+    	DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.STATE_FUNCTION, selectedState.getId());
     }
 
     @FXML
     void moveDownOnClick(ActionEvent event) {
     	int index = this.functionListView.getSelectionModel().getSelectedIndex();
+    	if (index == -1)
+    		return;
     	StateFunction sf = this.stateFunctionList.get(index);
     	this.stateFunctionList.remove(index);
     	index = index + 1 > this.stateFunctionList.size() ? this.stateFunctionList.size() : index + 1;
@@ -90,16 +99,20 @@ public class ManageStateFunctionController {
     	refreshSequence();
     	functionListView.setItems(FXCollections.observableArrayList(this.stateFunctionList));
     	this.functionListView.getSelectionModel().select(index);
+    	DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.STATE_FUNCTION, selectedState.getId());
     }
 
     @FXML
     void deleteOnClick(ActionEvent event) {
     	int index = this.functionListView.getSelectionModel().getSelectedIndex();
+    	if (index == -1)
+    		return;
     	StateFunction sf = this.stateFunctionList.get(index);
     	this.stateFunctionList.remove(index);
     	refreshSequence();
     	DataService.stateFunction.remove(sf);
     	functionListView.setItems(FXCollections.observableArrayList(this.stateFunctionList));
+    	DatabaseActionLogger.log(Resource.Action.DELETE, Resource.ActionTargetType.STATE_FUNCTION, selectedState.getId());
     }
 
     void refreshSequence() {

@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import ntu.goalnetdesigner.data.persistence.Task;
+import ntu.goalnetdesigner.logger.DatabaseActionLogger;
 import ntu.goalnetdesigner.logic.TasklistManager;
 import ntu.goalnetdesigner.session.UISession;
 import ntu.goalnetdesigner.utility.Resource;
@@ -58,6 +59,7 @@ public class TaskPropertyPaneController implements IPaneController{
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					TaskPropertyPaneController.this.selectedObject.setName(name.getText());
+					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.TASK, selectedObject.getId());
 				}
 			}
 		});
@@ -68,6 +70,7 @@ public class TaskPropertyPaneController implements IPaneController{
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					TaskPropertyPaneController.this.selectedObject.setDescription(description.getText());
+					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.TASK, selectedObject.getId());
 				}
 			}
 		});
@@ -77,6 +80,7 @@ public class TaskPropertyPaneController implements IPaneController{
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					TaskPropertyPaneController.this.selectedObject.setAchievement(Integer.parseInt(achievement.getText()));
+					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.TASK, selectedObject.getId());
 				}
 			}
 		});
@@ -86,6 +90,7 @@ public class TaskPropertyPaneController implements IPaneController{
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					TaskPropertyPaneController.this.selectedObject.setCost(Integer.parseInt(cost.getText()));
+					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.TASK, selectedObject.getId());
 				} 
 			}
 		});

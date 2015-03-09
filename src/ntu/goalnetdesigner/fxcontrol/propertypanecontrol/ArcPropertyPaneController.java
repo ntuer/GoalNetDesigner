@@ -10,8 +10,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.logger.ConsoleLogger;
+import ntu.goalnetdesigner.logger.DatabaseActionLogger;
 import ntu.goalnetdesigner.render.RenderedArc;
 import ntu.goalnetdesigner.session.UISession;
+import ntu.goalnetdesigner.utility.Resource;
 
 public class ArcPropertyPaneController implements IPaneController{
     @FXML
@@ -59,6 +61,7 @@ public class ArcPropertyPaneController implements IPaneController{
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					ArcPropertyPaneController.this.selectedObject.setName(name.getText());
+					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.ARC, selectedObject.getId());
 				}
 			}
 		});
@@ -69,6 +72,7 @@ public class ArcPropertyPaneController implements IPaneController{
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					ArcPropertyPaneController.this.selectedObject.setDescription(description.getText());
+					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.ARC, selectedObject.getId());
 				} 
 			}
 		});

@@ -23,6 +23,7 @@ public class TaskManager {
 		t.setTasklistTasks(new ArrayList<TasklistTask>());
 		DataSession.Cache.gnet.addTask(t);
 		DataService.task.persist(t);
+		DatabaseActionLogger.log(Resource.Action.CREATE, Resource.ActionTargetType.TASK, t.getId());
 		return t;
 	}
 	

@@ -47,7 +47,7 @@ public class Resource {
 	
 	public static final String CSS_PATH = "/ntu/goalnetdesigner/css/Modena.css";
 	
-	public static final String ABOUT_PATH = "/ntu/goalnetdesigner/fxui/About.fxml";
+	public static final String STATISTICS_PATH = "/ntu/goalnetdesigner/fxui/Statistics.fxml";
 	public static final String FEEDBACK_PATH = "/ntu/goalnetdesigner/fxui/Feedback.fxml";
 	public static final String MAINPAGE_PATH = "/ntu/goalnetdesigner/fxui/MainPage.fxml";
 	public static final String NEW_GNET_PATH = "/ntu/goalnetdesigner/fxui/NewGNet.fxml";
@@ -99,8 +99,8 @@ public class Resource {
 		public static final String CREATE = "Create";
 		public static final String UPDATE = "Update";
 		public static final String DELETE = "Delete";
-		public static final String LOGIN = "Login";
-		public static final String LOGOUT = "Logout";
+		public static final String OPEN = "Open";
+		public static final String CLOSE = "Close";
 	}
 	
 	public static class ActionTargetType{
@@ -110,5 +110,8 @@ public class Resource {
 		public static final String STATE = "State";
 		public static final String TRANSITION = "Transition";
 		public static final String ARC = "Arc";
+		public static final String STATE_FUNCTION = "State_Function";
+		public static final String TASK_FUNCTION = "Task_Function";
+		public static final String TASKLIST_TASK = "Tasklist_Task";
 	}
 }

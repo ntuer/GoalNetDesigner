@@ -48,6 +48,7 @@ import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.logger.ConsoleLogger;
+import ntu.goalnetdesigner.logger.DatabaseActionLogger;
 import ntu.goalnetdesigner.logger.StatusBarLogger;
 import ntu.goalnetdesigner.logic.AuthorizationManager;
 import ntu.goalnetdesigner.logic.FunctionManager;
@@ -107,7 +108,10 @@ public class MainPageController {
 
     @FXML
     private MenuItem runMenuVerify;
-
+    
+    @FXML
+    private MenuItem runMenuRunConfiguration;
+    
     @FXML
     private MenuItem fileMenuOpen;
 
@@ -187,7 +191,7 @@ public class MainPageController {
     private MenuItem editMenuClearObjectForArcs;
 
     @FXML
-    private MenuItem helpMenuAbout;
+    private MenuItem helpMenuStatistics;
 
     @FXML
     private MenuItem fileMenuExit;
@@ -690,6 +694,7 @@ public class MainPageController {
     
     private void closeOpenedGnet(){
     	if (DataSession.Cache.gnet != null){
+    		DatabaseActionLogger.log(Resource.Action.CLOSE, Resource.ActionTargetType.GNET, DataSession.Cache.gnet.getId());
     		AuthorizationManager am = new AuthorizationManager();
         	if (am.getGnetAccessLevelOfUser(LoginSession.user, DataSession.Cache.gnet).equals(Resource.UserGnetAccessLevel.READ)){
         		DataService.rollback();
@@ -832,7 +837,6 @@ public class MainPageController {
     	} else {
     		UIUtility.Draw.renderManager.delete(UISession.currentSelection);
     	}
-    	
     	refreshArcTreeView();
     	refreshFunctionTreeView();
     	refreshStateTreeView();
@@ -878,7 +882,28 @@ public class MainPageController {
 
     @FXML
     void runMenuRunClicked(ActionEvent event) {
-    	
+    	if (DataSession.pathToExe.isEmpty()){
+    		DialogResponse response = Dialogs.showConfirmDialog(UISession.primaryStage, "Do you want to configure it now?", 
+    		        "Run target not specified", "Run Error", DialogOptions.OK_CANCEL);
+    		if (response == DialogResponse.OK){
+    			runMenuRunConfigurationClicked(null);
+    		}
+    	} else {
+	    	try {
+				new ProcessBuilder(DataSession.pathToExe, DataSession.Cache.gnet.getId()).start();
+			} catch (IOException e) {
+				Dialogs.showErrorDialog(UISession.primaryStage, "Unable to launch specified EXE: " + DataSession.pathToExe, 
+	    				"Launch EXE failed", "Run Error");
+			}
+    	}
+    }
+    
+    @FXML
+    void runMenuRunConfigurationClicked(ActionEvent event){
+    	String input = Dialogs.showInputDialog(UISession.primaryStage, "Please enter new path of exe file", "Current path: " + DataSession.pathToExe, "Run Configuration");
+    	if (input != null && !input.isEmpty()){
+    		DataSession.pathToExe = input;
+    	}
     }
     
     @FXML
@@ -913,8 +938,8 @@ public class MainPageController {
     }
 
     @FXML
-    void helpMenuAboutClicked(ActionEvent event) throws Exception{
-    	Navigation.popUp(Resource.ABOUT_PATH, UISession.primaryStage);
+    void helpMenuStatisticsClicked(ActionEvent event) throws Exception{
+    	Navigation.popUp(Resource.STATISTICS_PATH, UISession.primaryStage);
     }
 
     @FXML

@@ -8,7 +8,9 @@ import ntu.goalnetdesigner.data.persistence.Method;
 import ntu.goalnetdesigner.data.persistence.StateFunction;
 import ntu.goalnetdesigner.data.persistence.TaskFunction;
 import ntu.goalnetdesigner.data.service.DataService;
+import ntu.goalnetdesigner.logger.DatabaseActionLogger;
 import ntu.goalnetdesigner.session.DataSession;
+import ntu.goalnetdesigner.utility.Resource;
 
 public class FunctionManager {
 	public static Method newInstance(){
@@ -21,6 +23,7 @@ public class FunctionManager {
 		m.setTaskFunctions(new ArrayList<TaskFunction>());
 		DataSession.Cache.gnet.addMethod(m);
 		DataService.method.persist(m);
+		DatabaseActionLogger.log(Resource.Action.CREATE, Resource.ActionTargetType.METHOD, m.getId());
 		return m;
 	}
 	

@@ -89,6 +89,7 @@
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="F5" control="UP" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
+                     <MenuItem fx:id="runMenuRunConfiguration" mnemonicParsing="false" onAction="#runMenuRunConfigurationClicked" text="Run Configuration" />
 						<SeparatorMenuItem mnemonicParsing="false" />
 						<CheckMenuItem fx:id="runMenuDisplayWarning" mnemonicParsing="false" selected="true" text="Display Warnings" />
 					</items>
@@ -114,7 +115,7 @@
 				</Menu>
 				<Menu mnemonicParsing="false" text="Help">
 					<items>
-						<MenuItem fx:id="helpMenuAbout" mnemonicParsing="false" onAction="#helpMenuAboutClicked" text="About" />
+						<MenuItem fx:id="helpMenuStatistics" mnemonicParsing="false" onAction="#helpMenuStatisticsClicked" text="Statistics" />
 						<MenuItem fx:id="helpMenuFeedback" mnemonicParsing="false" onAction="#helpMenuFeedbackClicked" text="Feedback" />
 					</items>
 				</Menu>

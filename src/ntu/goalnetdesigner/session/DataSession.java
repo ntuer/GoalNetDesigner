@@ -12,6 +12,8 @@ import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.data.persistence.Tasklist;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.data.service.DataService;
+import ntu.goalnetdesigner.logger.DatabaseActionLogger;
+import ntu.goalnetdesigner.utility.Resource;
 
 public class DataSession {
 	public static class Cache {
@@ -22,8 +24,10 @@ public class DataSession {
 		public static List<State> states = null;
 		public static List<Method> functions = null;
 		public static List<Transition> transitions = null;
-		public static List<ActionLog> actionLogs = new ArrayList<ActionLog>();
+		public static List<ActionLog> actionLogs = null;
 	}
+	
+	public static String pathToExe = "";
 
 	// this can be used to refresh cache as well
 	public static void setGNetCache(Gnet gnet){
@@ -35,6 +39,7 @@ public class DataSession {
 			Cache.functions = null;
 			Cache.tasks = null;
 			Cache.tasklists = null;
+			Cache.actionLogs = null;
 			DataService.reestablish();
 			String userId = LoginSession.user.getId();
 			LoginSession.user = null;
@@ -47,7 +52,9 @@ public class DataSession {
 			Cache.functions = gnet.getMethods();
 			Cache.tasks = gnet.getTasks();
 			Cache.tasklists = DataService.tasklist.findAll();
+			Cache.actionLogs = new ArrayList<ActionLog>();
 			DataService.begin();
+			DatabaseActionLogger.log(Resource.Action.OPEN, Resource.ActionTargetType.GNET, DataSession.Cache.gnet.getId());
 		}
 		
 	}	
