@@ -6,16 +6,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.data.persistence.Gnet;
-import ntu.goalnetdesigner.data.persistence.IDataServiceUnitSubscriber;
-import ntu.goalnetdesigner.data.persistence.Method;
-import ntu.goalnetdesigner.data.persistence.State;
-import ntu.goalnetdesigner.data.persistence.Task;
-import ntu.goalnetdesigner.data.persistence.Tasklist;
-import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.data.service.DataService;
-import ntu.goalnetdesigner.session.DataSession;
 
 public class SaveManager {
 	

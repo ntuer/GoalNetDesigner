@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import ntu.goalnetdesigner.data.persistence.Gnet;
 import ntu.goalnetdesigner.data.persistence.Method;
-import ntu.goalnetdesigner.data.persistence.StateFunction;
 import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.data.persistence.TaskFunction;
 import ntu.goalnetdesigner.data.persistence.TasklistTask;

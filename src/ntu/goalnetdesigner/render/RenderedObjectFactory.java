@@ -4,10 +4,8 @@ import java.lang.reflect.Constructor;
 
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
-import ntu.goalnetdesigner.logger.DatabaseActionLogger;
 import ntu.goalnetdesigner.session.UISession;
 import ntu.goalnetdesigner.utility.CurrentDrawingMode;
-import ntu.goalnetdesigner.utility.Resource;
 
 public class RenderedObjectFactory{
 	

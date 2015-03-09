@@ -13,8 +13,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.logger.DatabaseActionLogger;
-import ntu.goalnetdesigner.logic.RenderManager;
-import ntu.goalnetdesigner.render.RenderedEdge;
 import ntu.goalnetdesigner.render.RenderedState;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.UISession;

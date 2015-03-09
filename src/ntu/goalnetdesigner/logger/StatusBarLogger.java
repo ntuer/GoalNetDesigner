@@ -1,7 +1,5 @@
 package ntu.goalnetdesigner.logger;
 
-import java.util.Date;
-
 import javafx.scene.control.Label;
 
 public class StatusBarLogger {

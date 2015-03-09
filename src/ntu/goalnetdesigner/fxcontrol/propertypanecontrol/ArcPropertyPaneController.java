@@ -9,9 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import ntu.goalnetdesigner.data.persistence.Arc;
-import ntu.goalnetdesigner.logger.ConsoleLogger;
 import ntu.goalnetdesigner.logger.DatabaseActionLogger;
-import ntu.goalnetdesigner.render.RenderedArc;
 import ntu.goalnetdesigner.session.UISession;
 import ntu.goalnetdesigner.utility.Resource;
 

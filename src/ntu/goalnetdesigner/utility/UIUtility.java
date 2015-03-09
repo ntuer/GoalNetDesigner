@@ -52,7 +52,6 @@ public class UIUtility {
 					UISession.secondaryStage = null;
 				}
 			});
-			
 			st.initModality(Modality.APPLICATION_MODAL);
 			st.initOwner(ownerStage.getScene().getWindow());
 	        Scene scene = Resource.getInstance().getSceneByFxml(fxmlPath);

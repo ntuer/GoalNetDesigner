@@ -11,7 +11,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.logger.DatabaseActionLogger;
-import ntu.goalnetdesigner.logic.TasklistManager;
 import ntu.goalnetdesigner.session.UISession;
 import ntu.goalnetdesigner.utility.Resource;
 import ntu.goalnetdesigner.utility.UIUtility;

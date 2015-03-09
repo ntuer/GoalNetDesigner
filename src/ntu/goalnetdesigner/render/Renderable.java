@@ -3,10 +3,9 @@ package ntu.goalnetdesigner.render;
 import java.util.ArrayList;
 import java.util.List;
 
-import ntu.goalnetdesigner.render.customcontrol.BidirectionalStackPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
+import ntu.goalnetdesigner.render.customcontrol.BidirectionalStackPane;
 
 public class Renderable {
 

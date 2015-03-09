@@ -114,4 +114,10 @@ public class Resource {
 		public static final String TASK_FUNCTION = "Task_Function";
 		public static final String TASKLIST_TASK = "Tasklist_Task";
 	}
+	
+	public static class EducationLevel{
+		public static final String HIGH_SCHOOL_AND_BELOW = "High School and Below";
+		public static final String UNDERGRADUATE = "Undergraduate";
+		public static final String GRADUATE = "Graduate";
+	}
 }

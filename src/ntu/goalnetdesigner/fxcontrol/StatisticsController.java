@@ -1,9 +1,5 @@
 package ntu.goalnetdesigner.fxcontrol;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import ntu.goalnetdesigner.data.persistence.ActionLog;

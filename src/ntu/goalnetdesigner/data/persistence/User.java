@@ -30,6 +30,10 @@ public class User implements Serializable, IDataServiceUnitSubscriber {
 	private String password;
 
 	private String question;
+	
+	private Integer age;
+	
+	private String educationLevel;
 
 	//bi-directional many-to-one association to ActionLog
 	@OneToMany(mappedBy="user")
@@ -153,6 +157,22 @@ public class User implements Serializable, IDataServiceUnitSubscriber {
 		userGnets.setUser(null);
 
 		return userGnets;
+	}
+
+	public Integer getAge() {
+		return age;
+	}
+
+	public void setAge(Integer age) {
+		this.age = age;
+	}
+
+	public String getEducationLevel() {
+		return educationLevel;
+	}
+
+	public void setEducationLevel(String educationLevel) {
+		this.educationLevel = educationLevel;
 	}
 
 }

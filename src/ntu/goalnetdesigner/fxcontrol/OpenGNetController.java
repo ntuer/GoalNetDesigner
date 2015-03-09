@@ -9,7 +9,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import ntu.goalnetdesigner.data.persistence.Gnet;
-import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.logger.ConsoleLogger;
 import ntu.goalnetdesigner.logic.AuthorizationManager;
 import ntu.goalnetdesigner.session.DataSession;

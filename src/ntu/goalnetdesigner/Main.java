@@ -1,13 +1,12 @@
 package ntu.goalnetdesigner;
 
-import ntu.goalnetdesigner.fxcontrol.*;
-import ntu.goalnetdesigner.session.UISession;
-import ntu.goalnetdesigner.utility.Resource;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ntu.goalnetdesigner.session.UISession;
+import ntu.goalnetdesigner.utility.Resource;
 
 public class Main extends Application {
 	@Override
