@@ -4,5 +4,5 @@
     <application name="GoalNetDesigner" mainclass="ntu.goalnetdesigner.Main" version="1"/>
     <info title="GoalNetDesigner" vendor="NTU LILY"/>
   </deploy>
-  <signjar/>
+  <signjar alias="gnet" keypass="gnetgnet" keystore="D:\Dropbox\NTU\FYP\GoalNetDesigner\gnetkeystore" storepass="gnetgnet"/>
 </anttasks:AntTask>

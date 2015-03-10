@@ -12,6 +12,11 @@
 hs_err_pid*
 /bin
 # Ant build product
-/build
+/build/build
+/build/deploy
+/build/dist
+/build/externalLibs
+/build/project
+/build/projectRefs
 
 *.png
