@@ -97,8 +97,9 @@ public class Resource {
 	
 	public static class Action{
 		public static final String CREATE = "Create";
-		public static final String UPDATE = "Update";
+		public static final String EDIT = "Edit";
 		public static final String DELETE = "Delete";
+		public static final String MOVE = "Move";
 		public static final String OPEN = "Open";
 		public static final String CLOSE = "Close";
 	}

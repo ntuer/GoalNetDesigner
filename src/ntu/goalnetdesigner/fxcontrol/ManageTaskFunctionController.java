@@ -84,7 +84,7 @@ public class ManageTaskFunctionController {
     	refreshSequence();
     	functionListView.setItems(FXCollections.observableArrayList(this.taskFunctionList));
     	this.functionListView.getSelectionModel().select(index);
-    	DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.TASK_FUNCTION, selectedTask.getId());
+    	DatabaseActionLogger.log(Resource.Action.EDIT, Resource.ActionTargetType.TASK_FUNCTION, selectedTask.getId());
     }
 
     @FXML
@@ -99,7 +99,7 @@ public class ManageTaskFunctionController {
     	refreshSequence();
     	functionListView.setItems(FXCollections.observableArrayList(this.taskFunctionList));
     	this.functionListView.getSelectionModel().select(index);
-    	DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.TASK_FUNCTION, selectedTask.getId());
+    	DatabaseActionLogger.log(Resource.Action.EDIT, Resource.ActionTargetType.TASK_FUNCTION, selectedTask.getId());
     }
 
     @FXML

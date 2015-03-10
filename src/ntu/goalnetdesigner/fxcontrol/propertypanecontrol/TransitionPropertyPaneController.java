@@ -72,7 +72,7 @@ public class TransitionPropertyPaneController implements IPaneController {
 					TransitionPropertyPaneController.this.selectedObject.setName(name.getText());
 					((RenderedTransition) TransitionPropertyPaneController.this.selectedObject.getRenderedObject())
 						.getText().setText(name.getText());
-					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.TASK, selectedObject.getId());
+					DatabaseActionLogger.log(Resource.Action.EDIT, Resource.ActionTargetType.TASK, selectedObject.getId());
 				}
 			}
 		});
@@ -83,7 +83,7 @@ public class TransitionPropertyPaneController implements IPaneController {
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					TransitionPropertyPaneController.this.selectedObject.setDescription(description.getText());
-					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.TASK, selectedObject.getId());
+					DatabaseActionLogger.log(Resource.Action.EDIT, Resource.ActionTargetType.TASK, selectedObject.getId());
 				} 
 			}
 		});
@@ -93,7 +93,7 @@ public class TransitionPropertyPaneController implements IPaneController {
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					TransitionPropertyPaneController.this.selectedObject.setEnabled(Boolean.valueOf(enabled.getText()));
-					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.TASK, selectedObject.getId());
+					DatabaseActionLogger.log(Resource.Action.EDIT, Resource.ActionTargetType.TASK, selectedObject.getId());
 				} 
 			}
 		});
@@ -103,7 +103,7 @@ public class TransitionPropertyPaneController implements IPaneController {
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					TransitionPropertyPaneController.this.selectedObject.setAchievement(Integer.parseInt(achievement.getText()));
-					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.TASK, selectedObject.getId());
+					DatabaseActionLogger.log(Resource.Action.EDIT, Resource.ActionTargetType.TASK, selectedObject.getId());
 				}
 			}
 		});
@@ -113,7 +113,7 @@ public class TransitionPropertyPaneController implements IPaneController {
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					TransitionPropertyPaneController.this.selectedObject.setCost(Integer.parseInt(cost.getText()));
-					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.TASK, selectedObject.getId());
+					DatabaseActionLogger.log(Resource.Action.EDIT, Resource.ActionTargetType.TASK, selectedObject.getId());
 				} 
 			}
 		});

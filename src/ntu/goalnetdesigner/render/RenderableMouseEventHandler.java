@@ -13,6 +13,7 @@ import javafx.scene.layout.StackPane;
 import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.logger.ConsoleLogger;
+import ntu.goalnetdesigner.logger.DatabaseActionLogger;
 import ntu.goalnetdesigner.render.customcontrol.Arrow;
 import ntu.goalnetdesigner.render.customcontrol.BidirectionalStackPane;
 import ntu.goalnetdesigner.session.DataSession;
@@ -204,6 +205,13 @@ public class RenderableMouseEventHandler {
     			// after dragging, set underlying object value.
     			for (Map.Entry<Renderable, RenderableCoordinate> entry: coordinates.entrySet()){
     				updateBaseObject(entry);
+    				// update action log for dragging
+        			if (entry.getKey() instanceof RenderedTransition)
+        				DatabaseActionLogger.log(Resource.Action.MOVE, Resource.ActionTargetType.TRANSITION, 
+        						((RenderedTransition)entry.getKey()).getBaseObject().getId());
+        			else if (entry.getKey() instanceof RenderedState)
+        				DatabaseActionLogger.log(Resource.Action.MOVE, Resource.ActionTargetType.STATE, 
+        						((RenderedState)entry.getKey()).getBaseObject().getId());
     			}
     			coordinates.clear();
     		}

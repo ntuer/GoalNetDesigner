@@ -25,8 +25,8 @@
             </TableView>
             <HBox alignment="CENTER" layoutY="197.0" prefHeight="25.0" prefWidth="342.0" spacing="10.0">
                <children>
-                  <Button fx:id="addButton" mnemonicParsing="false" onAction="#addButtonClicked" text="Add" />
-                  <Button mnemonicParsing="false" onAction="#removeButtonClicked" text="Remove" />
+                  <Button fx:id="addButton" mnemonicParsing="false" onAction="#addButtonClicked" text="Add" disable="true"/>
+                  <Button fx:id="removeButton" mnemonicParsing="false" onAction="#removeButtonClicked" text="Remove" disable="true"/>
                </children>
             </HBox>
          </children>

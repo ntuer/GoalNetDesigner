@@ -116,7 +116,7 @@ public class StatePropertyPaneController implements IPaneController{
 					StatePropertyPaneController.this.selectedObject.setName(name.getText());
 					((RenderedState) StatePropertyPaneController.this.selectedObject.getRenderedObject())
 						.getText().setText(name.getText());
-					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.STATE, selectedObject.getId());
+					DatabaseActionLogger.log(Resource.Action.EDIT, Resource.ActionTargetType.STATE, selectedObject.getId());
 				}
 			}
 		});
@@ -127,7 +127,7 @@ public class StatePropertyPaneController implements IPaneController{
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					StatePropertyPaneController.this.selectedObject.setDescription(description.getText());
-					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.STATE, selectedObject.getId());
+					DatabaseActionLogger.log(Resource.Action.EDIT, Resource.ActionTargetType.STATE, selectedObject.getId());
 				}
 			}
 		});
@@ -150,7 +150,7 @@ public class StatePropertyPaneController implements IPaneController{
 						StatePropertyPaneController.this.selectedObject.setCompositeEndState(null);
 					}
 					setCompositeStateComboBoxUsable(newValue);
-					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.STATE, selectedObject.getId());
+					DatabaseActionLogger.log(Resource.Action.EDIT, Resource.ActionTargetType.STATE, selectedObject.getId());
 				} 
 			}
 		});
@@ -167,7 +167,7 @@ public class StatePropertyPaneController implements IPaneController{
 						if (newValue != null){
 							UIUtility.Draw.renderManager.drawComposition(selectedObject, newValue);
 						}
-						DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.STATE, selectedObject.getId());
+						DatabaseActionLogger.log(Resource.Action.EDIT, Resource.ActionTargetType.STATE, selectedObject.getId());
 					}
 				});
 
@@ -184,7 +184,7 @@ public class StatePropertyPaneController implements IPaneController{
 						if (newValue != null){
 							UIUtility.Draw.renderManager.drawComposition(newValue, selectedObject);
 						}
-						DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.STATE, selectedObject.getId());
+						DatabaseActionLogger.log(Resource.Action.EDIT, Resource.ActionTargetType.STATE, selectedObject.getId());
 					}
 				});
 	}

@@ -31,7 +31,7 @@ public class StatisticsController {
     			startLabel.setText(al.getTimestamp().toString());
     		} else if (action.equals(Resource.Action.CREATE)){
     			++creation;
-    		} else if (action.equals(Resource.Action.UPDATE)){
+    		} else if (action.equals(Resource.Action.EDIT)){
     			++update;
     		} else if (action.equals(Resource.Action.DELETE)){
     			++deletion;

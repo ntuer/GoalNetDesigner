@@ -84,7 +84,7 @@ public class ManageStateFunctionController {
     	refreshSequence();
     	functionListView.setItems(FXCollections.observableArrayList(this.stateFunctionList));
     	this.functionListView.getSelectionModel().select(index);
-    	DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.STATE_FUNCTION, selectedState.getId());
+    	DatabaseActionLogger.log(Resource.Action.EDIT, Resource.ActionTargetType.STATE_FUNCTION, selectedState.getId());
     }
 
     @FXML
@@ -99,7 +99,7 @@ public class ManageStateFunctionController {
     	refreshSequence();
     	functionListView.setItems(FXCollections.observableArrayList(this.stateFunctionList));
     	this.functionListView.getSelectionModel().select(index);
-    	DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.STATE_FUNCTION, selectedState.getId());
+    	DatabaseActionLogger.log(Resource.Action.EDIT, Resource.ActionTargetType.STATE_FUNCTION, selectedState.getId());
     }
 
     @FXML

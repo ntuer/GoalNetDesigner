@@ -42,6 +42,9 @@ public class ShareGNetController {
 
     @FXML
     private Button addButton;
+    
+    @FXML
+    private Button removeButton;
 
     @FXML
     private TableColumn<UserGnet, String> accessLevelColumn;
@@ -75,6 +78,8 @@ public class ShareGNetController {
                     ((UserGnet) t.getTableView().getItems().get(t.getTablePosition().getRow())).setAccessLevel(t.getNewValue());
                 }
             });
+    		addButton.setDisable(false);
+    		removeButton.setDisable(false);
     	}
     }
     

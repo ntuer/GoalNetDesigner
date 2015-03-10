@@ -59,7 +59,7 @@ public class ArcPropertyPaneController implements IPaneController{
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					ArcPropertyPaneController.this.selectedObject.setName(name.getText());
-					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.ARC, selectedObject.getId());
+					DatabaseActionLogger.log(Resource.Action.EDIT, Resource.ActionTargetType.ARC, selectedObject.getId());
 				}
 			}
 		});
@@ -70,7 +70,7 @@ public class ArcPropertyPaneController implements IPaneController{
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					ArcPropertyPaneController.this.selectedObject.setDescription(description.getText());
-					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.ARC, selectedObject.getId());
+					DatabaseActionLogger.log(Resource.Action.EDIT, Resource.ActionTargetType.ARC, selectedObject.getId());
 				} 
 			}
 		});

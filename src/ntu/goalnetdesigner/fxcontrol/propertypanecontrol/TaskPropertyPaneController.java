@@ -58,7 +58,7 @@ public class TaskPropertyPaneController implements IPaneController{
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					TaskPropertyPaneController.this.selectedObject.setName(name.getText());
-					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.TASK, selectedObject.getId());
+					DatabaseActionLogger.log(Resource.Action.EDIT, Resource.ActionTargetType.TASK, selectedObject.getId());
 				}
 			}
 		});
@@ -69,7 +69,7 @@ public class TaskPropertyPaneController implements IPaneController{
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					TaskPropertyPaneController.this.selectedObject.setDescription(description.getText());
-					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.TASK, selectedObject.getId());
+					DatabaseActionLogger.log(Resource.Action.EDIT, Resource.ActionTargetType.TASK, selectedObject.getId());
 				}
 			}
 		});
@@ -79,7 +79,7 @@ public class TaskPropertyPaneController implements IPaneController{
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					TaskPropertyPaneController.this.selectedObject.setAchievement(Integer.parseInt(achievement.getText()));
-					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.TASK, selectedObject.getId());
+					DatabaseActionLogger.log(Resource.Action.EDIT, Resource.ActionTargetType.TASK, selectedObject.getId());
 				}
 			}
 		});
@@ -89,7 +89,7 @@ public class TaskPropertyPaneController implements IPaneController{
 					Boolean oldPropertyValue, Boolean newPropertyValue) {
 				if (!newPropertyValue) {
 					TaskPropertyPaneController.this.selectedObject.setCost(Integer.parseInt(cost.getText()));
-					DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.TASK, selectedObject.getId());
+					DatabaseActionLogger.log(Resource.Action.EDIT, Resource.ActionTargetType.TASK, selectedObject.getId());
 				} 
 			}
 		});

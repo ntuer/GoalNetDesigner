@@ -99,7 +99,7 @@ public class ManageTransitionTaskController {
     	refreshSequence();
     	taskView.setItems(FXCollections.observableArrayList(this.tasklistTaskList));
     	this.taskView.getSelectionModel().select(index);
-    	DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.TASKLIST_TASK, selectedTasklist.getTransitions().get(0).getId());
+    	DatabaseActionLogger.log(Resource.Action.EDIT, Resource.ActionTargetType.TASKLIST_TASK, selectedTasklist.getTransitions().get(0).getId());
     }
 
     @FXML
@@ -114,7 +114,7 @@ public class ManageTransitionTaskController {
     	refreshSequence();
     	taskView.setItems(FXCollections.observableArrayList(this.tasklistTaskList));
     	this.taskView.getSelectionModel().select(index);
-    	DatabaseActionLogger.log(Resource.Action.UPDATE, Resource.ActionTargetType.TASKLIST_TASK, selectedTasklist.getTransitions().get(0).getId());
+    	DatabaseActionLogger.log(Resource.Action.EDIT, Resource.ActionTargetType.TASKLIST_TASK, selectedTasklist.getTransitions().get(0).getId());
     }
 
     @FXML

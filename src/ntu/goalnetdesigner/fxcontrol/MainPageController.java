@@ -637,8 +637,10 @@ public class MainPageController {
 	
 	@SuppressWarnings("unchecked")
 	public void refreshTeamTreeView() {
-		if (DataSession.Cache.gnet == null)
+		if (DataSession.Cache.gnet == null){
+			teamTreeView.setRoot(null);
 			return;
+		}
 		TreeItem<String> dummyRoot = new TreeItem<>();
 		AuthorizationManager am = new AuthorizationManager();
 		TreeItem<String> admin = UIUtility.TreeView.convertToTreeItem(am.getUsersOfGnetByAccessLevel(DataSession.Cache.gnet, Resource.UserGnetAccessLevel.ADMIN));
@@ -710,6 +712,9 @@ public class MainPageController {
         	DatabaseActionLogger.log(Resource.Action.CLOSE, Resource.ActionTargetType.GNET, DataSession.Cache.gnet.getId());
         	DataService.commit();
     	}
+    	UISession.currentPaneController = null;
+    	propertyPane.setContent(null);
+    	problemTableView.setItems(null);
     	setMenuAndButtonAvailability(false);
     	DataSession.setGNetCache(null);
         this.refreshTreeViewsAndDrawingPane();
