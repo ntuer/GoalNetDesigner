@@ -694,7 +694,6 @@ public class MainPageController {
     
     private void closeOpenedGnet(){
     	if (DataSession.Cache.gnet != null){
-    		DatabaseActionLogger.log(Resource.Action.CLOSE, Resource.ActionTargetType.GNET, DataSession.Cache.gnet.getId());
     		AuthorizationManager am = new AuthorizationManager();
         	if (am.getGnetAccessLevelOfUser(LoginSession.user, DataSession.Cache.gnet).equals(Resource.UserGnetAccessLevel.READ)){
         		DataService.rollback();
@@ -707,6 +706,9 @@ public class MainPageController {
 		    		DataService.rollback();
 		    	}
         	}
+        	DataService.begin();
+        	DatabaseActionLogger.log(Resource.Action.CLOSE, Resource.ActionTargetType.GNET, DataSession.Cache.gnet.getId());
+        	DataService.commit();
     	}
     	setMenuAndButtonAvailability(false);
     	DataSession.setGNetCache(null);

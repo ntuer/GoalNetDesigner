@@ -55,6 +55,8 @@ public class DataSession {
 			Cache.actionLogs = new ArrayList<ActionLog>();
 			DataService.begin();
 			DatabaseActionLogger.log(Resource.Action.OPEN, Resource.ActionTargetType.GNET, DataSession.Cache.gnet.getId());
+			DataService.commit();
+			DataService.begin();
 		}
 		
 	}	
