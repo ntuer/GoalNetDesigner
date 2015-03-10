@@ -4,9 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Dialogs;
-import javafx.scene.control.Dialogs.DialogOptions;
-import javafx.scene.control.Dialogs.DialogResponse;
 import javafx.scene.control.ListView;
 import ntu.goalnetdesigner.data.persistence.Gnet;
 import ntu.goalnetdesigner.data.persistence.Task;
@@ -15,6 +12,9 @@ import ntu.goalnetdesigner.logic.TaskManager;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.LoginSession;
 import ntu.goalnetdesigner.session.UISession;
+import ntu.goalnetdesigner.utility.Dialogs;
+import ntu.goalnetdesigner.utility.Dialogs.DialogOptions;
+import ntu.goalnetdesigner.utility.Dialogs.DialogResponse;
 import ntu.goalnetdesigner.utility.Resource;
 
 public class ShareTaskController {

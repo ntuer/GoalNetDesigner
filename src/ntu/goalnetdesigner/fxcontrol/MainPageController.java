@@ -15,9 +15,7 @@ import javafx.fxml.FXML;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.Dialogs;
-import javafx.scene.control.Dialogs.DialogOptions;
-import javafx.scene.control.Dialogs.DialogResponse;
+import ntu.goalnetdesigner.utility.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
@@ -65,6 +63,8 @@ import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.LoginSession;
 import ntu.goalnetdesigner.session.UISession;
 import ntu.goalnetdesigner.utility.CurrentDrawingMode;
+import ntu.goalnetdesigner.utility.Dialogs.DialogOptions;
+import ntu.goalnetdesigner.utility.Dialogs.DialogResponse;
 import ntu.goalnetdesigner.utility.Resource;
 import ntu.goalnetdesigner.utility.UIUtility;
 import ntu.goalnetdesigner.utility.UIUtility.Navigation;
@@ -924,8 +924,12 @@ public class MainPageController {
     
     @FXML
     void userMenuCurrentUserClicked(ActionEvent event) {
+    	try{
     	Dialogs.showInformationDialog(UISession.primaryStage, "Server Address: " + LoginSession.serverAddress, 
     		    "Current User ID: " + LoginSession.user.getId(), "Current User Information");
+    	}catch (Exception e){
+    		ConsoleLogger.log(e.getMessage());
+    	}
     }
 
     @FXML

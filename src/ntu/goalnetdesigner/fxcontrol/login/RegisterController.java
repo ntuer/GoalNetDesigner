@@ -5,13 +5,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Dialogs;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import ntu.goalnetdesigner.data.persistence.User;
 import ntu.goalnetdesigner.logic.AuthorizationManager;
 import ntu.goalnetdesigner.session.UISession;
+import ntu.goalnetdesigner.utility.Dialogs;
 import ntu.goalnetdesigner.utility.Resource;
 import ntu.goalnetdesigner.utility.UIUtility;
 

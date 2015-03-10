@@ -30,11 +30,6 @@
 			</fileset>
 		</copy>
 		<copy todir="externalLibs">
-			<fileset dir="D:\Dropbox\NTU\FYP\GoalNetDesigner\lib">
-				<filename name="javafx-dialogs-0.0.4.jar"/>	
-			</fileset>
-		</copy>
-		<copy todir="externalLibs">
 			<fileset dir="C:\Program Files\eclipselink\jlib\jpa">
 				<filename name="org.eclipse.persistence.jpa.modelgen_2.5.2.v20140319-9ad6abd.jar"/>	
 			</fileset>
@@ -70,7 +65,6 @@
 			<fileset dir="externalLibs">
 				<include name="javax.persistence_2.1.0.v201304241213.jar"/>
 				<include name="org.eclipse.persistence.jpa.modelgen_2.5.2.v20140319-9ad6abd.jar"/>
-				<include name="javafx-dialogs-0.0.4.jar"/>
 				<include name="org.eclipse.persistence.jpars_2.5.2.v20140319-9ad6abd.jar"/>
 				<include name="mysql-connector-java-5.1.33-bin.jar"/>
 				<include name="eclipselink.jar"/>
@@ -157,7 +151,6 @@
 			destDir="${basedir}/dist">
 			<path>
 			<fileset dir='dist' includes='**/*.jar' />
-			
 			</path>
 		</signjar>
 	

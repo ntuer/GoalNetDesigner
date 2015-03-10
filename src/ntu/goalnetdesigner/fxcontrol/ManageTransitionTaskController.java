@@ -7,9 +7,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Dialogs;
-import javafx.scene.control.Dialogs.DialogOptions;
-import javafx.scene.control.Dialogs.DialogResponse;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -23,6 +20,9 @@ import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.logger.DatabaseActionLogger;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.UISession;
+import ntu.goalnetdesigner.utility.Dialogs;
+import ntu.goalnetdesigner.utility.Dialogs.DialogOptions;
+import ntu.goalnetdesigner.utility.Dialogs.DialogResponse;
 import ntu.goalnetdesigner.utility.Resource;
 
 public class ManageTransitionTaskController {

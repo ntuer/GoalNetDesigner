@@ -12,9 +12,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Dialogs;
-import javafx.scene.control.Dialogs.DialogOptions;
-import javafx.scene.control.Dialogs.DialogResponse;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableColumn.CellEditEvent;
@@ -30,6 +27,9 @@ import ntu.goalnetdesigner.logic.AuthorizationManager;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.LoginSession;
 import ntu.goalnetdesigner.session.UISession;
+import ntu.goalnetdesigner.utility.Dialogs;
+import ntu.goalnetdesigner.utility.Dialogs.DialogOptions;
+import ntu.goalnetdesigner.utility.Dialogs.DialogResponse;
 import ntu.goalnetdesigner.utility.Resource;
 
 public class ShareGNetController {
