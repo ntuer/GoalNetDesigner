@@ -13,6 +13,9 @@ import ntu.goalnetdesigner.logger.ConsoleLogger;
 import ntu.goalnetdesigner.logic.AuthorizationManager;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.LoginSession;
+import ntu.goalnetdesigner.session.UISession;
+import ntu.goalnetdesigner.utility.Dialogs;
+import ntu.goalnetdesigner.utility.Resource;
 import ntu.goalnetdesigner.utility.UIUtility;
 
 public class OpenGNetController {
@@ -40,7 +43,12 @@ public class OpenGNetController {
     
     @FXML
     void OKButtonClicked(ActionEvent event) {
+    	AuthorizationManager am = new AuthorizationManager();
     	Gnet selectedGNet = GNetTable.getSelectionModel().getSelectedItem();
+    	if (am.getGnetAccessLevelOfUser(LoginSession.user, selectedGNet).equals(Resource.UserGnetAccessLevel.READ)){
+    		Dialogs.showWarningDialog(UISession.secondaryStage, "Any changes on this Goal Net will not be saved to database. However, you can edit and export it.", 
+        		    "You only have read access to this Goal Net.", "Read Access Only");
+    	}
     	DataSession.setGNetCache(selectedGNet);
     	ConsoleLogger.log("Existing GNet Opened:" + selectedGNet.getName());
     	UIUtility.Navigation.closeContainingStage(OKButton);

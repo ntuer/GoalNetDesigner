@@ -19,12 +19,16 @@ public class StatisticsController {
 
     @FXML
     private Label creationLabel;
+    
+    @FXML
+    private Label moveLabel;
 
     @FXML
     public void initialize(){
     	Integer creation = 0;
     	Integer deletion = 0;
     	Integer update = 0;
+    	Integer move = 0;
     	for (ActionLog al: DataSession.Cache.actionLogs){
     		String action = al.getAction();
     		if (action.equals(Resource.Action.OPEN)){
@@ -35,11 +39,14 @@ public class StatisticsController {
     			++update;
     		} else if (action.equals(Resource.Action.DELETE)){
     			++deletion;
+    		} else if (action.equals(Resource.Action.MOVE)){
+    			++move;
     		}
     	}
     	creationLabel.setText(creation.toString());
     	updateLabel.setText(update.toString());
     	deletionLabel.setText(deletion.toString());
+    	moveLabel.setText(move.toString());
     }
 	
 }
