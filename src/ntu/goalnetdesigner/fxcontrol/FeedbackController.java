@@ -10,10 +10,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import ntu.goalnetdesigner.data.persistence.FeedbackLog;
 import ntu.goalnetdesigner.data.persistence.Question;
 import ntu.goalnetdesigner.data.service.DataService;
@@ -32,6 +32,8 @@ public class FeedbackController {
     
     private Button submitButton;
     
+    private Label email;
+    
     @FXML
     public void initialize() {
     	grid.setHgap(10);
@@ -41,18 +43,26 @@ public class FeedbackController {
     	
     	int i = 0;
     	for (; i < questions.size(); ++i){
-    		final TextField answer = new TextField(); 
+    		Slider slider = new Slider(1, 5, 3);
+			slider.setShowTickMarks(true);
+			slider.setShowTickLabels(true);
+			slider.setMajorTickUnit(1);
+			slider.setBlockIncrement(1);
+    		
         	grid.add(new Label(questions.get(i).getBody()), 0, i);
-        	grid.add(answer, 1, i);
+        	grid.add(slider, 1, i);
     	}
 
     	submitButton = new Button("Submit");
-    	HBox hbox = new HBox();
-    	hbox.getChildren().add(submitButton);
-    	grid.add(hbox, 0, i);
-    	GridPane.setColumnSpan(hbox, 2);
-    	GridPane.setHgrow(hbox, Priority.ALWAYS);
-    	hbox.setAlignment(Pos.CENTER);
+    	email = new Label("If you have any suggestions, please write to author Siyao at lisi0010@e.ntu.edu.sg.");
+    	VBox vbox = new VBox();
+    	vbox.getChildren().add(email);
+    	vbox.getChildren().add(submitButton);
+    	vbox.setSpacing(10);
+    	grid.add(vbox, 0, i);
+    	GridPane.setColumnSpan(vbox, 2);
+    	GridPane.setHgrow(vbox, Priority.ALWAYS);
+    	vbox.setAlignment(Pos.CENTER);
     	submitButton.setOnAction(onSubmitHandler);
     }
     
@@ -61,12 +71,15 @@ public class FeedbackController {
 		public void handle(ActionEvent arg0) {
 			for (int i = 0; i < questions.size(); ++i){
 				FeedbackLog fb = new FeedbackLog();
-				fb.setAnswer(((TextField)grid.getChildren().get(i*2 + 1)).getText());
+				fb.setAnswer(String.valueOf(Math.round(((Slider)grid.getChildren().get(i*2 + 1)).getValue())));
 				fb.setUser(LoginSession.user);
 				fb.setId(UUID.randomUUID().toString());
 				fb.setQuestion(questions.get(i));
 				fb.setVersion(Resource.System.SYSTEM_VERSION);
-				DataService.feedbackLog.atomicInsert(fb);
+				if (DataService.getEntityManager().getTransaction().isActive())
+					DataService.feedbackLog.persist(fb);
+				else
+					DataService.feedbackLog.atomicInsert(fb);
 			}
 			Dialogs.showInformationDialog(UISession.primaryStage, "Thank you for your feedback!", 
 				    "Feedback Submitted", "Feedback");
