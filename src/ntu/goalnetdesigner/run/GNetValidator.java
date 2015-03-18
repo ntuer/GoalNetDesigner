@@ -18,7 +18,7 @@ public class GNetValidator implements IComponentValidator{
 		State root = this.gnet.getRootState();
 		if (root == null) {
 			parentValidationManager
-					.addWarning(this.gnet, "This Goal Net has no root state.");
+					.addError(this.gnet, "This Goal Net has no root state.");
 		} else if (!root.getComposite()) {
 			parentValidationManager
 					.addError(root, "A Goal Net's root state must be a composite state. Current root state "

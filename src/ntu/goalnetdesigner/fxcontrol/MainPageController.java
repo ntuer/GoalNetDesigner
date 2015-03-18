@@ -897,7 +897,14 @@ public class MainPageController {
     		}
     	} else {
 	    	try {
-				new ProcessBuilder(DataSession.pathToExe, DataSession.Cache.gnet.getId()).start();
+	    		ValidationManager vm = new ValidationManager();
+	        	vm.validate();
+	    		if (vm.containsError()){
+	    			Dialogs.showErrorDialog(UISession.primaryStage, "Please validate Goal Net and fix errors before launching.", 
+		    				"Goal Net contains unresolved errors", "Run Error");
+	    		} else {
+	    			new ProcessBuilder(DataSession.pathToExe, DataSession.Cache.gnet.getId()).start();
+	    		}
 			} catch (IOException e) {
 				Dialogs.showErrorDialog(UISession.primaryStage, "Unable to launch specified EXE: " + DataSession.pathToExe, 
 	    				"Launch EXE failed", "Run Error");

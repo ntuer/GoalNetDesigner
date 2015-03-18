@@ -12,7 +12,7 @@ import ntu.goalnetdesigner.run.TaskValidator;
 import ntu.goalnetdesigner.run.TransitionValidator;
 import ntu.goalnetdesigner.session.DataSession;
 
-public class ValidationManager implements IComponentValidator{
+public class ValidationManager{
 	private List<ObjectStringPair> errors;
 	private List<ObjectStringPair> warnings;
 	
@@ -77,4 +77,9 @@ public class ValidationManager implements IComponentValidator{
 			sb.insert(0, "Warnings List:\n");
 		return sb.toString();
 	}
+	
+	public boolean containsError(){
+		return this.errors.size() > 0;
+	}
+	
 }
