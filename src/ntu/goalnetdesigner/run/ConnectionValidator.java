@@ -72,7 +72,7 @@ public class ConnectionValidator implements IComponentValidator{
 			if(entry.getValue() == OffsetStatus.NOT_VISITED){
 				// Root state exception case
 				if (gnet.getRootState() != null && 
-						entry.getValue().equals(gnet.getRootState().getId()))
+						entry.getKey().getId().equals(gnet.getRootState().getId()))
 					continue;
 				
 		    	parentValidationManager

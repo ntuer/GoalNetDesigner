@@ -73,12 +73,11 @@ public class Resource {
 	public static final String TASK_PROPERTY_PANE_PATH ="/ntu/goalnetdesigner/fxui/propertypane/TaskPropertyPane.fxml";
 	
 	public static final Color STATE_COLOR = Color.PALEGREEN;
-	public static final Color COMPOSITE_STATE_COLOR = Color.BLUEVIOLET;
+	public static final Color COMPOSITE_STATE_COLOR = Color.RED;
 	public static final Color TRANSITION_COLOR = Color.PALEGREEN;
 	public static final Color SELECTION_COLOR = Color.GREEN;
 	public static final Color ARC_COLOR = Color.BLACK;
-	public static final Color COMPOSITION_ARC_COLOR = Color.BLUEVIOLET;
-	public static final Color SELECTED_OBJECT_COLOR = Color.RED;
+	public static final Color COMPOSITION_ARC_COLOR = Color.RED;
 	
 	public static final double STATE_RADIUS = 25.0;
 	public static final double TRANSITION_HEIGHT = 30.0;

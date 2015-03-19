@@ -1,6 +1,7 @@
 package ntu.goalnetdesigner.render;
 
 import javafx.geometry.Point2D;
+import javafx.scene.shape.StrokeLineCap;
 import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.render.customcontrol.Arrow;
 import ntu.goalnetdesigner.utility.Resource;
@@ -28,6 +29,8 @@ public class RenderedCompositionEdge extends RenderedEdge{
 	public void getGraphicalRepresentation(double sx, double sy, double ex, double ey){
 		this.shape = new Arrow(sx, sy, ex, ey);
 		this.shape.setStroke(Resource.COMPOSITION_ARC_COLOR);
+		this.shape.setStrokeLineCap(StrokeLineCap.BUTT);
+		this.shape.getStrokeDashArray().setAll(10.0, 5.0);
 		this.getShape().getArrow().setStroke(Resource.COMPOSITE_STATE_COLOR);
 	}
 	

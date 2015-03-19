@@ -318,26 +318,31 @@ public class MainPageController {
  	        	if (nv == null)
  	        		return;
  	        	if (nv.getObject() instanceof Gnet){
- 	        		return;
+ 	        		try {
+						editMenuGoalNetPropertyClicked(null);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+ 	        	} else {
+	 	            try {
+	 	            	if (nv.getObject() instanceof State){
+	 	            		UISession.setCurrentSelection((Drawable)nv.getObject());
+	 	            		propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.STATE_PROPERTY_PANE_PATH));
+	 	            	} else if (nv.getObject() instanceof Transition){
+	 	            		UISession.setCurrentSelection((Drawable)nv.getObject());
+	 	            		propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.TRANSITION_PROPERTY_PANE_PATH));
+	 	            	} else if (nv.getObject() instanceof Task){
+	 	            		UISession.setCurrentSelection(nv.getObject());
+	 	            		propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.TASK_PROPERTY_PANE_PATH));
+	 	            	} else if (nv.getObject() instanceof Method){
+	 	            		UISession.setCurrentSelection(nv.getObject());
+	 	            		propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.FUNCTION_PROPERTY_PANE_PATH));
+	 	            	}
+	 	            } catch (IOException e) {
+						e.printStackTrace();
+					}
+	 	            UISession.currentPaneController.refresh();
  	        	}
- 	            try {
- 	            	if (nv.getObject() instanceof State){
- 	            		UISession.setCurrentSelection((Drawable)nv.getObject());
- 	            		propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.STATE_PROPERTY_PANE_PATH));
- 	            	} else if (nv.getObject() instanceof Transition){
- 	            		UISession.setCurrentSelection((Drawable)nv.getObject());
- 	            		propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.TRANSITION_PROPERTY_PANE_PATH));
- 	            	} else if (nv.getObject() instanceof Task){
- 	            		UISession.setCurrentSelection(nv.getObject());
- 	            		propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.TASK_PROPERTY_PANE_PATH));
- 	            	} else if (nv.getObject() instanceof Method){
- 	            		UISession.setCurrentSelection(nv.getObject());
- 	            		propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.FUNCTION_PROPERTY_PANE_PATH));
- 	            	}
- 	            } catch (IOException e) {
-					e.printStackTrace();
-				}
- 	            UISession.currentPaneController.refresh();
  	        }
  	    });
 	}
@@ -795,7 +800,7 @@ public class MainPageController {
 
     @FXML
     void fileMenuExportClicked(ActionEvent event) {
-    	String input = Dialogs.showInputDialog(UISession.primaryStage, "Enter file name:", "Export as png", "Export");
+    	String input = Dialogs.showInputDialog(UISession.primaryStage, "Enter file name:", "Export current Goal Net as png", "Export");
     	if (input != null){
 	    	int maxX = 0, maxY = 0;
 	    	for (State s: DataSession.Cache.states){
