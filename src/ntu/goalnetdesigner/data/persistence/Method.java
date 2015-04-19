@@ -2,6 +2,7 @@ package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -63,6 +64,7 @@ public class Method implements Serializable, IDataServiceUnitSubscriber {
 	private List<TaskFunction> taskFunctions;
 
 	public Method() {
+		this.id = UUID.randomUUID().toString();
 	}
 
 	public String getId() {

@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.stage.Stage;
 import ntu.goalnetdesigner.fxcontrol.propertypanecontrol.IPaneController;
 import ntu.goalnetdesigner.render.Drawable;
@@ -29,6 +31,7 @@ public class UISession {
 	public static boolean isTreeViewRefreshing = false;
 	
 	// current selection status
+	public static ObjectProperty<Object> cs = new SimpleObjectProperty<>();
 	public static Object currentSelection = null;  // has to be object because it can be Renderable or Drawable
 	public static IPaneController currentPaneController = null;
 	

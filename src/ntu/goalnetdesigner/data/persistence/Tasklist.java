@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -37,7 +38,7 @@ public class Tasklist implements Serializable, IDataServiceUnitSubscriber {
 	private List<Transition> transitions;
 
 	public Tasklist() {
-		
+		this.id = UUID.randomUUID().toString();
 	}
 
 	public String getId() {

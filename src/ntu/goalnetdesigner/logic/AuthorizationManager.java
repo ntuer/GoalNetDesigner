@@ -12,7 +12,7 @@ import ntu.goalnetdesigner.utility.Resource;
 
 public class AuthorizationManager {
 	
-	public boolean login(String id, String password){
+	public boolean authenticate(String id, String password){
 		User user = DataService.user.find(id);
 		if (user == null) 
 			return false;

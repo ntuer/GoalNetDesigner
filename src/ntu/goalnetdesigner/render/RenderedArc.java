@@ -1,6 +1,7 @@
 package ntu.goalnetdesigner.render;
 
 import java.util.List;
+import java.util.UUID;
 
 import javafx.geometry.Point2D;
 import ntu.goalnetdesigner.data.persistence.Arc;
@@ -16,6 +17,7 @@ public class RenderedArc extends RenderedEdge{
 	public RenderedArc (RenderedState s, RenderedTransition t){
 		// base object
 		this.baseObject = new Arc();
+		((Arc)this.baseObject).setName("Arc");
 		// Graphical representation
 		Point2D p1 = UIUtility.Draw.findPointOnBorderForFirstRenderable(s, t);
 		Point2D p2 = UIUtility.Draw.findPointOnBorderForFirstRenderable(t, s);
@@ -28,6 +30,7 @@ public class RenderedArc extends RenderedEdge{
 	
 	public RenderedArc (RenderedTransition t, RenderedState s){
 		this.baseObject = new Arc();
+		((Arc)this.baseObject).setName("Arc");
 		DataSession.Cache.arcs.add(this.getBaseObject());
 		
 		// Graphical representation

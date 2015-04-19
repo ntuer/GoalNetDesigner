@@ -39,11 +39,12 @@ public class LoginController implements Initializable{
 		String id = usernameField.getText();
 		String password = passwordField.getText();
 		AuthorizationManager lm = new AuthorizationManager();
-		if (lm.login(id, password)) {
+		if (lm.authenticate(id, password)) {
 			UIUtility.Navigation.switchTo(Resource.MAINPAGE_PATH, UISession.primaryStage);
 		}
-		else
+		else {
 			actiontarget.setText("Invalid Login");
+		}
 	}
 
     @FXML

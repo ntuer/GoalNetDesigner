@@ -12,7 +12,6 @@ import ntu.goalnetdesigner.session.LoginSession;
 public class DatabaseActionLogger {
 	public static void log(String action, String targetObjectType, String targetObjectId){
 		ActionLog al = new ActionLog();
-		al.setId(UUID.randomUUID().toString());
 		al.setAction(action);
 		al.setOperationTargetObject(targetObjectType);
 		al.setTargetObjectID(targetObjectId);

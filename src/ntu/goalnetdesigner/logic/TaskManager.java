@@ -16,7 +16,6 @@ import ntu.goalnetdesigner.utility.Resource;
 public class TaskManager {
 	public static Task newInstance(){
 		Task t = new Task();
-		t.setId(UUID.randomUUID().toString());
 		t.setName("New Task");
 		t.setTaskFunctions(new ArrayList<TaskFunction>());
 		t.setTasklistTasks(new ArrayList<TasklistTask>());
@@ -28,7 +27,6 @@ public class TaskManager {
 	
 	public static Task cloneInstanceToGnet(Task old, Gnet gnet){
 		Task t = new Task();
-		t.setId(UUID.randomUUID().toString());
 		t.setName(old.getName());
 		t.setTaskFunctions(new ArrayList<TaskFunction>());
 		t.setTasklistTasks(new ArrayList<TasklistTask>());

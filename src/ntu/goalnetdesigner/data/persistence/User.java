@@ -1,8 +1,11 @@
 package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -52,6 +55,7 @@ public class User implements Serializable, IDataServiceUnitSubscriber {
 	}
 	
 	public User() {
+		this.id = UUID.randomUUID().toString();
 	}
 
 	public String getId() {

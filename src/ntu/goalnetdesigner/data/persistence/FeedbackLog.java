@@ -1,8 +1,11 @@
 package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.sql.Timestamp;
+import java.util.UUID;
 
 
 /**
@@ -41,6 +44,7 @@ public class FeedbackLog implements Serializable, IDataServiceUnitSubscriber {
 	private User user;
 
 	public FeedbackLog() {
+		this.id = UUID.randomUUID().toString();
 	}
 
 	public String getId() {

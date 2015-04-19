@@ -15,7 +15,6 @@ import ntu.goalnetdesigner.utility.Resource;
 public class FunctionManager {
 	public static Method newInstance(){
 		Method m = new Method();
-		m.setId(UUID.randomUUID().toString());
 		m.setName("New function");
 		m.setFileName("filename");
 		m.setRTType("void");
@@ -29,7 +28,6 @@ public class FunctionManager {
 	
 	public static Method cloneInstanceToGnet(Method old, Gnet gnet){
 		Method m = new Method();
-		m.setId(UUID.randomUUID().toString());
 		m.setName(old.getName());
 		m.setFileName(old.getFileName());
 		m.setRTType(old.getRTType());

@@ -68,15 +68,15 @@ public class Transition extends ntu.goalnetdesigner.render.Drawable implements S
 	private Tasklist tasklist;
 
 	public Transition(){
-		
+		this.id = UUID.randomUUID().toString();
 	}
 	
-	public Transition(double x, double y) {
+	public Transition(double x, double y, String type) {
 		this.name = "Transition";
 		this.id = UUID.randomUUID().toString();
-		this.type = "simple";
 		this.x = (int) x;
 		this.y = (int) y;
+		this.type = type;
 	}
 
 	public String getId() {

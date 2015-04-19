@@ -32,9 +32,6 @@ public class NewGNetController {
     @FXML
     void okButtonClicked(ActionEvent event) {
     	Gnet t = new Gnet();
-    	// It must be placed here to save trouble
-    	// otherwise Gnet constructor will initialize lists to null 
-    	t.setId(UUID.randomUUID().toString());
     	t.setName(this.nameOfGoalNetField.getText());
     	t.setDescription(descriptionField.getText());
     	DataService.gnet.atomicInsert(t);

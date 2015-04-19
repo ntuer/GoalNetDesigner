@@ -73,7 +73,6 @@ public class FeedbackController {
 				FeedbackLog fb = new FeedbackLog();
 				fb.setAnswer(String.valueOf(Math.round(((Slider)grid.getChildren().get(i*2 + 1)).getValue())));
 				fb.setUser(LoginSession.user);
-				fb.setId(UUID.randomUUID().toString());
 				fb.setQuestion(questions.get(i));
 				fb.setVersion(Resource.System.SYSTEM_VERSION);
 				if (DataService.getEntityManager().getTransaction().isActive())

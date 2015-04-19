@@ -11,7 +11,6 @@ import ntu.goalnetdesigner.session.DataSession;
 public class TasklistManager {
 	public static Tasklist newInstance(){
 		Tasklist t = new Tasklist();
-		t.setId(UUID.randomUUID().toString());
 		t.setName("New tasklist");
 		t.setTasklistTasks(new ArrayList<TasklistTask>());
 		DataSession.Cache.tasklists.add(t);

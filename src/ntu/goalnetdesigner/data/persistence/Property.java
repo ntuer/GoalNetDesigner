@@ -1,8 +1,11 @@
 package ntu.goalnetdesigner.data.persistence;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.math.BigInteger;
+import java.util.UUID;
 
 
 /**
@@ -33,6 +36,7 @@ public class Property implements Serializable, IDataServiceUnitSubscriber {
 	private String val;
 
 	public Property() {
+		this.id = UUID.randomUUID().toString();
 	}
 
 	public String getId() {

@@ -24,11 +24,11 @@ import ntu.goalnetdesigner.render.RenderableMouseEventHandler;
 import ntu.goalnetdesigner.render.RenderedArc;
 import ntu.goalnetdesigner.render.RenderedCompositionEdge;
 import ntu.goalnetdesigner.render.RenderedEdge;
-import ntu.goalnetdesigner.render.RenderedObjectFactory;
 import ntu.goalnetdesigner.render.RenderedState;
 import ntu.goalnetdesigner.render.RenderedTransition;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.UISession;
+import ntu.goalnetdesigner.utility.CurrentDrawingMode;
 import ntu.goalnetdesigner.utility.Resource;
 
 public class RenderManager {
@@ -96,22 +96,33 @@ public class RenderManager {
 	}
 	
 	public Renderable drawNewStateOrTransition(double x, double y){
-		try {
-			Renderable r =  RenderedObjectFactory.getNewRenderedObject(x, y, propertyPane, drawingPane);
-			setMouseEventHandler(r);
-			if (r instanceof RenderedTransition){
-				DataService.transition.persist((Transition) r.getBaseObject());
-				DatabaseActionLogger.log(Resource.Action.CREATE, Resource.ActionTargetType.TRANSITION, ((Transition) r.getBaseObject()).getId());
+		Renderable r = null;
+		if (UISession.currentDrawingMode == CurrentDrawingMode.STATE ||
+				UISession.currentDrawingMode == CurrentDrawingMode.COMPOSITE_STATE){
+			if (UISession.currentDrawingMode == CurrentDrawingMode.STATE){
+				r = new RenderedState(x, y, false);
+			} else {
+				r = new RenderedState(x, y, true);
 			}
-			else{
-				DataService.state.persist((State) r.getBaseObject());
-				DatabaseActionLogger.log(Resource.Action.CREATE, Resource.ActionTargetType.STATE, ((State) r.getBaseObject()).getId());
+			((State)r.getBaseObject()).setGnet(DataSession.Cache.gnet);
+			DataSession.Cache.states.add((State) r.getBaseObject());
+			DataService.state.persist((State) r.getBaseObject());
+			DatabaseActionLogger.log(Resource.Action.CREATE, Resource.ActionTargetType.STATE, ((State) r.getBaseObject()).getId());
+		} else if (UISession.currentDrawingMode == CurrentDrawingMode.TRANSITION ||
+				UISession.currentDrawingMode == CurrentDrawingMode.REASONING_TRANSITION) {
+			if (UISession.currentDrawingMode == CurrentDrawingMode.TRANSITION){
+				r = new RenderedTransition(x, y, "simple");
+			} else {
+				r = new RenderedTransition(x, y, "reasoning");
 			}
-			return r;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
+			((Transition)r.getBaseObject()).setGnet(DataSession.Cache.gnet);
+			DataSession.Cache.transitions.add((Transition) r.getBaseObject());
+			DataService.transition.persist((Transition) r.getBaseObject());
+			DatabaseActionLogger.log(Resource.Action.CREATE, Resource.ActionTargetType.TRANSITION, ((Transition) r.getBaseObject()).getId());
 		}
+		if (r != null)
+			setMouseEventHandler(r);
+		return r;
 	}
 	
 	public RenderedArc drawNewArcByStartAndEnd(Renderable s, Renderable e){
@@ -119,13 +130,13 @@ public class RenderManager {
     	if (s instanceof RenderedState){
     		if (!(e instanceof RenderedTransition)){
     			UISession.objectsForArc.clear();
-    			return a;
+    			return null;
     		}
 			a = new RenderedArc((RenderedState)s, (RenderedTransition) e);
     	} else if (s instanceof RenderedTransition){
     		if (!(e instanceof RenderedState)){
     			UISession.objectsForArc.clear();
-    			return a;
+    			return null;
     		}
     		a = new RenderedArc((RenderedTransition)s, (RenderedState) e);
     	} 

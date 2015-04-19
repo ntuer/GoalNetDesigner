@@ -8,13 +8,9 @@ import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.utility.Resource;
 
 public class RenderedTransition extends Renderable{
-	public RenderedTransition (double x, double y){
+	public RenderedTransition (double x, double y, String type){
 		super();
-		// base object
-		this.baseObject = new Transition(x, y);
-		this.getBaseObject().setGnet(DataSession.Cache.gnet);
-		DataSession.Cache.transitions.add(this.getBaseObject());
-		// Graphical representation
+		this.baseObject = new Transition(x, y, type);
 		getGraphicalRepresentation(x, y);
 	}
 	
@@ -24,8 +20,15 @@ public class RenderedTransition extends Renderable{
 	}
 	
 	public void getGraphicalRepresentation(double x, double y){
-		this.shape = new TransitionPolygon("rectangle");
-		showAsSimple();
+		if (((Transition)this.baseObject).getType().equals("simple"))
+			this.shape = new TransitionPolygon("rectangle");
+		else if (((Transition)this.baseObject).getType().equals("reasoning"))
+			this.shape = new TransitionPolygon("diamond");
+		
+		this.getShape().setFill(Resource.TRANSITION_COLOR.deriveColor(1, 1, 1, 0.5));
+		this.getShape().setStroke(Resource.TRANSITION_COLOR);
+		this.getShape().setStrokeWidth(Resource.NORMAL_STROKE_WIDTH);
+		this.getShape().setStrokeType(StrokeType.OUTSIDE);
 		this.text = new Text(((Transition)this.baseObject).getName());
 		this.display.setTranslateX(x - Resource.TRANSITION_WIDTH / 2);
 		this.display.setTranslateY(y - Resource.TRANSITION_HEIGHT / 2);
@@ -60,17 +63,9 @@ public class RenderedTransition extends Renderable{
 	
 	public void showAsSimple(){
 		getShape().transformTo("rectangle");
-		getShape().setFill(Resource.TRANSITION_COLOR.deriveColor(1, 1, 1, 0.5));
-		getShape().setStroke(Resource.TRANSITION_COLOR);
-		getShape().setStrokeWidth(Resource.NORMAL_STROKE_WIDTH);
-		getShape().setStrokeType(StrokeType.OUTSIDE);
 	}
 	
 	public void showAsReasoning(){
 		getShape().transformTo("diamond");
-		getShape().setFill(Resource.TRANSITION_COLOR.deriveColor(1, 1, 1, 0.5));
-		getShape().setStroke(Resource.TRANSITION_COLOR);
-		getShape().setStrokeWidth(Resource.NORMAL_STROKE_WIDTH);
-		getShape().setStrokeType(StrokeType.OUTSIDE);
 	}
 }

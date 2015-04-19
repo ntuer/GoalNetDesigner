@@ -88,6 +88,7 @@ public class State extends ntu.goalnetdesigner.render.Drawable implements Serial
 	private List<StateFunction> stateFunctions;
 
 	public State() {
+		this.id = UUID.randomUUID().toString();
 	}
 	
 	public State(double x, double y, boolean isComposite) {

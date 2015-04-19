@@ -52,8 +52,9 @@ public class DataService {
 	}
 	
 	public static void reestablish(){
-		em.close();
-		em = getEntityManagerFactory().createEntityManager();
+		em.close(); // close previous em
+		em = getEntityManagerFactory().createEntityManager(); // get new em
+		// below assign the individual em to the new em
 		actionLog.reestablish();
 		feedbackLog.reestablish();
 		question.reestablish();
