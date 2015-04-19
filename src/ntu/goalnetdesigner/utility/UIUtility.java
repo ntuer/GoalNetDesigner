@@ -9,14 +9,19 @@ import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import ntu.goalnetdesigner.data.persistence.Method;
 import ntu.goalnetdesigner.data.persistence.State;
+import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.logic.RenderManager;
+import ntu.goalnetdesigner.render.Drawable;
 import ntu.goalnetdesigner.render.Renderable;
+import ntu.goalnetdesigner.render.RenderedArc;
 import ntu.goalnetdesigner.render.RenderedState;
 import ntu.goalnetdesigner.render.RenderedTransition;
 import ntu.goalnetdesigner.render.customcontrol.Arrow;
@@ -69,7 +74,7 @@ public class UIUtility {
 		}
 	}
 	
-	public static class Draw{
+	public static class Draw {
 		public static RenderManager renderManager = null;
 		
 		public static void setBoldBorder(Renderable r){
@@ -142,6 +147,7 @@ public class UIUtility {
 					 a.getY() + (b.getY() - a.getY()) / 2.0);
 		}
 	}
+	
 	public static class GroupSelection{
 		public static boolean isRenderableInSelectionRectangle(Renderable r, Rectangle rect){
 			double x = rect.getTranslateX();
@@ -156,4 +162,75 @@ public class UIUtility {
 			return false;
 		}
 	}
+	
+	public static class CurrentSelectionProperty extends SimpleObjectProperty<Object>{
+		ScrollPane propertyPane;
+		public CurrentSelectionProperty() {
+			super();
+			
+			this.addListener(new ChangeListener<Object>() {
+				@Override
+				public void changed(ObservableValue<? extends Object> arg0,
+						Object oldPropertyValue, Object newPropertyValue) {
+					// cancel old selection
+					if (oldPropertyValue != null){
+						Renderable or = null;
+						if (oldPropertyValue instanceof Renderable){
+							or = (Renderable) oldPropertyValue;
+						} else if (oldPropertyValue instanceof Drawable){
+							or = ((Drawable) oldPropertyValue).getRenderedObject();
+						}
+						if (or != null){
+							UIUtility.Draw.restoreBorder(or);
+						}
+					}
+					// select new object
+					if (newPropertyValue != null){
+						
+						Renderable nr = null;
+						if (newPropertyValue instanceof Renderable){
+							nr = (Renderable) newPropertyValue;
+						} else if (newPropertyValue instanceof Drawable){
+							nr = ((Drawable) newPropertyValue).getRenderedObject();
+						}
+						if (nr != null){
+							UIUtility.Draw.setBoldBorder(nr);
+							try{
+								if (nr instanceof RenderedState){
+									CurrentSelectionProperty.this.propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.STATE_PROPERTY_PANE_PATH));
+								} else if (nr instanceof RenderedTransition){
+									CurrentSelectionProperty.this.propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.TRANSITION_PROPERTY_PANE_PATH));
+								} else if (nr instanceof RenderedArc){
+									CurrentSelectionProperty.this.propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.ARC_PROPERTY_PANE_PATH));
+								}
+							} catch (Exception e){
+								e.printStackTrace();
+							}
+						} else {
+							try{
+								if (newPropertyValue instanceof Method){
+									CurrentSelectionProperty.this.propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.FUNCTION_PROPERTY_PANE_PATH));
+								} else if (newPropertyValue instanceof Task){
+									CurrentSelectionProperty.this.propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.TASK_PROPERTY_PANE_PATH));
+								}
+							} catch (Exception e){
+								e.printStackTrace();
+							}
+						}
+						UISession.currentPaneController.refresh();
+					} else {
+						UISession.currentPaneController = null;
+						CurrentSelectionProperty.this.propertyPane.setContent(null);
+					}
+				}
+			});
+		}
+		public ScrollPane getPropertyPane() {
+			return propertyPane;
+		}
+		public void setPropertyPane(ScrollPane propertyPane) {
+			this.propertyPane = propertyPane;
+		}
+	}
+
 }

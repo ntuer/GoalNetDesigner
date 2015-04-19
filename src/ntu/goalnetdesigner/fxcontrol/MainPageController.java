@@ -68,7 +68,7 @@ import ntu.goalnetdesigner.utility.Resource;
 import ntu.goalnetdesigner.utility.UIUtility;
 import ntu.goalnetdesigner.utility.UIUtility.Navigation;
 
-public class MainPageController {    
+public class MainPageController {
 	@FXML
 	private ToggleButton simpleStateButton;
 	
@@ -868,7 +868,7 @@ public class MainPageController {
     	try{
     	Dialogs.showInformationDialog(UISession.primaryStage, "Server Address: " + LoginSession.serverAddress, 
     		    "Current User ID: " + LoginSession.user.getId(), "Current User Information");
-    	}catch (Exception e){
+    	} catch (Exception e){
     		ConsoleLogger.log(e.getMessage());
     	}
     }

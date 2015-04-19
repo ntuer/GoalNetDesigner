@@ -48,9 +48,9 @@ public class RegisterController{
     @FXML
     public void initialize(){
     	ObservableList<String> value = FXCollections.observableArrayList (
-    		    new String(Resource.EducationLevel.HIGH_SCHOOL_AND_BELOW),
-    		    new String(Resource.EducationLevel.UNDERGRADUATE),
-    		    new String(Resource.EducationLevel.GRADUATE)
+    		    Resource.EducationLevel.HIGH_SCHOOL_AND_BELOW,
+    		    Resource.EducationLevel.UNDERGRADUATE,
+    		    Resource.EducationLevel.GRADUATE
     		);
     	educationComboBox.setItems(value);
     }

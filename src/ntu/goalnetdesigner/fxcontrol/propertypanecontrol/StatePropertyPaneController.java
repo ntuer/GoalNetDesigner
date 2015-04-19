@@ -64,7 +64,7 @@ public class StatePropertyPaneController implements IPaneController{
 			int i = 0;
 			// remove itself
 			for (State s: startStateComboBox.getItems()){
-				if (s.getId() == this.selectedObject.getId()){
+				if (s.getId().equals(this.selectedObject.getId())){
 					startStateComboBox.getItems().remove(s);
 					break;
 				}

@@ -327,7 +327,7 @@ public class RenderManager {
 		if (currentSelection instanceof RenderedArc){
 			drawingPane.getChildren().remove(((RenderedArc)currentSelection).getShape());
 			drawingPane.getChildren().remove(((RenderedArc)currentSelection).getShape().getArrow());
-		} else if (currentSelection instanceof Renderable){
+		} else {
 			drawingPane.getChildren().remove(((Renderable)currentSelection).getDisplay());
 		}
 	}

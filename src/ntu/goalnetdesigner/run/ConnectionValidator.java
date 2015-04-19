@@ -81,8 +81,8 @@ public class ConnectionValidator implements IComponentValidator{
 			
 			if(entry.getValue() == OffsetStatus.HALF){
 				// start/end state exception case
-				if (gnet.getStartState() != null && entry.getKey().equals(gnet.getStartState().getId()) ||
-					gnet.getEndState() != null && entry.getKey().equals(gnet.getEndState().getId()))
+				if (gnet.getStartState() != null && entry.getKey().getId().equals(gnet.getStartState().getId()) ||
+					gnet.getEndState() != null && entry.getKey().getId().equals(gnet.getEndState().getId()))
 					continue;
 				
 		    	parentValidationManager

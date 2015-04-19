@@ -16,6 +16,9 @@ import ntu.goalnetdesigner.logger.DatabaseActionLogger;
 import ntu.goalnetdesigner.utility.Resource;
 
 public class DataSession {
+	// reserved for multiple gnets
+	public static ArrayList<Gnet> currentGnets = new ArrayList<>();
+	
 	public static class Cache {
 		public static Gnet gnet = null;
 		public static List<Task> tasks = null;
