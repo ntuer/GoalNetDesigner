@@ -48,7 +48,7 @@ public class TransitionPropertyPaneController implements IPaneController {
 	private Transition selectedObject = null;
 	@Override
 	public void refresh(){
-		this.selectedObject = (Transition) UISession.getDrawableFromCurrentSelection();
+		this.selectedObject = (Transition) UISession.getCurrentSelectionAsDrawable();
 		if (selectedObject == null)
 			return;
 		x.setText("" + selectedObject.getX());

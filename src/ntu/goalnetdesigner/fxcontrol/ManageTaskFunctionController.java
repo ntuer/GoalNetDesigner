@@ -35,7 +35,7 @@ public class ManageTaskFunctionController {
     
     @FXML
     public void initialize(){
-    	this.selectedTask = (Task) UISession.currentSelection;
+    	this.selectedTask = (Task) UISession.currentSelection.getValue();
     	this.taskFunctionList = this.selectedTask.getTaskFunctions();
     	functionListView.setItems(FXCollections.observableArrayList(this.taskFunctionList));
     }

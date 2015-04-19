@@ -97,10 +97,10 @@ public class RubberBandSelection {
         		UISession.isInRenderedObject = false;
         		return;
         	}
+        	UISession.currentSelection.setValue(null);
 			if (!event.isShiftDown() && !event.isControlDown()) {
 				UISession.currentGroupSelection.clear();
 			}
-
 			// Only select state and transitions. 
 			// Have to iterate twice due to lack of combined list and method to find bound for canvas
 			for (Transition t : DataSession.Cache.transitions) {

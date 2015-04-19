@@ -2,6 +2,9 @@ package ntu.goalnetdesigner.utility;
 
 import java.util.List;
 
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
@@ -153,5 +156,4 @@ public class UIUtility {
 			return false;
 		}
 	}
-	
 }

@@ -47,7 +47,7 @@ public class FunctionPropertyPaneController implements IPaneController{
 	}
 	
 	public void refresh(){
-		this.selectedObject = (Method) UISession.currentSelection;
+		this.selectedObject = (Method) UISession.currentSelection.getValue();
 		if (this.selectedObject == null)
 			return;
 		description.setText(this.selectedObject.getDescription());

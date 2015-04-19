@@ -35,7 +35,7 @@ public class ManageStateFunctionController {
     
     @FXML
     public void initialize(){
-    	this.selectedState = (State) UISession.getDrawableFromCurrentSelection();
+    	this.selectedState = (State) UISession.getCurrentSelectionAsDrawable();
     	this.stateFunctionList = this.selectedState.getStateFunctions();
     	functionListView.setItems(FXCollections.observableArrayList(this.stateFunctionList));
     }

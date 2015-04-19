@@ -58,6 +58,5 @@ public class DataSession {
 			DataService.commit();
 			DataService.begin();
 		}
-		
 	}	
 }

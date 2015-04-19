@@ -45,9 +45,9 @@ public class RenderableMouseEventHandler {
     	public void handle(MouseEvent e)
     	{
     		if (e.getSource() instanceof Arrow)
-    			UISession.setCurrentSelection(((Arrow)(e.getSource())).getParentRenderable());
+    			UISession.currentSelection.setValue(((Arrow)(e.getSource())).getParentRenderable());
     		else
-    			UISession.setCurrentSelection(((BidirectionalStackPane)(e.getSource())).getParentRenderable());
+    			UISession.currentSelection.setValue(((BidirectionalStackPane)(e.getSource())).getParentRenderable());
     		UISession.isInRenderedObject = true; // flag to cancel drawing pane event
     		
     		// If user action is to add arc
@@ -55,29 +55,9 @@ public class RenderableMouseEventHandler {
     				UISession.isDragging != true){
     			UISession.objectsForArc.add(((BidirectionalStackPane)(e.getSource())).getParentRenderable());
     		} else {
-    			// update display of property display pane.
+    			// set flag to cancel dragging event
     			UISession.isDragging = false;
 	    		ConsoleLogger.log("Object clicked/Dragged and selected!");
-	    		if (UISession.currentSelection instanceof RenderedState){
-	    			try {
-						propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.STATE_PROPERTY_PANE_PATH));
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-	    		} else if (UISession.currentSelection instanceof RenderedTransition){
-	    			try {
-						propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.TRANSITION_PROPERTY_PANE_PATH));
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-	    		} else if (UISession.currentSelection instanceof RenderedArc){
-	    			try {
-						propertyPane.setContent(Resource.getInstance().getPaneByFxml(Resource.ARC_PROPERTY_PANE_PATH));
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-	    		}
-	    		UISession.currentPaneController.refresh();
     		}
     	}
     };

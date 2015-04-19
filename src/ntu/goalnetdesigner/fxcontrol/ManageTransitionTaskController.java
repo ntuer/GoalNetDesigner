@@ -41,7 +41,7 @@ public class ManageTransitionTaskController {
     
     @FXML
     public void initialize(){
-    	this.selectedTasklist = (Tasklist) ((Transition)UISession.getDrawableFromCurrentSelection()).getTasklist();
+    	this.selectedTasklist = (Tasklist) ((Transition)UISession.getCurrentSelectionAsDrawable()).getTasklist();
     	this.tasklistTaskList = this.selectedTasklist.getTasklistTasks();
     	taskView.setItems(FXCollections.observableArrayList(this.tasklistTaskList));
     	taskListNameField.setText(this.selectedTasklist.getName());

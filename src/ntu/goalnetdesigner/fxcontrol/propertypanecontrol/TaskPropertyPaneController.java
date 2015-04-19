@@ -39,7 +39,7 @@ public class TaskPropertyPaneController implements IPaneController{
 	}
 	
 	public void refresh(){
-		this.selectedObject = (Task) UISession.currentSelection;
+		this.selectedObject = (Task) UISession.currentSelection.getValue();
 		if (this.selectedObject == null)
 			return;
 		description.setText(this.selectedObject.getDescription());

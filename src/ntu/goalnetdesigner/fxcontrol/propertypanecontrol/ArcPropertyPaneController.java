@@ -39,7 +39,7 @@ public class ArcPropertyPaneController implements IPaneController{
 	}
 	
 	public void refresh(){
-		this.selectedObject = (Arc) UISession.getDrawableFromCurrentSelection();
+		this.selectedObject = (Arc) UISession.getCurrentSelectionAsDrawable();
 		if (this.selectedObject == null)
 			return;
 		description.setText(this.selectedObject.getDescription());
