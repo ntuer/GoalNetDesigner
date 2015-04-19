@@ -1,4 +1,4 @@
-package ntu.goalnetdesigner.run;
+package ntu.goalnetdesigner.validation.syntax;
 
 public class ObjectStringPair {
 	private Object object;

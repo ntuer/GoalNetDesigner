@@ -1,7 +1,6 @@
 package ntu.goalnetdesigner.render;
 
 import java.util.List;
-import java.util.UUID;
 
 import javafx.geometry.Point2D;
 import ntu.goalnetdesigner.data.persistence.Arc;

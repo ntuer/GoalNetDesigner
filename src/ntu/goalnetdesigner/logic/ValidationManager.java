@@ -3,14 +3,14 @@ package ntu.goalnetdesigner.logic;
 import java.util.ArrayList;
 import java.util.List;
 
-import ntu.goalnetdesigner.run.ConnectionValidator;
-import ntu.goalnetdesigner.run.GNetValidator;
-import ntu.goalnetdesigner.run.IComponentValidator;
-import ntu.goalnetdesigner.run.ObjectStringPair;
-import ntu.goalnetdesigner.run.StateValidator;
-import ntu.goalnetdesigner.run.TaskValidator;
-import ntu.goalnetdesigner.run.TransitionValidator;
 import ntu.goalnetdesigner.session.DataSession;
+import ntu.goalnetdesigner.validation.IComponentValidator;
+import ntu.goalnetdesigner.validation.syntax.ConnectionValidator;
+import ntu.goalnetdesigner.validation.syntax.GNetValidator;
+import ntu.goalnetdesigner.validation.syntax.ObjectStringPair;
+import ntu.goalnetdesigner.validation.syntax.StateValidator;
+import ntu.goalnetdesigner.validation.syntax.TaskValidator;
+import ntu.goalnetdesigner.validation.syntax.TransitionValidator;
 
 public class ValidationManager{
 	private List<ObjectStringPair> errors;

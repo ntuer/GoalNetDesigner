@@ -2,7 +2,6 @@ package ntu.goalnetdesigner.logger;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.UUID;
 
 import ntu.goalnetdesigner.data.persistence.ActionLog;
 import ntu.goalnetdesigner.data.service.DataService;

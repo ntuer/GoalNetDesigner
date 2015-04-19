@@ -4,7 +4,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 import ntu.goalnetdesigner.data.persistence.State;
-import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.utility.Resource;
 
 public class RenderedState extends Renderable{

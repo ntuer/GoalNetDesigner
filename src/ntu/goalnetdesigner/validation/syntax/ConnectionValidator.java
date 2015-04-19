@@ -1,4 +1,4 @@
-package ntu.goalnetdesigner.run;
+package ntu.goalnetdesigner.validation.syntax;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +8,7 @@ import ntu.goalnetdesigner.data.persistence.Gnet;
 import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.logic.ValidationManager;
+import ntu.goalnetdesigner.validation.IComponentValidator;
 
 public class ConnectionValidator implements IComponentValidator{
 	private Gnet gnet;

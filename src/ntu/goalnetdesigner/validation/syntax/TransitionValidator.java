@@ -1,8 +1,9 @@
-package ntu.goalnetdesigner.run;
+package ntu.goalnetdesigner.validation.syntax;
 
 import ntu.goalnetdesigner.data.persistence.Gnet;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.logic.ValidationManager;
+import ntu.goalnetdesigner.validation.IComponentValidator;
 
 public class TransitionValidator implements IComponentValidator{
 	private Gnet gnet;

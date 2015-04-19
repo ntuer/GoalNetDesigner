@@ -1,7 +1,6 @@
 package ntu.goalnetdesigner.fxcontrol;
 
 import java.util.List;
-import java.util.UUID;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

@@ -1,8 +1,9 @@
-package ntu.goalnetdesigner.run;
+package ntu.goalnetdesigner.validation.syntax;
 
 import ntu.goalnetdesigner.data.persistence.Task;
 import ntu.goalnetdesigner.logic.ValidationManager;
 import ntu.goalnetdesigner.session.DataSession;
+import ntu.goalnetdesigner.validation.IComponentValidator;
 
 public class TaskValidator implements IComponentValidator{
 	private ValidationManager parentValidationManager;

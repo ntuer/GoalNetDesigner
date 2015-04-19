@@ -56,7 +56,6 @@ import ntu.goalnetdesigner.logic.ValidationManager;
 import ntu.goalnetdesigner.render.Renderable;
 import ntu.goalnetdesigner.render.RenderedArc;
 import ntu.goalnetdesigner.render.customcontrol.RubberBandSelection;
-import ntu.goalnetdesigner.run.ObjectStringPair;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.LoginSession;
 import ntu.goalnetdesigner.session.UISession;
@@ -67,6 +66,7 @@ import ntu.goalnetdesigner.utility.Dialogs.DialogResponse;
 import ntu.goalnetdesigner.utility.Resource;
 import ntu.goalnetdesigner.utility.UIUtility;
 import ntu.goalnetdesigner.utility.UIUtility.Navigation;
+import ntu.goalnetdesigner.validation.syntax.ObjectStringPair;
 
 public class MainPageController {
 	@FXML

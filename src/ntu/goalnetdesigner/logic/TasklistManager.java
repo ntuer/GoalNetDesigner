@@ -1,7 +1,6 @@
 package ntu.goalnetdesigner.logic;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 import ntu.goalnetdesigner.data.persistence.Tasklist;
 import ntu.goalnetdesigner.data.persistence.TasklistTask;

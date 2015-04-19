@@ -4,7 +4,6 @@ import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 import ntu.goalnetdesigner.data.persistence.Transition;
 import ntu.goalnetdesigner.render.customcontrol.TransitionPolygon;
-import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.utility.Resource;
 
 public class RenderedTransition extends Renderable{

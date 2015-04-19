@@ -1,7 +1,5 @@
 package ntu.goalnetdesigner.fxcontrol;
 
-import java.util.UUID;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
