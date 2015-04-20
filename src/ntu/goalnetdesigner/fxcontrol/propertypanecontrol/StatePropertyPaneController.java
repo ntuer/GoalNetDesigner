@@ -58,37 +58,35 @@ public class StatePropertyPaneController implements IPaneController{
 		id.setText(selectedObject.getId());
 		name.setText(selectedObject.getName());
 		composite.setText(selectedObject.getComposite() + "");
-		
 		startStateComboBox.setItems(FXCollections.observableArrayList(DataSession.Cache.states));
+		// remove itself
+		for (State s: startStateComboBox.getItems()){
+			if (s.getId().equals(this.selectedObject.getId())){
+				startStateComboBox.getItems().remove(s);
+				break;
+			}
+		}
+		// set selection
 		if (this.selectedObject.getCompositeStartState() != null){
 			int i = 0;
-			// remove itself
-			for (State s: startStateComboBox.getItems()){
-				if (s.getId().equals(this.selectedObject.getId())){
-					startStateComboBox.getItems().remove(s);
-					break;
-				}
-			}
-			// set selection
 			for (i = 0; i < startStateComboBox.getItems().size(); ++i) {
-				if (startStateComboBox.getItems().get(i).getId() == this.selectedObject.getCompositeStartState().getId())
+				if (startStateComboBox.getItems().get(i).getId().equals(this.selectedObject.getCompositeStartState().getId()))
 					break;
 			}
 			startStateComboBox.getSelectionModel().select(i);
 		}
-		
 		endStateComboBox.setItems(FXCollections.observableArrayList(DataSession.Cache.states));
+		// remove itself
+		for (State s: endStateComboBox.getItems()){
+			if (s.getId().equals(this.selectedObject.getId())){
+				endStateComboBox.getItems().remove(s);
+				break;
+			}
+		}
 		if (this.selectedObject.getCompositeEndState() != null){
 			int i = 0;
-			// remove itself
-			for (State s: endStateComboBox.getItems()){
-				if (s.getId() == this.selectedObject.getId()){
-					endStateComboBox.getItems().remove(s);
-					break;
-				}
-			}
 			for (i = 0; i < endStateComboBox.getItems().size(); ++i) {
-				if (endStateComboBox.getItems().get(i).getId() == this.selectedObject.getCompositeEndState().getId())
+				if (endStateComboBox.getItems().get(i).getId().equals(this.selectedObject.getCompositeEndState().getId()))
 					break;
 			}
 			endStateComboBox.getSelectionModel().select(i);

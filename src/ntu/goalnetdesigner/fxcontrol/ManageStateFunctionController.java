@@ -1,14 +1,12 @@
 package ntu.goalnetdesigner.fxcontrol;
 import java.util.List;
+import java.util.Optional;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.GridPane;
-import javafx.util.Callback;
 import ntu.goalnetdesigner.data.persistence.Method;
 import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.StateFunction;
@@ -16,9 +14,6 @@ import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.logger.DatabaseActionLogger;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.UISession;
-import ntu.goalnetdesigner.utility.Dialogs;
-import ntu.goalnetdesigner.utility.Dialogs.DialogOptions;
-import ntu.goalnetdesigner.utility.Dialogs.DialogResponse;
 import ntu.goalnetdesigner.utility.Resource;
 
 public class ManageStateFunctionController {
@@ -29,10 +24,6 @@ public class ManageStateFunctionController {
     private State selectedState;
     private List<StateFunction> stateFunctionList;
     
-    // Helper fields for adding new function
-	private Method selectedFunction;
-	private ComboBox<Method> cmb = new ComboBox<Method>();
-    
     @FXML
     public void initialize(){
     	this.selectedState = (State) UISession.getCurrentSelectionAsDrawable();
@@ -40,36 +31,26 @@ public class ManageStateFunctionController {
     	functionListView.setItems(FXCollections.observableArrayList(this.stateFunctionList));
     }
     
-    @SuppressWarnings({ "unchecked", "rawtypes" })
 	@FXML
     void addButtonOnClick(ActionEvent event) {
-    	GridPane grid = new GridPane();
-    	grid.setHgap(10);
-    	grid.setVgap(10);
-    	grid.setPadding(new Insets(0, 10, 0, 10));
-		cmb.setItems(FXCollections.observableArrayList(DataSession.Cache.functions));
-		grid.add(cmb, 0, 0);
-    	Callback callback = new Callback() {
-			@Override
-			public Object call(Object arg0) {
-				ManageStateFunctionController.this.selectedFunction = cmb.getSelectionModel().getSelectedItem();
-				return null;
-			}
-    	};
-    	DialogResponse resp = Dialogs.showCustomDialog(UISession.primaryStage, 
-    			grid, "Please select function", "Select function", DialogOptions.OK_CANCEL, callback);
-    	
-    	if (resp == DialogResponse.OK){
+    	List<Method> choices = DataSession.Cache.functions;
+    	ChoiceDialog<Method> dialog = new ChoiceDialog<Method>(null, choices);
+    	dialog.setTitle("Select function");
+    	dialog.setHeaderText("Please select function");
+    	dialog.setContentText("Function list:");
+    	Optional<Method> result = dialog.showAndWait();
+
+    	result.ifPresent(v -> {
     		StateFunction sf = new StateFunction();
     		// find max sequence, and append to end
     		sf.setSequence(this.stateFunctionList.size());
     		this.selectedState.addStateFunction(sf);
-    		this.selectedFunction.addStateFunction(sf);
+    		v.addStateFunction(sf);
     		refreshSequence();
     		DataService.stateFunction.persist(sf);
     		functionListView.setItems(FXCollections.observableArrayList(this.stateFunctionList));
     		DatabaseActionLogger.log(Resource.Action.CREATE, Resource.ActionTargetType.STATE_FUNCTION, selectedState.getId());
-    	}
+    	});
     }
 
     @FXML

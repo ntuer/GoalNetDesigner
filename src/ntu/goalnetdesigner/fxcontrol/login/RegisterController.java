@@ -4,6 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -11,7 +13,6 @@ import javafx.scene.text.Text;
 import ntu.goalnetdesigner.data.persistence.User;
 import ntu.goalnetdesigner.logic.AuthorizationManager;
 import ntu.goalnetdesigner.session.UISession;
-import ntu.goalnetdesigner.utility.Dialogs;
 import ntu.goalnetdesigner.utility.Resource;
 import ntu.goalnetdesigner.utility.UIUtility;
 
@@ -88,8 +89,11 @@ public class RegisterController{
     	u.setEducationLevel(educationComboBox.getSelectionModel().getSelectedItem());
 		AuthorizationManager lm = new AuthorizationManager();
 		if (lm.register(u)) {
-			Dialogs.showInformationDialog(UISession.primaryStage, "You can now login with " + u.getId(), 
-				    "User registered", "Registration");
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Registration");
+			alert.setHeaderText("User registered");
+			alert.setContentText("You can now login with " + u.getId());
+			alert.showAndWait();
 			UIUtility.Navigation.switchTo(Resource.LOGIN_PATH, UISession.primaryStage);
 		}
 		else

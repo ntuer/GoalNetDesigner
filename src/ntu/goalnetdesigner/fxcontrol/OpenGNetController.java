@@ -4,6 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -13,8 +15,6 @@ import ntu.goalnetdesigner.logger.ConsoleLogger;
 import ntu.goalnetdesigner.logic.AuthorizationManager;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.LoginSession;
-import ntu.goalnetdesigner.session.UISession;
-import ntu.goalnetdesigner.utility.Dialogs;
 import ntu.goalnetdesigner.utility.Resource;
 import ntu.goalnetdesigner.utility.UIUtility;
 
@@ -46,8 +46,11 @@ public class OpenGNetController {
     	AuthorizationManager am = new AuthorizationManager();
     	Gnet selectedGNet = GNetTable.getSelectionModel().getSelectedItem();
     	if (am.getGnetAccessLevelOfUser(LoginSession.user, selectedGNet).equals(Resource.UserGnetAccessLevel.READ)){
-    		Dialogs.showWarningDialog(UISession.secondaryStage, "Any changes on this Goal Net will not be saved to database. However, you can edit and export it.", 
-        		    "You only have read access to this Goal Net.", "Read Access Only");
+    		Alert alert = new Alert(AlertType.WARNING);
+    		alert.setTitle("Read Access Only");
+    		alert.setHeaderText("You only have read access to this Goal Net");
+    		alert.setContentText("Any changes on this Goal Net will not be saved to database. However, you can edit and export it.");
+    		alert.showAndWait();
     	}
     	DataSession.setGNetCache(selectedGNet);
     	ConsoleLogger.log("Existing GNet Opened:" + selectedGNet.getName());

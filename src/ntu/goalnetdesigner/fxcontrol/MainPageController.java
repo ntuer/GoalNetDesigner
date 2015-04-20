@@ -3,6 +3,7 @@ package ntu.goalnetdesigner.fxcontrol;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Optional;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -13,7 +14,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -23,6 +27,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -60,9 +65,6 @@ import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.LoginSession;
 import ntu.goalnetdesigner.session.UISession;
 import ntu.goalnetdesigner.utility.CurrentDrawingMode;
-import ntu.goalnetdesigner.utility.Dialogs;
-import ntu.goalnetdesigner.utility.Dialogs.DialogOptions;
-import ntu.goalnetdesigner.utility.Dialogs.DialogResponse;
 import ntu.goalnetdesigner.utility.Resource;
 import ntu.goalnetdesigner.utility.UIUtility;
 import ntu.goalnetdesigner.utility.UIUtility.Navigation;
@@ -627,13 +629,16 @@ public class MainPageController {
         	if (am.getGnetAccessLevelOfUser(LoginSession.user, DataSession.Cache.gnet).equals(Resource.UserGnetAccessLevel.READ)){
         		DataService.rollback();
         	} else {
-		    	DialogResponse response = Dialogs.showConfirmDialog(UISession.primaryStage, 
-		    		    "Click Yes to save, No to discard.", "Do you want to save your latest changes since last save?", "Exit", DialogOptions.YES_NO);
-		    	if (response == DialogResponse.YES){
-		    		DataService.commit();
-		    	} else if (response == DialogResponse.NO){
-		    		DataService.rollback();
-		    	}
+        		Alert alert = new Alert(AlertType.CONFIRMATION);
+        		alert.setTitle("Exit");
+        		alert.setHeaderText("Do you want to save your latest changes since last save?");
+        		alert.setContentText("Click OK to save, Cancel to discard.");
+        		Optional<ButtonType> result = alert.showAndWait();
+        		if (result.get() == ButtonType.OK){
+        			DataService.commit();
+        		} else {
+        			DataService.rollback();
+        		}
         	}
         	DataService.begin();
         	DatabaseActionLogger.log(Resource.Action.CLOSE, Resource.ActionTargetType.GNET, DataSession.Cache.gnet.getId());
@@ -684,8 +689,11 @@ public class MainPageController {
     void fileMenuSaveClicked(ActionEvent event) {
     	AuthorizationManager am = new AuthorizationManager();
     	if (am.getGnetAccessLevelOfUser(LoginSession.user, DataSession.Cache.gnet).equals(Resource.UserGnetAccessLevel.READ)){
-    		Dialogs.showErrorDialog(UISession.primaryStage, "You don't have the access right to store this goal net. However, you can continue to edit locally and export it.", 
-    				"Unauthorized", "Save Gnet Error");
+    		Alert alert = new Alert(AlertType.ERROR);
+    		alert.setTitle("Save Gnet Error");
+    		alert.setHeaderText("Unauthorized");
+    		alert.setContentText("You don't have the access right to store this goal net. However, you can continue to edit locally and export it.");
+    		alert.showAndWait();
     	} else {
 	    	SaveManager sm = new SaveManager();
 	    	sm.saveToDatabase(DataSession.Cache.gnet);
@@ -709,11 +717,15 @@ public class MainPageController {
 
     @FXML
     void fileMenuSaveAsLocalClicked(ActionEvent event) {
-    	String input = Dialogs.showInputDialog(UISession.primaryStage, "Enter file name:", "Save Local", "Save Local");
-    	if (input != null){
-	    	SaveManager sm = new SaveManager();
-	    	sm.saveLocally(input, DataSession.Cache.gnet);
-    	}
+    	TextInputDialog dialog = new TextInputDialog();
+    	dialog.setTitle("Save Local");
+    	dialog.setHeaderText("Save Local");
+    	dialog.setContentText("Enter file name:");
+    	Optional<String> result = dialog.showAndWait();
+    	result.ifPresent(v -> {
+    		SaveManager sm = new SaveManager();
+	    	sm.saveLocally(v, DataSession.Cache.gnet);
+    	});
     }
     @FXML
     void fileMenuCloseClicked(ActionEvent event) {
@@ -722,9 +734,14 @@ public class MainPageController {
 
     @FXML
     void fileMenuExportClicked(ActionEvent event) {
-    	String input = Dialogs.showInputDialog(UISession.primaryStage, "Enter file name:", "Export current Goal Net as png", "Export");
-    	if (input != null){
-	    	int maxX = 0, maxY = 0;
+    	
+    	TextInputDialog dialog = new TextInputDialog();
+    	dialog.setTitle("Export");
+    	dialog.setHeaderText("Export current Goal Net as png");
+    	dialog.setContentText("Enter file name:");
+    	Optional<String> result = dialog.showAndWait();
+    	result.ifPresent(v -> {
+    		int maxX = 0, maxY = 0;
 	    	for (State s: DataSession.Cache.states){
 	    		if (maxX < s.getX())
 	    			maxX = s.getX();
@@ -743,14 +760,14 @@ public class MainPageController {
 	    			maxY + Resource.EXPORT_PICTURE_BORDER_SIZE);
 	    	
 	    	WritableImage image = drawingPane.snapshot(new SnapshotParameters(), wi);
-	        File file = new File(input + ".png");
+	        File file = new File(v + ".png");
 	
 	        try {
 	            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
 	        } catch (IOException e) {
 	            ConsoleLogger.log("Failed to export GNet. " + e.getMessage());
 	        }
-    	}
+    	});
     }
 
     @FXML
@@ -817,9 +834,12 @@ public class MainPageController {
     @FXML
     void runMenuRunClicked(ActionEvent event) {
     	if (DataSession.pathToExe.isEmpty()){
-    		DialogResponse response = Dialogs.showConfirmDialog(UISession.primaryStage, "Do you want to configure it now?", 
-    		        "Run target not specified", "Run Error", DialogOptions.OK_CANCEL);
-    		if (response == DialogResponse.OK){
+    		Alert alert = new Alert(AlertType.CONFIRMATION);
+    		alert.setTitle("Run Error");
+    		alert.setHeaderText("Run target not specified");
+    		alert.setContentText("Do you want to configure it now?");
+    		Optional<ButtonType> result = alert.showAndWait();
+    		if (result.get() == ButtonType.OK){
     			runMenuRunConfigurationClicked(null);
     		}
     	} else {
@@ -827,24 +847,32 @@ public class MainPageController {
 	    		ValidationManager vm = new ValidationManager();
 	        	vm.validate();
 	    		if (vm.containsError()){
-	    			Dialogs.showErrorDialog(UISession.primaryStage, "Please validate Goal Net and fix errors before launching.", 
-		    				"Goal Net contains unresolved errors", "Run Error");
+	    			Alert alert = new Alert(AlertType.ERROR);
+	    			alert.setTitle("Run Error");
+	    			alert.setHeaderText("Goal Net contains unresolved errors");
+	    			alert.setContentText("Please validate Goal Net and fix errors before launching!");
+	    			alert.showAndWait();
 	    		} else {
 	    			new ProcessBuilder(DataSession.pathToExe, DataSession.Cache.gnet.getId()).start();
 	    		}
 			} catch (IOException e) {
-				Dialogs.showErrorDialog(UISession.primaryStage, "Unable to launch specified EXE: " + DataSession.pathToExe, 
-	    				"Launch EXE failed", "Run Error");
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Run Error");
+				alert.setHeaderText("Launch EXE failed");
+				alert.setContentText("Unable to launch specified EXE: " + DataSession.pathToExe);
+				alert.showAndWait();
 			}
     	}
     }
     
     @FXML
     void runMenuRunConfigurationClicked(ActionEvent event){
-    	String input = Dialogs.showInputDialog(UISession.primaryStage, "Please enter new path of exe file", "Current path: " + DataSession.pathToExe, "Run Configuration");
-    	if (input != null && !input.isEmpty()){
-    		DataSession.pathToExe = input;
-    	}
+    	TextInputDialog dialog = new TextInputDialog(DataSession.pathToExe);
+    	dialog.setTitle("Run Configuration");
+    	dialog.setHeaderText("Current path: " + DataSession.pathToExe);
+    	dialog.setContentText("Please enter new path of exe file:");
+    	Optional<String> result = dialog.showAndWait();
+    	result.ifPresent(v -> DataSession.pathToExe = v);
     }
     
     @FXML
@@ -865,12 +893,11 @@ public class MainPageController {
     
     @FXML
     void userMenuCurrentUserClicked(ActionEvent event) {
-    	try{
-    	Dialogs.showInformationDialog(UISession.primaryStage, "Server Address: " + LoginSession.serverAddress, 
-    		    "Current User ID: " + LoginSession.user.getId(), "Current User Information");
-    	} catch (Exception e){
-    		ConsoleLogger.log(e.getMessage());
-    	}
+    	Alert alert = new Alert(AlertType.INFORMATION);
+    	alert.setTitle("Current User Information");
+    	alert.setHeaderText("Current User ID: " + LoginSession.user.getId());
+    	alert.setContentText("Server Address: " + LoginSession.serverAddress);
+    	alert.showAndWait();
     }
 
     @FXML

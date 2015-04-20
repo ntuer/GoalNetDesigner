@@ -1,6 +1,7 @@
 package ntu.goalnetdesigner.fxcontrol.sharing;
 
 import java.util.Iterator;
+import java.util.Optional;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
@@ -11,7 +12,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableColumn.CellEditEvent;
@@ -20,16 +23,13 @@ import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
+import javafx.util.Pair;
 import ntu.goalnetdesigner.data.persistence.User;
 import ntu.goalnetdesigner.data.persistence.UserGnet;
 import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.logic.AuthorizationManager;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.LoginSession;
-import ntu.goalnetdesigner.session.UISession;
-import ntu.goalnetdesigner.utility.Dialogs;
-import ntu.goalnetdesigner.utility.Dialogs.DialogOptions;
-import ntu.goalnetdesigner.utility.Dialogs.DialogResponse;
 import ntu.goalnetdesigner.utility.Resource;
 
 public class ShareGNetController {
@@ -51,8 +51,6 @@ public class ShareGNetController {
 
     private ComboBox<User> userCmb = new ComboBox<User>();
     private ComboBox<String> accessCmb = new ComboBox<String>();
-    private User selectedUser;
-    private String selectedAccessLevel;
     
     private ObservableList<String> levelChoice = FXCollections.observableArrayList (
 		    new String(Resource.UserGnetAccessLevel.READ),
@@ -83,9 +81,13 @@ public class ShareGNetController {
     	}
     }
     
-    @SuppressWarnings({ "unchecked", "rawtypes" })
 	@FXML
     void addButtonClicked(ActionEvent event) {
+    	Dialog<Pair<User, String>> dialog = new Dialog<>();
+    	dialog.setTitle("Share Goal Net");
+    	dialog.setHeaderText("Please select user and choose access level");
+    	dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+    	
     	GridPane grid = new GridPane();
     	grid.setHgap(10);
     	grid.setVgap(10);
@@ -105,26 +107,27 @@ public class ShareGNetController {
 		accessCmb.setItems(FXCollections.observableArrayList(this.levelChoice));
 		grid.add(userCmb, 0, 0);
 		grid.add(accessCmb, 0, 1);
-    	Callback callback = new Callback() {
-			@Override
-			public Object call(Object arg0) {
-				ShareGNetController.this.selectedUser = userCmb.getSelectionModel().getSelectedItem();
-				ShareGNetController.this.selectedAccessLevel = accessCmb.getSelectionModel().getSelectedItem();
-				return null;
-			}
-    	};
-    	DialogResponse resp = Dialogs.showCustomDialog(UISession.primaryStage, 
-    			grid, "Please select user and choose access level", "Share Goal Net", DialogOptions.OK_CANCEL, callback);
-    	
-    	if (resp == DialogResponse.OK){
-    		UserGnet ug = new UserGnet();
+		
+		dialog.getDialogPane().setContent(grid);
+		dialog.setResultConverter(dialogButton -> {
+		    if (dialogButton == ButtonType.OK) {
+		        return new Pair<>(userCmb.getSelectionModel().getSelectedItem(), 
+		        		accessCmb.getSelectionModel().getSelectedItem());
+		    }
+		    return null;
+		});
+		
+		Optional<Pair<User, String>> result = dialog.showAndWait();
+
+		result.ifPresent(v -> {
+			UserGnet ug = new UserGnet();
     		// find max sequence, and append to end
-    		ug.setAccessLevel(this.selectedAccessLevel);
-    		this.selectedUser.addUserGnet(ug);
+    		ug.setAccessLevel(v.getValue());
+    		v.getKey().addUserGnet(ug);
     		DataSession.Cache.gnet.addUserGnet(ug);
     		DataService.userGnet.persist(ug);
     		userTable.setItems(FXCollections.observableArrayList(DataSession.Cache.gnet.getUserGnets()));
-    	}
+		});
     }
     
     @FXML

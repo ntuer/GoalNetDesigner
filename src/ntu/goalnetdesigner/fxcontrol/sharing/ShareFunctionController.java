@@ -3,6 +3,8 @@ package ntu.goalnetdesigner.fxcontrol.sharing;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import ntu.goalnetdesigner.data.persistence.Gnet;
@@ -12,7 +14,6 @@ import ntu.goalnetdesigner.logic.FunctionManager;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.LoginSession;
 import ntu.goalnetdesigner.session.UISession;
-import ntu.goalnetdesigner.utility.Dialogs;
 import ntu.goalnetdesigner.utility.Resource;
 
 public class ShareFunctionController {
@@ -30,7 +31,11 @@ public class ShareFunctionController {
     public void initialize(){
     	AuthorizationManager am = new AuthorizationManager();
     	if (am.getGnetAccessLevelOfUser(LoginSession.user, DataSession.Cache.gnet).equals(Resource.UserGnetAccessLevel.READ)){
-    		Dialogs.showErrorDialog(UISession.secondaryStage, "You do not have write access to this Goal net and cannot use this function!", "Unauthorized", "Error");
+    		Alert alert = new Alert(AlertType.ERROR);
+    		alert.setTitle("Error");
+    		alert.setHeaderText("Unauthorized");
+    		alert.setContentText("You do not have write access to this Goal net and cannot use this function!");
+    		alert.showAndWait();
     		cloneButton.setDisable(true);
     	}
     	else {
@@ -44,12 +49,19 @@ public class ShareFunctionController {
     	Method method = this.functionListView.getSelectionModel().getSelectedItem();
     	Gnet gnet = this.gnetListView.getSelectionModel().getSelectedItem();
     	if (method == null || gnet == null){
-    		Dialogs.showErrorDialog(UISession.secondaryStage, "Please select both Function and Goal Net", "Empty Selection", "Error");
+    		Alert alert = new Alert(AlertType.ERROR);
+    		alert.setTitle("Error");
+    		alert.setHeaderText("Empty Selection");
+    		alert.setContentText("Please select both Function and Goal Net!");
+    		alert.showAndWait();
     	}
     	else {
 	    	FunctionManager.cloneInstanceToGnet(method, gnet);
-	    	Dialogs.showInformationDialog(UISession.secondaryStage, "Function " + method.getName() + " has been cloned to " + gnet.getName(), 
-	    		    "Clone successful", "Clone Function");
+	    	Alert alert = new Alert(AlertType.INFORMATION);
+    		alert.setTitle("Clone Function");
+    		alert.setHeaderText("Clone successful");
+    		alert.setContentText("Function " + method.getName() + " has been cloned to " + gnet.getName());
+    		alert.showAndWait();
     	}
     }
 }

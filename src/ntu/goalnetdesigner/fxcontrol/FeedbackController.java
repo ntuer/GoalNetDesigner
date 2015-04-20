@@ -7,6 +7,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -17,8 +19,6 @@ import ntu.goalnetdesigner.data.persistence.FeedbackLog;
 import ntu.goalnetdesigner.data.persistence.Question;
 import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.session.LoginSession;
-import ntu.goalnetdesigner.session.UISession;
-import ntu.goalnetdesigner.utility.Dialogs;
 import ntu.goalnetdesigner.utility.Resource;
 import ntu.goalnetdesigner.utility.UIUtility;
 
@@ -79,8 +79,11 @@ public class FeedbackController {
 				else
 					DataService.feedbackLog.atomicInsert(fb);
 			}
-			Dialogs.showInformationDialog(UISession.primaryStage, "Thank you for your feedback!", 
-				    "Feedback Submitted", "Feedback");
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Feedback");
+			alert.setHeaderText("Feedback Submitted");
+			alert.setContentText("Thank you for your feedback!");
+			alert.showAndWait();
 			UIUtility.Navigation.closeContainingStage(FeedbackController.this.submitButton);
 		}
     };

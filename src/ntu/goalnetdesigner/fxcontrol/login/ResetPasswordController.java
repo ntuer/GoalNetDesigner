@@ -4,6 +4,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
@@ -11,7 +13,6 @@ import ntu.goalnetdesigner.data.persistence.User;
 import ntu.goalnetdesigner.data.service.DataService;
 import ntu.goalnetdesigner.logic.AuthorizationManager;
 import ntu.goalnetdesigner.session.UISession;
-import ntu.goalnetdesigner.utility.Dialogs;
 import ntu.goalnetdesigner.utility.Resource;
 import ntu.goalnetdesigner.utility.UIUtility;
 
@@ -77,8 +78,11 @@ public class ResetPasswordController{
     	}
     	AuthorizationManager lm = new AuthorizationManager();
 		if (lm.changePassword(user, passwordField.getText())) {
-			Dialogs.showInformationDialog(UISession.primaryStage, "You can login with your new password now.", 
-				    "User password reset", "Password Reset");
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Password Reset");
+			alert.setHeaderText("User password reset successfully");
+			alert.setContentText("You can login with your new password now.");
+			alert.showAndWait();
 			UIUtility.Navigation.switchTo(Resource.LOGIN_PATH, UISession.primaryStage);
 		}
 		else
