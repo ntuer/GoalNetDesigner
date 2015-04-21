@@ -1,5 +1,7 @@
 package ntu.goalnetdesigner.validation;
 
 public interface IComponentValidator {
-	public void validate();
+	public default void validate(){
+		throw new RuntimeException();
+	}
 }

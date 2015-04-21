@@ -5,9 +5,9 @@ import java.util.List;
 
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.validation.IComponentValidator;
+import ntu.goalnetdesigner.validation.ObjectStringPair;
 import ntu.goalnetdesigner.validation.syntax.ConnectionValidator;
 import ntu.goalnetdesigner.validation.syntax.GNetValidator;
-import ntu.goalnetdesigner.validation.syntax.ObjectStringPair;
 import ntu.goalnetdesigner.validation.syntax.StateValidator;
 import ntu.goalnetdesigner.validation.syntax.TaskValidator;
 import ntu.goalnetdesigner.validation.syntax.TransitionValidator;

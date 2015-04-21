@@ -1,10 +1,9 @@
-package ntu.goalnetdesigner.validation.syntax;
+package ntu.goalnetdesigner.validation;
 
 public class ObjectStringPair {
 	private Object object;
 	private String string;
 	public ObjectStringPair(Object object2, String error) {
-		// TODO Auto-generated constructor stub
 		this.object = object2;
 		this.string = error;
 	}

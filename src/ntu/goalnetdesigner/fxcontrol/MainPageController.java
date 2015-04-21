@@ -68,7 +68,7 @@ import ntu.goalnetdesigner.utility.CurrentDrawingMode;
 import ntu.goalnetdesigner.utility.Resource;
 import ntu.goalnetdesigner.utility.UIUtility;
 import ntu.goalnetdesigner.utility.UIUtility.Navigation;
-import ntu.goalnetdesigner.validation.syntax.ObjectStringPair;
+import ntu.goalnetdesigner.validation.ObjectStringPair;
 
 public class MainPageController {
 	@FXML

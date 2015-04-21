@@ -33,12 +33,8 @@ public class ConnectionValidator implements IComponentValidator{
 		HashMap<State, OffsetStatus> stateArcOffset = new HashMap<State, OffsetStatus>();
 		HashMap<Transition, OffsetStatus> transitionArcOffset = new HashMap<Transition, OffsetStatus>();
 		// init values in hashmap
-		for (State s: gnet.getStates()){
-			stateArcOffset.put(s, OffsetStatus.NOT_VISITED);
-		}
-		for (Transition s: gnet.getTransitions()){
-			transitionArcOffset.put(s, OffsetStatus.NOT_VISITED);
-		}
+		gnet.getStates().forEach(s -> stateArcOffset.put(s, OffsetStatus.NOT_VISITED));
+		gnet.getTransitions().forEach(s -> transitionArcOffset.put(s, OffsetStatus.NOT_VISITED));
 		// iterate arcs, and mark states and transitions
 		// process start first
 		for (Arc a: gnet.getArcs()){
