@@ -5,9 +5,7 @@ import java.util.Map;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import ntu.goalnetdesigner.data.persistence.State;
 import ntu.goalnetdesigner.data.persistence.Transition;
@@ -22,8 +20,6 @@ import ntu.goalnetdesigner.utility.Resource;
 import ntu.goalnetdesigner.utility.UIUtility;
 
 public class RenderableMouseEventHandler {
-	private ScrollPane propertyPane;
-	private AnchorPane drawingPane;
 	public double orgSceneX, orgSceneY;
 	
 	private class RenderableCoordinate {
@@ -33,11 +29,8 @@ public class RenderableMouseEventHandler {
 	
 	private HashMap<Renderable, RenderableCoordinate> coordinates = new HashMap<>();
 	
-	public RenderableMouseEventHandler(ScrollPane propertyDisplayPane,
-			AnchorPane drawingPane) {
+	public RenderableMouseEventHandler() {
 		super();
-		this.propertyPane = propertyDisplayPane;
-		this.drawingPane = drawingPane;
 	}
 
 	public EventHandler<MouseEvent> mouseOnClickHandler = new EventHandler<MouseEvent>() {

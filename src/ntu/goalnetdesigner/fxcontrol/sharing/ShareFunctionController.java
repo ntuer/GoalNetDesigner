@@ -13,7 +13,6 @@ import ntu.goalnetdesigner.logic.AuthorizationManager;
 import ntu.goalnetdesigner.logic.FunctionManager;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.LoginSession;
-import ntu.goalnetdesigner.session.UISession;
 import ntu.goalnetdesigner.utility.Resource;
 
 public class ShareFunctionController {

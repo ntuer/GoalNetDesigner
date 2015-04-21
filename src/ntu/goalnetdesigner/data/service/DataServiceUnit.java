@@ -51,8 +51,8 @@ public class DataServiceUnit<T extends IDataServiceUnitSubscriber> {
 	
 	public void atomicDelete(T t){
 		try {
-			Method method = this.type.getMethod("getId", null);
-			String id = (String) method.invoke(t, null);
+			Method method = this.type.getMethod("getId", (Class<?>[])null);
+			String id = (String) method.invoke(t, (Object[]) null);
 			em.getTransaction().begin();
 			T a = em.find(this.type, id);
 			if (a != null){

@@ -272,7 +272,7 @@ public class MainPageController {
     	ConsoleLogger.setOutputArea(this.eventLogField);
     	StatusBarLogger.setStatusLabel(statusLabel);
     	UISession.currentSelection.setPropertyPane(propertyPane);
-    	UIUtility.Draw.renderManager = new RenderManager(this.drawingPane, this.propertyPane);
+    	UIUtility.Draw.renderManager = new RenderManager(this.drawingPane);
     	setViewMenuHandlers();
     	setProblemTableSelectionHandler();
     	setCurrentDrawingModeSelectionHandlers();
@@ -519,7 +519,7 @@ public class MainPageController {
         refreshTeamTreeView();
         UISession.isTreeViewRefreshing = false;
         ConsoleLogger.log("TreeViews and Drawing Pane refreshed");
-        UIUtility.Draw.renderManager.renderGNet(DataSession.Cache.gnet);
+        UIUtility.Draw.renderManager.renderExistingGNet(DataSession.Cache.gnet);
         ConsoleLogger.log("Successfully rendered existing objects");
     }
     

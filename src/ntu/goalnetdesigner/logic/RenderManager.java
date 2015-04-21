@@ -3,7 +3,6 @@ package ntu.goalnetdesigner.logic;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import ntu.goalnetdesigner.data.persistence.Arc;
 import ntu.goalnetdesigner.data.persistence.Gnet;
@@ -34,12 +33,10 @@ import ntu.goalnetdesigner.utility.Resource;
 public class RenderManager {
 	
 	private AnchorPane drawingPane;
-	private ScrollPane propertyPane;
 
-	public RenderManager(AnchorPane drawingPane, ScrollPane propertyPane) {
+	public RenderManager(AnchorPane drawingPane) {
 		super();
 		this.drawingPane = drawingPane;
-		this.propertyPane = propertyPane;
 	}
 
 	public AnchorPane getDrawingPane() {
@@ -50,27 +47,29 @@ public class RenderManager {
 		this.drawingPane = drawingPane;
 	}
 	
-	public void renderGNet(Gnet gnet){
-		if (gnet == null){
-			drawingPane.getChildren().clear();
-			return;
-		}
-		List<Arc> arcs = gnet.getArcs();
-		List<State> states = gnet.getStates();
-		List<Transition> transitions = gnet.getTransitions();
-		for(State s: states){
-			drawExistingState(s);
-		}
-		for (Transition t : transitions){
-			drawExistingTransition(t);
-		}
-		for (Arc a: arcs){
-			drawExistingArc(a, states, transitions);
-		}
-		for (State s: states){
-			if (s.getComposite()){
-				drawComposition(s, s.getCompositeStartState());
-				drawComposition(s.getCompositeEndState(), s);
+	public void renderExistingGNet(Gnet gnet){
+		drawingPane.getChildren().clear();
+		if (gnet != null) {
+			List<Arc> arcs = gnet.getArcs();
+			List<State> states = gnet.getStates();
+			List<Transition> transitions = gnet.getTransitions();
+			for(State s: states){
+				drawExistingState(s);
+			}
+			for (Transition t : transitions){
+				drawExistingTransition(t);
+			}
+			for (Arc a: arcs){
+				drawExistingArc(a, states, transitions);
+			}
+			// draw compositions
+			for (State s: states){
+				if (s.getComposite()){
+					if (s.getCompositeStartState() != null)
+						drawComposition(s, s.getCompositeStartState());
+					if (s.getCompositeEndState() != null)
+						drawComposition(s.getCompositeEndState(), s);
+				}
 			}
 		}
 	}
@@ -181,7 +180,7 @@ public class RenderManager {
 	}
 	
 	private void setMouseEventHandler(Renderable r){
-		RenderableMouseEventHandler meh = new RenderableMouseEventHandler(propertyPane, drawingPane);
+		RenderableMouseEventHandler meh = new RenderableMouseEventHandler();
 		r.setMeh(meh);
 	}
 

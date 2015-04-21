@@ -124,6 +124,7 @@ public class TransitionPropertyPaneController implements IPaneController {
     	// create new Tasklist if does not exist
     	if (this.selectedObject.getTasklist() == null){
     		this.selectedObject.setTasklist(TasklistManager.newInstance());
+    		this.selectedObject.getTasklist().getTransitions().add(this.selectedObject);
     	}
     	UIUtility.Navigation.popUp(Resource.MANAGE_TRANSITION_TASK_PATH, UISession.primaryStage);
     }

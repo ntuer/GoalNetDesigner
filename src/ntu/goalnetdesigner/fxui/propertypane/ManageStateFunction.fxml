@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.GridPane?>
 
-<GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntu.goalnetdesigner.fxcontrol.ManageTaskFunctionController">
+<GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ntu.goalnetdesigner.fxcontrol.propertypanecontrol.ManageStateFunctionController">
    <rowConstraints>
       <RowConstraints minHeight="10.0" prefHeight="250.0" />
    </rowConstraints>

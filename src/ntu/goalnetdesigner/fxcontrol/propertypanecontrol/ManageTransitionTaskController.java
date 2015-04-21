@@ -1,4 +1,4 @@
-package ntu.goalnetdesigner.fxcontrol;
+package ntu.goalnetdesigner.fxcontrol.propertypanecontrol;
 import java.util.List;
 import java.util.Optional;
 
