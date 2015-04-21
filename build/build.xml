@@ -84,7 +84,6 @@
 			<classpath>
 				<fileset dir="build/libs">
 				<include name="mysql-connector-java-5.1.33-bin.jar"/>
-				
 				<include name="javax.persistence_2.1.0.v201304241213.jar"/>
 				<include name="org.eclipse.persistence.jpars_2.6.0.v20150309-bf26070.jar"/>
 				<include name="eclipselink.jar"/>
