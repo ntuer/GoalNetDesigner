@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.input.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<fx:root type="javafx.scene.control.Tab" xmlns:fx="http://javafx.com/fxml">
+	<content>
+		<ScrollPane prefHeight="200.0" prefWidth="200.0">
+			<content>
+				<AnchorPane minHeight="0.0" minWidth="0.0"
+					prefHeight="5000.0" prefWidth="5000.0" />
+			</content>
+		</ScrollPane>
+	</content>
+</fx:root>

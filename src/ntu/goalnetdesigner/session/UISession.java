@@ -7,12 +7,12 @@ import java.util.Queue;
 import java.util.Set;
 
 import javafx.stage.Stage;
-import ntu.goalnetdesigner.fxcontrol.propertypanecontrol.IPaneController;
+import ntu.goalnetdesigner.render.CurrentDrawingMode;
 import ntu.goalnetdesigner.render.Drawable;
 import ntu.goalnetdesigner.render.Renderable;
-import ntu.goalnetdesigner.utility.CurrentDrawingMode;
 import ntu.goalnetdesigner.utility.UIUtility;
 import ntu.goalnetdesigner.utility.UIUtility.CurrentSelectionProperty;
+import ntu.goalnetdesigner.viewcontroller.propertypanecontrol.IPaneController;
 
 public class UISession {
 	// Main window reference

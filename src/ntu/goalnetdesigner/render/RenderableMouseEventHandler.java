@@ -15,7 +15,6 @@ import ntu.goalnetdesigner.render.customcontrol.Arrow;
 import ntu.goalnetdesigner.render.customcontrol.BidirectionalStackPane;
 import ntu.goalnetdesigner.session.DataSession;
 import ntu.goalnetdesigner.session.UISession;
-import ntu.goalnetdesigner.utility.CurrentDrawingMode;
 import ntu.goalnetdesigner.utility.Resource;
 import ntu.goalnetdesigner.utility.UIUtility;
 
