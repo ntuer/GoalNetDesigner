@@ -1,8 +1,10 @@
 package ntu.goalnetdesigner.viewcontroller.propertypanecontrol;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceDialog;
@@ -28,7 +30,13 @@ public class ManageStateFunctionController {
     public void initialize(){
     	this.selectedState = (State) UISession.getCurrentSelectionAsDrawable();
     	this.stateFunctionList = this.selectedState.getStateFunctions();
-    	functionListView.setItems(FXCollections.observableArrayList(this.stateFunctionList));
+    	this.stateFunctionList.sort(new Comparator<StateFunction>() {
+    		public int compare (StateFunction o1, StateFunction o2){
+    			return o1.getSequence() - o2.getSequence();
+    		}
+		});
+    	ObservableList<StateFunction> v = FXCollections.observableArrayList(this.stateFunctionList);
+    	functionListView.setItems(v);
     }
     
 	@FXML
@@ -97,8 +105,7 @@ public class ManageStateFunctionController {
     }
 
     void refreshSequence() {
-    	for (int i = 0; i < this.stateFunctionList.size(); ++i){
+    	for (int i = 0; i < this.stateFunctionList.size(); ++i)
     		this.stateFunctionList.get(i).setSequence(i + 1);
-    	}
     }
 }

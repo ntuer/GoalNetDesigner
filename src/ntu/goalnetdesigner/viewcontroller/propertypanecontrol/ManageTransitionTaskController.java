@@ -1,4 +1,5 @@
 package ntu.goalnetdesigner.viewcontroller.propertypanecontrol;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,11 @@ public class ManageTransitionTaskController {
     public void initialize(){
     	this.selectedTasklist = (Tasklist) ((Transition)UISession.getCurrentSelectionAsDrawable()).getTasklist();
     	this.tasklistTaskList = this.selectedTasklist.getTasklistTasks();
+    	this.tasklistTaskList.sort(new Comparator<TasklistTask>() {
+    		public int compare (TasklistTask o1, TasklistTask o2){
+    			return o1.getSequence() - o2.getSequence();
+    		}
+		});
     	taskView.setItems(FXCollections.observableArrayList(this.tasklistTaskList));
     	taskListNameField.setText(this.selectedTasklist.getName());
     	

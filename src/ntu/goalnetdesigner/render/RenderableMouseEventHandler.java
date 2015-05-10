@@ -57,6 +57,7 @@ public class RenderableMouseEventHandler {
     public EventHandler<MouseEvent> mousePressedHandler = new EventHandler<MouseEvent>() {
     	public void handle(MouseEvent e)
     	{
+    		coordinates.clear();
     		UISession.isInRenderedObject = true;
     		orgSceneX = e.getSceneX();
             orgSceneY = e.getSceneY();

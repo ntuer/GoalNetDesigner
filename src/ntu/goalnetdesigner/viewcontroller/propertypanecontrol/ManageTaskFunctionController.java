@@ -1,4 +1,5 @@
 package ntu.goalnetdesigner.viewcontroller.propertypanecontrol;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +29,11 @@ public class ManageTaskFunctionController {
     public void initialize(){
     	this.selectedTask = (Task) UISession.currentSelection.getValue();
     	this.taskFunctionList = this.selectedTask.getTaskFunctions();
+    	this.taskFunctionList.sort(new Comparator<TaskFunction>() {
+    		public int compare (TaskFunction o1, TaskFunction o2){
+    			return o1.getSequence() - o2.getSequence();
+    		}
+		});
     	functionListView.setItems(FXCollections.observableArrayList(this.taskFunctionList));
     }
     

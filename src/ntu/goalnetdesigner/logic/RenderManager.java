@@ -155,8 +155,6 @@ public class RenderManager {
 	
 	public RenderedCompositionEdge drawComposition(State start, State end){
 		RenderedCompositionEdge rc = new RenderedCompositionEdge(start, end);
-		start.getRenderedObject().getAssociatedRenderedEdges().add(rc);
-		end.getRenderedObject().getAssociatedRenderedEdges().add(rc);
 		drawingPane.getChildren().addAll(rc.getShape());
 		drawingPane.getChildren().addAll(rc.getShape().getArrow());
 		return rc;
@@ -251,6 +249,34 @@ public class RenderManager {
 			
 		} else if (baseObject instanceof Arc){
 			DatabaseActionLogger.log(Resource.Action.DELETE, Resource.ActionTargetType.ARC, ((Arc) baseObject).getId());
+			Arc a = (Arc) baseObject;
+			for (State s: DataSession.Cache.states){
+				if (s.getId().equals(a.getInputID()) || s.getId().equals(a.getOutputID())){
+					for (RenderedEdge re: s.getRenderedObject().getAssociatedRenderedEdges()){
+						if (re instanceof RenderedArc){
+							RenderedArc ra = (RenderedArc) re;
+							if (ra.getBaseObject() == baseObject){
+								s.getRenderedObject().getAssociatedRenderedEdges().remove(ra);
+								break;
+							}
+						}
+					}
+				}
+			}
+			for (Transition t: DataSession.Cache.transitions){
+				if (t.getId().equals(a.getInputID()) || t.getId().equals(a.getOutputID())){
+					for (RenderedEdge re: t.getRenderedObject().getAssociatedRenderedEdges()){
+						if (re instanceof RenderedArc){
+							RenderedArc ra = (RenderedArc) re;
+							if (ra.getBaseObject() == baseObject){ // same object ref is guaranteed
+								t.getRenderedObject().getAssociatedRenderedEdges().remove(ra);
+								break;
+							}
+						}
+					}
+				}
+			}
+			
 			DataService.arc.remove((Arc) baseObject);
 			// update cache
 			DataSession.Cache.arcs.remove((Arc) baseObject);

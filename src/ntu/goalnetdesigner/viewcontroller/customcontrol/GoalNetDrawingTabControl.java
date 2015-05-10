@@ -1,4 +1,4 @@
-package ntu.goalnetdesigner.fxcontrol.viewcontroller;
+package ntu.goalnetdesigner.viewcontroller.customcontrol;
 
 import java.io.IOException;
 
@@ -9,10 +9,10 @@ import ntu.goalnetdesigner.data.persistence.Gnet;
 public class GoalNetDrawingTabControl extends Tab{
 	// handle multiple gnets
 	private Gnet gnet;
-	public GoalNetDrawingTabControl(Gnet gnet){
+	public GoalNetDrawingTabControl(){
 		this.gnet = gnet;
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-				"/ntu/goalnetdesigner/fxui/customcontrol/GoalNetDrawingTab.fxml"));
+				"/ntu/goalnetdesigner/view/customcontrol/GoalNetDrawingTab.fxml"));
 				        fxmlLoader.setRoot(this);
 				        fxmlLoader.setController(this);
 

@@ -15,7 +15,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
 
 
 /**
@@ -84,7 +83,6 @@ public class State extends ntu.goalnetdesigner.render.Drawable implements Serial
 
 	//bi-directional many-to-one association to StateFunction
 	@OneToMany(mappedBy="state", orphanRemoval=true)
-	@OrderBy("Sequence ASC")
 	private List<StateFunction> stateFunctions;
 
 	public State() {
